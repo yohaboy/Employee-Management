@@ -1,0 +1,129 @@
+// Hierarchical Office Management and Secure Letter System
+// This schema implements a strict tree-based hierarchy with secure messaging
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Node represents each employee in the hierarchical tree
+model Node {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed password
+  name      String
+  position  String   // Job title/position
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Hierarchical relationships
+  parentId String? // null for root node only
+  parent   Node?   @relation("NodeHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children Node[]  @relation("NodeHierarchy")
+
+  // Letters sent and received
+  sentLetters     Letter[] @relation("SenderNode")
+  receivedLetters Letter[] @relation("ReceiverNode")
+
+  // Signatures made by this node
+  signatures Signature[]
+
+  // Audit logs for this node
+  auditLogs AuditLog[]
+
+  @@index([parentId])
+  @@index([email])
+}
+
+// Letter represents secure messages between nodes
+model Letter {
+  id        String       @id @default(cuid())
+  subject   String
+  body      String       @db.Text
+  status    LetterStatus @default(DRAFT)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  // Sender and receiver relationships
+  senderId   String
+  sender     Node   @relation("SenderNode", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   Node   @relation("ReceiverNode", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  // Digital signature
+  signature Signature?
+
+  // Audit trail
+  auditLogs AuditLog[]
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Signature represents digital signatures on letters
+model Signature {
+  id        String   @id @default(cuid())
+  response  String?  @db.Text // Optional response when signing
+  signedAt  DateTime @default(now())
+
+  // Letter being signed
+  letterId String @unique
+  letter   Letter @relation(fields: [letterId], references: [id], onDelete: Cascade)
+
+  // Node who signed
+  signedById String
+  signedBy   Node   @relation(fields: [signedById], references: [id], onDelete: Cascade)
+
+  @@index([signedById])
+  @@index([signedAt])
+}
+
+// AuditLog tracks all important actions in the system
+model AuditLog {
+  id        String         @id @default(cuid())
+  action    AuditAction
+  details   String?        @db.Text
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime       @default(now())
+
+  // Node who performed the action
+  nodeId String
+  node   Node   @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  // Optional letter reference
+  letterId String?
+  letter   Letter? @relation(fields: [letterId], references: [id], onDelete: SetNull)
+
+  @@index([nodeId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// Enums
+enum LetterStatus {
+  DRAFT
+  SENT
+  SIGNED
+  RESPONDED
+}
+
+enum AuditAction {
+  NODE_CREATED
+  NODE_UPDATED
+  NODE_DELETED
+  LETTER_CREATED
+  LETTER_UPDATED
+  LETTER_DELETED
+  LETTER_SENT
+  LETTER_SIGNED
+  LETTER_RESPONDED
+  LOGIN_SUCCESS
+  LOGIN_FAILED
+  LOGOUT
+}

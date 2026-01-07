@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hierarchical Office Management System
+
+A secure, hierarchical office management and letter system built with Next.js 14.
+
+## Features
+
+- **Strict Hierarchy**: Users are organized in a tree structure. Visibility and permissions are strictly enforced based on the hierarchy (parent-child relationships).
+- **Secure Letters**: Send letters to parents or descendants. Letters have a strict lifecycle (Draft -> Sent -> Signed/Responded).
+- **Digital Signatures**: Recipients can digitally sign letters and provide responses.
+- **Audit Logging**: Comprehensive audit logging for all actions.
+- **Modern UI**: Built with Tailwind CSS and shadcn/ui, featuring a dark mode aesthetic.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+
+- npm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  Clone the repository
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Build the project:
+    ```bash
+    npm run build
+    ```
+4.  Start the server:
+    ```bash
+    npm start
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development Mode (In-Memory Database)
 
-## Learn More
+Currently, the application is configured to use an **in-memory database** for demonstration and testing purposes. This means:
 
-To learn more about Next.js, take a look at the following resources:
+- **Data is not persistent**: All data will be lost when the server restarts.
+- **Initial User**: A root admin user is created automatically on startup.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Default Credentials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Email**: `admin@company.com`
+- **Password**: `admin123`
 
-## Deploy on Vercel
+## Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Components**: shadcn/ui
+- **Database**: In-memory store (mocking Prisma/PostgreSQL)
+- **Authentication**: Custom session-based auth with bcrypt
+- **Validation**: Zod
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Key Directories
+
+- `src/app`: Next.js app router pages and API routes (Server Actions)
+- `src/components`: Reusable UI components
+- `src/lib`: Utility functions (auth, hierarchy, validation, db)
