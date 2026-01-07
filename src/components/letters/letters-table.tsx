@@ -34,8 +34,8 @@ interface LettersTableProps {
 const statusColors: Record<string, string> = {
     DRAFT: 'bg-muted text-muted-foreground',
     SENT: 'bg-primary text-primary-foreground',
-    SIGNED: 'bg-green-500 text-white',
-    RESPONDED: 'bg-purple-500 text-white',
+    SIGNED: 'bg-green-500/10 text-green-600 border-green-200',
+    RESPONDED: 'bg-purple-500/10 text-purple-600 border-purple-200',
 }
 
 export function LettersTable({ letters, currentNodeId, type }: LettersTableProps) {
@@ -48,17 +48,17 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
     }
 
     return (
-        <div className="rounded-none border-2 border-border overflow-hidden">
+        <div className="rounded-md border overflow-hidden">
             <Table>
                 <TableHeader>
-                    <TableRow className="bg-muted/50 hover:bg-muted/50 border-b-2 border-border">
-                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Subject</TableHead>
-                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">
+                    <TableRow className="bg-muted/50">
+                        <TableHead>Subject</TableHead>
+                        <TableHead>
                             {type === 'received' ? 'From' : 'To'}
                         </TableHead>
-                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Status</TableHead>
-                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Date</TableHead>
-                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs text-right">Actions</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -68,29 +68,29 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
                         return (
                             <TableRow
                                 key={letter.id}
-                                className="border-b-2 border-border hover:bg-muted/30 transition-colors"
+                                className="hover:bg-muted/30 transition-colors"
                             >
-                                <TableCell className="font-bold text-foreground uppercase tracking-tight">
+                                <TableCell className="font-medium">
                                     {letter.subject}
                                 </TableCell>
                                 <TableCell>
                                     <div>
-                                        <p className="font-bold text-foreground">{otherParty.name}</p>
-                                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{otherParty.position}</p>
+                                        <p className="font-medium">{otherParty.name}</p>
+                                        <p className="text-xs text-muted-foreground">{otherParty.position}</p>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <Badge className={`${statusColors[letter.status]} rounded-none font-bold text-[10px] uppercase tracking-widest px-2 py-0.5`}>
+                                    <Badge variant="outline" className={statusColors[letter.status]}>
                                         {letter.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-muted-foreground text-xs font-bold uppercase tracking-tight">
+                                <TableCell className="text-muted-foreground text-xs">
                                     {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <Link href={`/dashboard/letters/${letter.id}`}>
-                                        <Button variant="outline" size="sm" className="font-bold uppercase tracking-widest text-[10px]">
-                                            <Eye className="w-3 h-3 mr-1" />
+                                        <Button variant="outline" size="sm">
+                                            <Eye className="size-3 mr-1" />
                                             View
                                         </Button>
                                     </Link>

@@ -25,19 +25,19 @@ export default async function UsersPage() {
         }))
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-4xl font-black text-foreground mb-2 uppercase tracking-tighter">Manage Users</h2>
-                    <p className="text-muted-foreground font-medium">Create and manage your direct reports</p>
+                    <h2 className="text-3xl font-bold tracking-tight">Manage Users</h2>
+                    <p className="text-muted-foreground">Create and manage your direct reports</p>
                 </div>
                 <CreateUserDialog parentId={currentNode.id} />
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
-                        <Users className="w-6 h-6" />
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                        <Users className="size-5" />
                         Direct Reports ({directChildren.length})
                     </CardTitle>
                 </CardHeader>

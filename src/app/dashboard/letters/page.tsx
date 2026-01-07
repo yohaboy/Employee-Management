@@ -38,39 +38,39 @@ export default async function LettersPage() {
         .map(mapLetter)
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-4xl font-black text-foreground uppercase tracking-tighter">Letters</h2>
-                    <p className="text-muted-foreground font-medium">Manage your correspondence</p>
+                    <h2 className="text-3xl font-bold tracking-tight">Letters</h2>
+                    <p className="text-muted-foreground">Manage your correspondence</p>
                 </div>
                 <Link href="/dashboard/letters/new">
                     <Button>
-                        <Plus className="w-5 h-5 mr-2" />
+                        <Plus className="size-4 mr-2" />
                         New Letter
                     </Button>
                 </Link>
             </div>
 
             <Card>
-                <CardContent className="pt-8">
+                <CardContent className="pt-6">
                     <Tabs defaultValue="received" className="w-full">
-                        <TabsList className="grid w-full max-w-md grid-cols-2 rounded-none border-2 border-border p-1 bg-muted/30">
-                            <TabsTrigger value="received" className="rounded-none font-bold uppercase tracking-tight data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-brutal-sm">
-                                <Inbox className="w-4 h-4 mr-2" />
+                        <TabsList className="grid w-full max-w-md grid-cols-2">
+                            <TabsTrigger value="received">
+                                <Inbox className="size-4 mr-2" />
                                 Inbox ({receivedLetters.length})
                             </TabsTrigger>
-                            <TabsTrigger value="sent" className="rounded-none font-bold uppercase tracking-tight data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-brutal-sm">
-                                <Send className="w-4 h-4 mr-2" />
+                            <TabsTrigger value="sent">
+                                <Send className="size-4 mr-2" />
                                 Outbox ({sentLetters.length})
                             </TabsTrigger>
                         </TabsList>
 
-                        <TabsContent value="received" className="mt-8">
+                        <TabsContent value="received" className="mt-6">
                             <LettersTable letters={receivedLetters} currentNodeId={currentNode.id} type="received" />
                         </TabsContent>
 
-                        <TabsContent value="sent" className="mt-8">
+                        <TabsContent value="sent" className="mt-6">
                             <LettersTable letters={sentLetters} currentNodeId={currentNode.id} type="sent" />
                         </TabsContent>
                     </Tabs>

@@ -12,7 +12,7 @@ export function LoginForm() {
     return (
         <form action={formAction} className="space-y-4">
             {state?.error && (
-                <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
+                <div className="bg-destructive/10 border border-destructive text-destructive px-4 py-3 rounded-md text-sm font-medium">
                     {state.error}
                 </div>
             )}

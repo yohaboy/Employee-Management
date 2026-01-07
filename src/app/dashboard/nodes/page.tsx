@@ -19,14 +19,14 @@ export default async function NodesPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold text-white mb-2">Organization Hierarchy</h2>
-                <p className="text-slate-400">View your position in the organizational structure</p>
+                <h2 className="text-3xl font-bold tracking-tight">Organization Hierarchy</h2>
+                <p className="text-muted-foreground">View your position in the organizational structure</p>
             </div>
 
-            <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+            <Card>
                 <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                        <Users className="w-5 h-5" />
+                    <CardTitle className="flex items-center gap-2">
+                        <Users className="size-5" />
                         Hierarchy Tree
                     </CardTitle>
                 </CardHeader>

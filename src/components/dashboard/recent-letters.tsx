@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Mail } from 'lucide-react'
 
 interface Letter {
     id: string
@@ -29,8 +29,8 @@ interface RecentLettersProps {
 const statusColors: Record<string, string> = {
     DRAFT: 'bg-muted text-muted-foreground',
     SENT: 'bg-primary text-primary-foreground',
-    SIGNED: 'bg-green-500 text-white',
-    RESPONDED: 'bg-purple-500 text-white',
+    SIGNED: 'bg-green-500/10 text-green-600 border-green-200',
+    RESPONDED: 'bg-purple-500/10 text-purple-600 border-purple-200',
 }
 
 export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
@@ -43,7 +43,7 @@ export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
     }
 
     return (
-        <div className="space-y-4">
+        <div className="divide-y border-t">
             {letters.map((letter) => {
                 const isSender = letter.senderId === currentNodeId
                 const otherParty = isSender ? letter.receiver : letter.sender
@@ -52,26 +52,29 @@ export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
                     <Link
                         key={letter.id}
                         href={`/dashboard/letters/${letter.id}`}
-                        className="block p-4 rounded-none border-2 border-border hover:border-primary hover:bg-primary/5 transition-all group active:translate-x-[1px] active:translate-y-[1px]"
+                        className="flex items-center justify-between py-4 hover:bg-muted/30 transition-colors group px-2 -mx-2 rounded-lg"
                     >
-                        <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                            <div className="size-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
+                                <Mail className="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            </div>
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-bold text-foreground truncate group-hover:text-primary transition-colors uppercase tracking-tight">
+                                <h4 className="font-bold text-sm text-foreground truncate group-hover:text-primary transition-colors">
                                     {letter.subject}
                                 </h4>
-                                <p className="text-sm text-muted-foreground font-medium">
-                                    {isSender ? 'TO' : 'FROM'}: {otherParty.name} <span className="text-xs opacity-70">({otherParty.position})</span>
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                    {isSender ? 'To' : 'From'}: <span className="font-semibold text-foreground/80">{otherParty.name}</span>
                                 </p>
                             </div>
-                            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
                         </div>
-                        <div className="flex items-center gap-3">
-                            <Badge className={`${statusColors[letter.status]} rounded-none font-bold text-[10px] uppercase tracking-widest px-2 py-0.5`}>
+                        <div className="flex items-center gap-6 ml-4">
+                            <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-bold text-[10px] px-2 py-0.5 rounded-full`}>
                                 {letter.status}
                             </Badge>
-                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider hidden sm:block">
                                 {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                             </span>
+                            <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                     </Link>
                 )

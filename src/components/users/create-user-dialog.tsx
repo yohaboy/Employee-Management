@@ -38,15 +38,15 @@ export function CreateUserDialog({ parentId }: CreateUserDialogProps) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase tracking-tighter">Create New User</DialogTitle>
-                    <DialogDescription className="font-medium">
+                    <DialogTitle className="text-2xl font-semibold">Create New User</DialogTitle>
+                    <DialogDescription>
                         Add a new employee as your direct report
                     </DialogDescription>
                 </DialogHeader>
 
                 <form action={formAction} className="space-y-6">
                     {state?.error && (
-                        <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
+                        <div className="bg-destructive/10 border border-destructive text-destructive px-4 py-3 rounded-md text-sm font-medium">
                             {state.error}
                         </div>
                     )}

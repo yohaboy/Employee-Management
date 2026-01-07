@@ -15,8 +15,8 @@ export function UserInfo({ node }: UserInfoProps) {
                 <p className="text-sm font-medium text-foreground">{node.name}</p>
                 <p className="text-xs text-muted-foreground">{node.position}</p>
             </div>
-            <div className="w-10 h-10 rounded-none bg-primary flex items-center justify-center shadow-brutal-sm border-2 border-black dark:border-white">
-                <User className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border">
+                <User className="w-5 h-5 text-primary" />
             </div>
         </div>
     )
