@@ -5,7 +5,7 @@ import { canViewLetter } from '@/lib/hierarchy'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, User, Calendar, FileText } from 'lucide-react'
+import { ArrowLeft, User, Calendar, FileText, FileCheck } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
@@ -18,10 +18,10 @@ interface LetterPageProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-slate-500',
-    SENT: 'bg-blue-500',
-    SIGNED: 'bg-green-500',
-    RESPONDED: 'bg-purple-500',
+    DRAFT: 'bg-muted text-muted-foreground',
+    SENT: 'bg-primary text-primary-foreground',
+    SIGNED: 'bg-green-500 text-white',
+    RESPONDED: 'bg-purple-500 text-white',
 }
 
 export default async function LetterPage({ params }: LetterPageProps) {
@@ -81,72 +81,74 @@ export default async function LetterPage({ params }: LetterPageProps) {
     const canSign = isReceiver && letter.status === 'SENT' && !letter.signature
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="flex items-center gap-4">
                 <Link href="/dashboard/letters">
-                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                    <Button variant="outline" size="sm">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to Letters
                     </Button>
                 </Link>
             </div>
 
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold text-white mb-2">{letter.subject}</h2>
-                    <div className="flex items-center gap-3">
-                        <Badge className={`${statusColors[letter.status]} text-white`}>
+                    <h2 className="text-4xl font-black text-foreground mb-3 uppercase tracking-tighter">{letter.subject}</h2>
+                    <div className="flex items-center gap-4">
+                        <Badge className={`${statusColors[letter.status]} rounded-none font-bold uppercase tracking-widest px-3 py-1`}>
                             {letter.status}
                         </Badge>
-                        <span className="text-sm text-slate-400">
+                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                             {format(new Date(letter.createdAt), 'PPpp')}
                         </span>
                     </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                     {letter.status !== 'DRAFT' && <DownloadPdfButton letter={letter} />}
                     {isSender && <LetterActions letter={letter} />}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 space-y-6">
-                    <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-8">
+                    <Card>
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
-                                <FileText className="w-5 h-5" />
+                            <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                                <FileText className="w-6 h-6" />
                                 Letter Content
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="prose prose-invert max-w-none">
-                                <p className="text-slate-300 whitespace-pre-wrap">{letter.body}</p>
+                            <div className="prose dark:prose-invert max-w-none">
+                                <p className="text-foreground font-medium leading-relaxed whitespace-pre-wrap">{letter.body}</p>
                             </div>
                         </CardContent>
                     </Card>
 
                     {letter.signature && (
-                        <Card className="border-green-700 bg-green-900/20 backdrop-blur">
+                        <Card className="border-green-500 shadow-[4px_4px_0px_0px_rgba(34,197,94,1)]">
                             <CardHeader>
-                                <CardTitle className="text-green-400 flex items-center gap-2">
-                                    <FileText className="w-5 h-5" />
+                                <CardTitle className="text-green-600 dark:text-green-400 font-black uppercase tracking-tight flex items-center gap-2">
+                                    <FileCheck className="w-6 h-6" />
                                     Digital Signature
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div>
-                                    <p className="text-sm text-slate-400 mb-1">Signed by</p>
-                                    <p className="text-white font-medium">{letter.signature.signedBy.name}</p>
-                                    <p className="text-sm text-slate-400">{letter.signature.signedBy.position}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-slate-400 mb-1">Signed at</p>
-                                    <p className="text-white">{format(new Date(letter.signature.signedAt), 'PPpp')}</p>
+                            <CardContent className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed by</p>
+                                        <p className="text-foreground font-bold text-lg">{letter.signature.signedBy.name}</p>
+                                        <p className="text-sm text-muted-foreground font-medium">{letter.signature.signedBy.position}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed at</p>
+                                        <p className="text-foreground font-bold">{format(new Date(letter.signature.signedAt), 'PPpp')}</p>
+                                    </div>
                                 </div>
                                 {letter.signature.response && (
-                                    <div>
-                                        <p className="text-sm text-slate-400 mb-1">Response</p>
-                                        <p className="text-white whitespace-pre-wrap">{letter.signature.response}</p>
+                                    <div className="pt-4 border-t-2 border-green-500/20">
+                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Response</p>
+                                        <p className="text-foreground font-medium whitespace-pre-wrap bg-green-500/5 p-4 border-l-4 border-green-500">{letter.signature.response}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -154,9 +156,9 @@ export default async function LetterPage({ params }: LetterPageProps) {
                     )}
 
                     {canSign && (
-                        <Card className="border-blue-700 bg-blue-900/20 backdrop-blur">
+                        <Card className="border-primary shadow-brutal">
                             <CardHeader>
-                                <CardTitle className="text-blue-400">Sign This Letter</CardTitle>
+                                <CardTitle className="text-primary font-black uppercase tracking-tight">Sign This Letter</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <SignLetterForm letterId={letter.id} />
@@ -165,61 +167,61 @@ export default async function LetterPage({ params }: LetterPageProps) {
                     )}
                 </div>
 
-                <div className="space-y-6">
-                    <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+                <div className="space-y-8">
+                    <Card>
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <User className="w-5 h-5" />
                                 From
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div>
-                                <p className="font-medium text-white">{letter.sender.name}</p>
-                                <p className="text-sm text-slate-400">{letter.sender.position}</p>
-                                <p className="text-sm text-slate-500">{letter.sender.email}</p>
+                                <p className="font-bold text-foreground text-lg">{letter.sender.name}</p>
+                                <p className="text-sm text-muted-foreground font-bold uppercase tracking-tight">{letter.sender.position}</p>
+                                <p className="text-xs text-muted-foreground mt-2 font-medium">{letter.sender.email}</p>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+                    <Card>
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <User className="w-5 h-5" />
                                 To
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div>
-                                <p className="font-medium text-white">{letter.receiver.name}</p>
-                                <p className="text-sm text-slate-400">{letter.receiver.position}</p>
-                                <p className="text-sm text-slate-500">{letter.receiver.email}</p>
+                                <p className="font-bold text-foreground text-lg">{letter.receiver.name}</p>
+                                <p className="text-sm text-muted-foreground font-bold uppercase tracking-tight">{letter.receiver.position}</p>
+                                <p className="text-xs text-muted-foreground mt-2 font-medium">{letter.receiver.email}</p>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+                    <Card>
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <Calendar className="w-5 h-5" />
                                 Timeline
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-4">
                             <div>
-                                <p className="text-xs text-slate-500 mb-1">Created</p>
-                                <p className="text-sm text-white">{format(new Date(letter.createdAt), 'PPp')}</p>
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Created</p>
+                                <p className="text-sm text-foreground font-bold">{format(new Date(letter.createdAt), 'PPp')}</p>
                             </div>
                             {letter.updatedAt.getTime() !== letter.createdAt.getTime() && (
                                 <div>
-                                    <p className="text-xs text-slate-500 mb-1">Last Updated</p>
-                                    <p className="text-sm text-white">{format(new Date(letter.updatedAt), 'PPp')}</p>
+                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Last Updated</p>
+                                    <p className="text-sm text-foreground font-bold">{format(new Date(letter.updatedAt), 'PPp')}</p>
                                 </div>
                             )}
                             {letter.signature && (
                                 <div>
-                                    <p className="text-xs text-slate-500 mb-1">Signed</p>
-                                    <p className="text-sm text-white">{format(new Date(letter.signature.signedAt), 'PPp')}</p>
+                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed</p>
+                                    <p className="text-sm text-foreground font-bold">{format(new Date(letter.signature.signedAt), 'PPp')}</p>
                                 </div>
                             )}
                         </CardContent>

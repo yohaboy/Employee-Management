@@ -47,29 +47,29 @@ export function NewLetterForm({ recipients }: NewLetterFormProps) {
 
     if (recipients.length === 0) {
         return (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-muted-foreground">
                 <p>No available recipients. You need a parent or subordinates to send letters.</p>
             </div>
         )
     }
 
     return (
-        <form action={formAction} className="space-y-6">
+        <form action={formAction} className="space-y-8">
             {state?.error && (
-                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
                     {state.error}
                 </div>
             )}
 
             <div className="space-y-2">
-                <Label htmlFor="recipient" className="text-slate-200">Recipient *</Label>
+                <Label htmlFor="recipient">Recipient *</Label>
                 <Select value={selectedRecipient} onValueChange={setSelectedRecipient} required>
-                    <SelectTrigger className="bg-slate-900/50 border-slate-600 text-white">
+                    <SelectTrigger className="rounded-none border-2">
                         <SelectValue placeholder="Select a recipient" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectContent className="rounded-none border-2">
                         {recipients.map((recipient) => (
-                            <SelectItem key={recipient.id} value={recipient.id} className="text-white">
+                            <SelectItem key={recipient.id} value={recipient.id} className="font-medium">
                                 {recipient.name} - {recipient.position}
                             </SelectItem>
                         ))}
@@ -78,35 +78,33 @@ export function NewLetterForm({ recipients }: NewLetterFormProps) {
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="subject" className="text-slate-200">Subject *</Label>
+                <Label htmlFor="subject">Subject *</Label>
                 <Input
                     id="subject"
                     name="subject"
                     placeholder="Enter letter subject"
                     required
-                    className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                 />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="body" className="text-slate-200">Message *</Label>
+                <Label htmlFor="body">Message *</Label>
                 <Textarea
                     id="body"
                     name="body"
                     placeholder="Write your message here..."
                     required
                     rows={10}
-                    className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                 />
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                     type="submit"
                     disabled={isPending || !selectedRecipient}
                     onClick={() => setShouldSend(false)}
                     variant="outline"
-                    className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                    className="flex-1"
                 >
                     {isPending ? 'Saving...' : 'Save as Draft'}
                 </Button>
@@ -114,7 +112,7 @@ export function NewLetterForm({ recipients }: NewLetterFormProps) {
                     type="submit"
                     disabled={isPending || !selectedRecipient}
                     onClick={() => setShouldSend(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="flex-1"
                 >
                     {isPending ? 'Sending...' : 'Send Letter'}
                 </Button>

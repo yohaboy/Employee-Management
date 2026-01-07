@@ -2,8 +2,7 @@
 
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { User, ChevronDown, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { User } from 'lucide-react'
 import { format } from 'date-fns'
 
 interface Node {
@@ -23,70 +22,65 @@ interface NodeTreeViewProps {
     currentNodeId: string
 }
 
-function TreeNode({ node, currentNodeId, level = 0 }: { node: Node; currentNodeId: string; level?: number }) {
-    const [isExpanded, setIsExpanded] = useState(true)
+function NodeCard({ node, isCurrentNode, isParent }: { node: Node; isCurrentNode: boolean; isParent?: boolean }) {
+    return (
+        <div className={`relative z-10 flex flex-col items-center p-6 bg-card border-2 shadow-brutal w-72 transition-all ${isCurrentNode ? 'border-primary' : isParent ? 'border-black dark:border-white' : 'border-border'
+            }`}>
+            <div className={`p-3 rounded-none mb-4 border-2 border-black dark:border-white ${isCurrentNode ? 'bg-primary/10 text-primary' : isParent ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                }`}>
+                <User className="w-8 h-8" />
+            </div>
+
+            <div className="text-center w-full">
+                <h4 className="font-black text-foreground uppercase tracking-tighter text-lg truncate">{node.name}</h4>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest truncate mt-1">{node.position}</p>
+                <p className="text-[10px] font-medium text-muted-foreground/70 truncate mt-2">{node.email}</p>
+            </div>
+
+            {isCurrentNode && (
+                <Badge className="mt-4 bg-primary text-primary-foreground rounded-none font-black uppercase tracking-widest">You</Badge>
+            )}
+            {isParent && (
+                <Badge className="mt-4 bg-black dark:bg-white text-white dark:text-black rounded-none font-black uppercase tracking-widest">Superior</Badge>
+            )}
+        </div>
+    )
+}
+
+function TreeNode({ node, currentNodeId }: { node: Node; currentNodeId: string }) {
     const hasChildren = node.children && node.children.length > 0
     const isCurrentNode = node.id === currentNodeId
 
     return (
-        <div className="space-y-2">
-            <div
-                className={`flex items-start gap-3 p-4 rounded-lg border transition-all ${isCurrentNode
-                        ? 'border-blue-600 bg-blue-900/30'
-                        : 'border-slate-700 bg-slate-900/30 hover:bg-slate-700/30'
-                    }`}
-                style={{ marginLeft: `${level * 24}px` }}
-            >
-                {hasChildren && (
-                    <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        className="mt-1 text-slate-400 hover:text-white transition-colors"
-                    >
-                        {isExpanded ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ChevronRight className="w-4 h-4" />
-                        )}
-                    </button>
-                )}
-                {!hasChildren && <div className="w-4" />}
+        <div className="flex flex-col items-center">
+            <NodeCard node={node} isCurrentNode={isCurrentNode} />
 
-                <div className="p-2 rounded-lg bg-blue-600/20 flex-shrink-0">
-                    <User className="w-5 h-5 text-blue-400" />
-                </div>
+            {hasChildren && (
+                <>
+                    {/* Vertical line from parent */}
+                    <div className="w-1 h-12 bg-border" />
 
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-white">{node.name}</h4>
-                        {isCurrentNode && (
-                            <Badge className="bg-blue-600 text-white text-xs">You</Badge>
-                        )}
+                    {/* Horizontal line covering all children */}
+                    <div className="relative flex justify-center">
+                        <div className="flex gap-12">
+                            {node.children!.map((child, index) => (
+                                <div key={child.id} className="flex flex-col items-center relative">
+                                    {/* Vertical line to child */}
+                                    <div className="w-1 h-12 bg-border" />
+
+                                    {/* Horizontal connector logic for multiple children */}
+                                    {node.children!.length > 1 && (
+                                        <div className={`absolute top-0 h-1 bg-border ${index === 0 ? 'left-1/2 right-0 w-1/2' :
+                                            index === node.children!.length - 1 ? 'left-0 right-1/2 w-1/2' : 'w-full'
+                                            }`} />
+                                    )}
+
+                                    <TreeNode node={child} currentNodeId={currentNodeId} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                    <p className="text-sm text-slate-400">{node.position}</p>
-                    <p className="text-xs text-slate-500">{node.email}</p>
-                    <p className="text-xs text-slate-600 mt-1">
-                        Joined {format(new Date(node.createdAt), 'PP')}
-                    </p>
-                </div>
-
-                {hasChildren && (
-                    <Badge variant="outline" className="border-slate-600 text-slate-400">
-                        {node.children!.length} {node.children!.length === 1 ? 'report' : 'reports'}
-                    </Badge>
-                )}
-            </div>
-
-            {hasChildren && isExpanded && (
-                <div className="space-y-2">
-                    {node.children!.map((child) => (
-                        <TreeNode
-                            key={child.id}
-                            node={child}
-                            currentNodeId={currentNodeId}
-                            level={level + 1}
-                        />
-                    ))}
-                </div>
+                </>
             )}
         </div>
     )
@@ -94,36 +88,15 @@ function TreeNode({ node, currentNodeId, level = 0 }: { node: Node; currentNodeI
 
 export function NodeTreeView({ treeData, currentNodeId }: NodeTreeViewProps) {
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col items-center p-12 overflow-x-auto min-w-full">
             {treeData.parent && (
-                <div>
-                    <h3 className="text-sm font-medium text-slate-400 mb-3 flex items-center gap-2">
-                        <div className="h-px flex-1 bg-slate-700" />
-                        <span>PARENT</span>
-                        <div className="h-px flex-1 bg-slate-700" />
-                    </h3>
-                    <div className="flex items-start gap-3 p-4 rounded-lg border border-slate-700 bg-slate-900/30">
-                        <div className="p-2 rounded-lg bg-purple-600/20 flex-shrink-0">
-                            <User className="w-5 h-5 text-purple-400" />
-                        </div>
-                        <div className="flex-1">
-                            <h4 className="font-medium text-white">{treeData.parent.name}</h4>
-                            <p className="text-sm text-slate-400">{treeData.parent.position}</p>
-                            <p className="text-xs text-slate-500">{treeData.parent.email}</p>
-                        </div>
-                        <Badge className="bg-purple-600 text-white">Manager</Badge>
-                    </div>
+                <div className="flex flex-col items-center">
+                    <NodeCard node={treeData.parent} isCurrentNode={false} isParent={true} />
+                    <div className="w-1 h-12 bg-border" />
                 </div>
             )}
 
-            <div>
-                <h3 className="text-sm font-medium text-slate-400 mb-3 flex items-center gap-2">
-                    <div className="h-px flex-1 bg-slate-700" />
-                    <span>YOUR HIERARCHY</span>
-                    <div className="h-px flex-1 bg-slate-700" />
-                </h3>
-                <TreeNode node={treeData.node} currentNodeId={currentNodeId} />
-            </div>
+            <TreeNode node={treeData.node} currentNodeId={currentNodeId} />
         </div>
     )
 }

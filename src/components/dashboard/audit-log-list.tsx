@@ -27,30 +27,30 @@ export async function AuditLogList({ nodeId, limit = 5 }: AuditLogListProps) {
 
     if (logs.length === 0) {
         return (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-muted-foreground">
                 <p>No activity yet</p>
             </div>
         )
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {logs.map((log: any) => (
                 <div
                     key={log.id}
-                    className="flex items-start gap-3 p-3 rounded-lg border border-slate-700 bg-slate-900/30"
+                    className="flex items-start gap-4 p-4 rounded-none border-2 border-border bg-muted/30"
                 >
-                    <div className="p-2 rounded-lg bg-blue-500/10 flex-shrink-0">
-                        <Activity className="w-4 h-4 text-blue-400" />
+                    <div className="p-2 rounded-none border-2 border-black dark:border-white bg-primary/10 flex-shrink-0">
+                        <Activity className="w-4 h-4 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm text-white font-medium">
+                        <p className="text-sm text-foreground font-bold uppercase tracking-tight">
                             {actionLabels[log.action] || log.action}
                         </p>
                         {log.details && (
-                            <p className="text-xs text-slate-400 truncate">{log.details}</p>
+                            <p className="text-xs text-muted-foreground font-medium truncate mt-0.5">{log.details}</p>
                         )}
-                        <p className="text-xs text-slate-500 mt-1">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">
                             {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
                         </p>
                     </div>

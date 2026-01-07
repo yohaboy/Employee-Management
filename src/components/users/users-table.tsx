@@ -21,45 +21,45 @@ interface UsersTableProps {
 export function UsersTable({ users }: UsersTableProps) {
     if (users.length === 0) {
         return (
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-muted-foreground">
                 <User className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>No direct reports yet</p>
-                <p className="text-sm mt-1">Create your first user to get started</p>
+                <p className="font-bold uppercase tracking-tight">No direct reports yet</p>
+                <p className="text-xs mt-1 font-medium">Create your first user to get started</p>
             </div>
         )
     }
 
     return (
-        <div className="rounded-lg border border-slate-700 overflow-hidden">
+        <div className="rounded-none border-2 border-border overflow-hidden">
             <Table>
                 <TableHeader>
-                    <TableRow className="bg-slate-900/50 hover:bg-slate-900/50 border-slate-700">
-                        <TableHead className="text-slate-300">Name</TableHead>
-                        <TableHead className="text-slate-300">Position</TableHead>
-                        <TableHead className="text-slate-300">Email</TableHead>
-                        <TableHead className="text-slate-300">Reports</TableHead>
-                        <TableHead className="text-slate-300">Joined</TableHead>
+                    <TableRow className="bg-muted/50 hover:bg-muted/50 border-b-2 border-border">
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Name</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Position</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Email</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Reports</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Joined</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {users.map((user) => (
-                        <TableRow key={user.id} className="border-slate-700 hover:bg-slate-700/30">
-                            <TableCell className="font-medium text-white">
+                        <TableRow key={user.id} className="border-b-2 border-border hover:bg-muted/30 transition-colors">
+                            <TableCell className="font-bold text-foreground">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0">
-                                        <User className="w-4 h-4 text-blue-400" />
+                                    <div className="w-8 h-8 rounded-none border-2 border-black dark:border-white bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                        <User className="w-4 h-4 text-primary" />
                                     </div>
-                                    {user.name}
+                                    <span className="uppercase tracking-tight">{user.name}</span>
                                 </div>
                             </TableCell>
-                            <TableCell className="text-slate-300">{user.position}</TableCell>
-                            <TableCell className="text-slate-400">{user.email}</TableCell>
+                            <TableCell className="text-foreground font-bold uppercase tracking-tight text-xs">{user.position}</TableCell>
+                            <TableCell className="text-muted-foreground font-medium text-xs">{user.email}</TableCell>
                             <TableCell>
-                                <Badge variant="outline" className="border-slate-600 text-slate-400">
+                                <Badge className="rounded-none border-2 border-border bg-muted text-muted-foreground font-bold uppercase tracking-widest text-[10px] px-2 py-0.5">
                                     {user._count.children} {user._count.children === 1 ? 'report' : 'reports'}
                                 </Badge>
                             </TableCell>
-                            <TableCell className="text-slate-400 text-sm">
+                            <TableCell className="text-muted-foreground text-xs font-bold uppercase tracking-tight">
                                 {format(new Date(user.createdAt), 'PP')}
                             </TableCell>
                         </TableRow>

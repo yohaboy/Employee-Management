@@ -32,33 +32,33 @@ interface LettersTableProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-slate-500',
-    SENT: 'bg-blue-500',
-    SIGNED: 'bg-green-500',
-    RESPONDED: 'bg-purple-500',
+    DRAFT: 'bg-muted text-muted-foreground',
+    SENT: 'bg-primary text-primary-foreground',
+    SIGNED: 'bg-green-500 text-white',
+    RESPONDED: 'bg-purple-500 text-white',
 }
 
 export function LettersTable({ letters, currentNodeId, type }: LettersTableProps) {
     if (letters.length === 0) {
         return (
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-muted-foreground">
                 <p>No letters found</p>
             </div>
         )
     }
 
     return (
-        <div className="rounded-lg border border-slate-700 overflow-hidden">
+        <div className="rounded-none border-2 border-border overflow-hidden">
             <Table>
                 <TableHeader>
-                    <TableRow className="bg-slate-900/50 hover:bg-slate-900/50 border-slate-700">
-                        <TableHead className="text-slate-300">Subject</TableHead>
-                        <TableHead className="text-slate-300">
+                    <TableRow className="bg-muted/50 hover:bg-muted/50 border-b-2 border-border">
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Subject</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">
                             {type === 'received' ? 'From' : 'To'}
                         </TableHead>
-                        <TableHead className="text-slate-300">Status</TableHead>
-                        <TableHead className="text-slate-300">Date</TableHead>
-                        <TableHead className="text-slate-300 text-right">Actions</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Status</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs">Date</TableHead>
+                        <TableHead className="text-foreground font-black uppercase tracking-widest text-xs text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -68,29 +68,29 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
                         return (
                             <TableRow
                                 key={letter.id}
-                                className="border-slate-700 hover:bg-slate-700/30"
+                                className="border-b-2 border-border hover:bg-muted/30 transition-colors"
                             >
-                                <TableCell className="font-medium text-white">
+                                <TableCell className="font-bold text-foreground uppercase tracking-tight">
                                     {letter.subject}
                                 </TableCell>
-                                <TableCell className="text-slate-300">
+                                <TableCell>
                                     <div>
-                                        <p className="font-medium">{otherParty.name}</p>
-                                        <p className="text-xs text-slate-500">{otherParty.position}</p>
+                                        <p className="font-bold text-foreground">{otherParty.name}</p>
+                                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{otherParty.position}</p>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <Badge className={`${statusColors[letter.status]} text-white`}>
+                                    <Badge className={`${statusColors[letter.status]} rounded-none font-bold text-[10px] uppercase tracking-widest px-2 py-0.5`}>
                                         {letter.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-slate-400 text-sm">
+                                <TableCell className="text-muted-foreground text-xs font-bold uppercase tracking-tight">
                                     {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <Link href={`/dashboard/letters/${letter.id}`}>
-                                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
-                                            <Eye className="w-4 h-4 mr-1" />
+                                        <Button variant="outline" size="sm" className="font-bold uppercase tracking-widest text-[10px]">
+                                            <Eye className="w-3 h-3 mr-1" />
                                             View
                                         </Button>
                                     </Link>

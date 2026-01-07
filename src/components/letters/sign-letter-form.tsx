@@ -18,21 +18,21 @@ export function SignLetterForm({ letterId }: SignLetterFormProps) {
     const [state, formAction, isPending] = useActionState(handleSign, null)
 
     return (
-        <form action={formAction} className="space-y-4">
+        <form action={formAction} className="space-y-6">
             {state?.error && (
-                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
                     {state.error}
                 </div>
             )}
 
             {state?.success && (
-                <div className="bg-green-500/10 border border-green-500 text-green-500 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-green-500/10 border-2 border-green-500 text-green-600 dark:text-green-400 px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
                     Letter signed successfully!
                 </div>
             )}
 
             <div className="space-y-2">
-                <Label htmlFor="response" className="text-slate-200">
+                <Label htmlFor="response">
                     Response (Optional)
                 </Label>
                 <Textarea
@@ -40,9 +40,8 @@ export function SignLetterForm({ letterId }: SignLetterFormProps) {
                     name="response"
                     placeholder="Add your response here..."
                     rows={4}
-                    className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                 />
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground font-medium">
                     You can add an optional response when signing this letter
                 </p>
             </div>
@@ -50,7 +49,7 @@ export function SignLetterForm({ letterId }: SignLetterFormProps) {
             <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full"
             >
                 {isPending ? 'Signing...' : 'Sign Letter'}
             </Button>

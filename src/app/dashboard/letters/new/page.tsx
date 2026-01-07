@@ -27,10 +27,10 @@ export default async function NewLetterPage() {
         .sort((a, b) => a.name.localeCompare(b.name))
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="flex items-center gap-4">
                 <Link href="/dashboard/letters">
-                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                    <Button variant="outline" size="sm">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to Letters
                     </Button>
@@ -38,13 +38,13 @@ export default async function NewLetterPage() {
             </div>
 
             <div>
-                <h2 className="text-3xl font-bold text-white">Compose New Letter</h2>
-                <p className="text-slate-400">Send a secure letter to your parent or subordinates</p>
+                <h2 className="text-4xl font-black text-foreground uppercase tracking-tighter">Compose New Letter</h2>
+                <p className="text-muted-foreground font-medium">Send a secure letter to your parent or subordinates</p>
             </div>
 
-            <Card className="border-slate-700 bg-slate-800/50 backdrop-blur max-w-3xl">
+            <Card className="max-w-3xl">
                 <CardHeader>
-                    <CardTitle className="text-white">Letter Details</CardTitle>
+                    <CardTitle className="text-xl font-black uppercase tracking-tight">Letter Details</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <NewLetterForm recipients={potentialRecipients} />

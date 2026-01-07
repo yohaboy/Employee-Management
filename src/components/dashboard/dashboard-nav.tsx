@@ -28,14 +28,14 @@ export function DashboardNav() {
                         key={item.href}
                         href={item.href}
                         className={cn(
-                            'flex items-center gap-3 px-4 py-3 rounded-lg transition-all',
+                            'flex items-center gap-3 px-4 py-3 rounded-none border-2 transition-all',
                             isActive
-                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/50'
-                                : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                                ? 'bg-primary text-primary-foreground border-primary shadow-brutal-sm'
+                                : 'text-muted-foreground border-transparent hover:bg-muted hover:text-foreground hover:border-border'
                         )}
                     >
                         <Icon className="w-5 h-5" />
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-bold uppercase tracking-tight text-xs">{item.label}</span>
                     </Link>
                 )
             })}
@@ -44,10 +44,10 @@ export function DashboardNav() {
                 <Button
                     type="submit"
                     variant="ghost"
-                    className="w-full justify-start gap-3 text-slate-300 hover:bg-red-600/20 hover:text-red-400"
+                    className="w-full justify-start gap-3 text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-none px-4 py-3 h-auto border-2 border-transparent hover:border-destructive"
                 >
                     <LogOut className="w-5 h-5" />
-                    <span className="font-medium">Logout</span>
+                    <span className="font-bold uppercase tracking-tight text-xs">Logout</span>
                 </Button>
             </form>
         </nav>

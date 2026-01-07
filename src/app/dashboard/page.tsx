@@ -76,38 +76,38 @@ export default async function DashboardPage() {
     ]
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div>
-                <h2 className="text-3xl font-bold text-white mb-2">Welcome back, {currentNode.name}</h2>
-                <p className="text-slate-400">Here's what's happening in your workspace</p>
+                <h2 className="text-4xl font-black text-foreground mb-2 uppercase tracking-tighter">Welcome back, {currentNode.name}</h2>
+                <p className="text-muted-foreground font-medium">Here's what's happening in your workspace</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat) => {
                     const Icon = stat.icon
                     return (
-                        <Card key={stat.title} className="border-slate-700 bg-slate-800/50 backdrop-blur">
+                        <Card key={stat.title}>
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium text-slate-300">
+                                <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
                                     {stat.title}
                                 </CardTitle>
-                                <div className={`p-2 rounded-lg ${stat.bgColor}`}>
+                                <div className={`p-2 rounded-none border-2 border-black dark:border-white ${stat.bgColor}`}>
                                     <Icon className={`w-4 h-4 ${stat.color}`} />
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-3xl font-bold text-white">{stat.value}</div>
+                                <div className="text-4xl font-black text-foreground">{stat.value}</div>
                             </CardContent>
                         </Card>
                     )
                 })}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card>
                     <CardHeader>
-                        <CardTitle className="text-white flex items-center gap-2">
-                            <Mail className="w-5 h-5" />
+                        <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                            <Mail className="w-6 h-6" />
                             Recent Letters
                         </CardTitle>
                     </CardHeader>
@@ -116,10 +116,10 @@ export default async function DashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-slate-700 bg-slate-800/50 backdrop-blur">
+                <Card>
                     <CardHeader>
-                        <CardTitle className="text-white flex items-center gap-2">
-                            <Activity className="w-5 h-5" />
+                        <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                            <Activity className="w-6 h-6" />
                             Recent Activity
                         </CardTitle>
                     </CardHeader>

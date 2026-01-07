@@ -31,62 +31,59 @@ export function CreateUserDialog({ parentId }: CreateUserDialogProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                    <Plus className="w-4 h-4 mr-2" />
+                <Button>
+                    <Plus className="w-5 h-5 mr-2" />
                     Create User
                 </Button>
             </DialogTrigger>
-            <DialogContent className="bg-slate-800 border-slate-700 text-white">
+            <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create New User</DialogTitle>
-                    <DialogDescription className="text-slate-400">
+                    <DialogTitle className="text-2xl font-black uppercase tracking-tighter">Create New User</DialogTitle>
+                    <DialogDescription className="font-medium">
                         Add a new employee as your direct report
                     </DialogDescription>
                 </DialogHeader>
 
-                <form action={formAction} className="space-y-4">
+                <form action={formAction} className="space-y-6">
                     {state?.error && (
-                        <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
+                        <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
                             {state.error}
                         </div>
                     )}
 
                     <div className="space-y-2">
-                        <Label htmlFor="name" className="text-slate-200">Full Name *</Label>
+                        <Label htmlFor="name">Full Name *</Label>
                         <Input
                             id="name"
                             name="name"
                             placeholder="John Doe"
                             required
-                            className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email" className="text-slate-200">Email *</Label>
+                        <Label htmlFor="email">Email *</Label>
                         <Input
                             id="email"
                             name="email"
                             type="email"
                             placeholder="john.doe@company.com"
                             required
-                            className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="position" className="text-slate-200">Position *</Label>
+                        <Label htmlFor="position">Position *</Label>
                         <Input
                             id="position"
                             name="position"
                             placeholder="Software Engineer"
                             required
-                            className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="password" className="text-slate-200">Password *</Label>
+                        <Label htmlFor="password">Password *</Label>
                         <Input
                             id="password"
                             name="password"
@@ -94,26 +91,25 @@ export function CreateUserDialog({ parentId }: CreateUserDialogProps) {
                             placeholder="Minimum 8 characters"
                             required
                             minLength={8}
-                            className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-500"
                         />
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-muted-foreground font-medium">
                             This password will be used by the employee to log in
                         </p>
                     </div>
 
-                    <div className="flex gap-3 pt-4">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <Button
                             type="button"
                             variant="outline"
                             onClick={() => setOpen(false)}
-                            className="flex-1 border-slate-600 text-slate-300"
+                            className="flex-1"
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
                             disabled={isPending}
-                            className="flex-1 bg-blue-600 hover:bg-blue-700"
+                            className="flex-1"
                         >
                             {isPending ? 'Creating...' : 'Create User'}
                         </Button>

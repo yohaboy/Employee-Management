@@ -27,23 +27,23 @@ interface RecentLettersProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-slate-500',
-    SENT: 'bg-blue-500',
-    SIGNED: 'bg-green-500',
-    RESPONDED: 'bg-purple-500',
+    DRAFT: 'bg-muted text-muted-foreground',
+    SENT: 'bg-primary text-primary-foreground',
+    SIGNED: 'bg-green-500 text-white',
+    RESPONDED: 'bg-purple-500 text-white',
 }
 
 export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
     if (letters.length === 0) {
         return (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-muted-foreground">
                 <p>No letters yet</p>
             </div>
         )
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {letters.map((letter) => {
                 const isSender = letter.senderId === currentNodeId
                 const otherParty = isSender ? letter.receiver : letter.sender
@@ -52,24 +52,24 @@ export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
                     <Link
                         key={letter.id}
                         href={`/dashboard/letters/${letter.id}`}
-                        className="block p-4 rounded-lg border border-slate-700 hover:border-slate-600 hover:bg-slate-700/30 transition-all group"
+                        className="block p-4 rounded-none border-2 border-border hover:border-primary hover:bg-primary/5 transition-all group active:translate-x-[1px] active:translate-y-[1px]"
                     >
                         <div className="flex items-start justify-between mb-2">
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-medium text-white truncate group-hover:text-blue-400 transition-colors">
+                                <h4 className="font-bold text-foreground truncate group-hover:text-primary transition-colors uppercase tracking-tight">
                                     {letter.subject}
                                 </h4>
-                                <p className="text-sm text-slate-400">
-                                    {isSender ? 'To' : 'From'}: {otherParty.name} ({otherParty.position})
+                                <p className="text-sm text-muted-foreground font-medium">
+                                    {isSender ? 'TO' : 'FROM'}: {otherParty.name} <span className="text-xs opacity-70">({otherParty.position})</span>
                                 </p>
                             </div>
-                            <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors flex-shrink-0 ml-2" />
+                            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Badge className={`${statusColors[letter.status]} text-white text-xs`}>
+                        <div className="flex items-center gap-3">
+                            <Badge className={`${statusColors[letter.status]} rounded-none font-bold text-[10px] uppercase tracking-widest px-2 py-0.5`}>
                                 {letter.status}
                             </Badge>
-                            <span className="text-xs text-slate-500">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                                 {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                             </span>
                         </div>

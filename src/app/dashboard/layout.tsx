@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getCurrentNode } from '@/lib/auth'
 import { DashboardNav } from '@/components/dashboard/dashboard-nav'
 import { UserInfo } from '@/components/dashboard/user-info'
+import { ModeToggle } from '@/components/mode-toggle'
 
 export default async function DashboardLayout({
     children,
@@ -15,15 +16,18 @@ export default async function DashboardLayout({
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-            <div className="border-b border-slate-700 bg-slate-800/50 backdrop-blur">
+        <div className="min-h-screen bg-background text-foreground">
+            <div className="border-b-2 border-border bg-card">
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-bold text-white">Office Management System</h1>
-                            <p className="text-sm text-slate-400">Hierarchical Letter Platform</p>
+                            <h1 className="text-3xl font-black text-foreground uppercase tracking-tighter">Office System</h1>
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Hierarchical Letter Platform</p>
                         </div>
-                        <UserInfo node={currentNode} />
+                        <div className="flex items-center gap-4">
+                            <ModeToggle />
+                            <UserInfo node={currentNode} />
+                        </div>
                     </div>
                 </div>
             </div>
