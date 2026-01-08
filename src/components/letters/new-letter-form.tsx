@@ -59,101 +59,98 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
 
     if (recipients.length === 0) {
         return (
-            <div className="text-center py-8 text-muted-foreground">
-                <p>No available recipients. You need a parent or subordinates to send letters.</p>
+            <div className="text-center py-20 bg-muted/5 rounded-3xl border border-dashed border-border/50">
+                <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">No available recipients</p>
             </div>
         )
     }
 
     return (
-        <form action={formAction} className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <form action={formAction} className="flex flex-col h-full gap-6">
             {state?.error && (
-                <div className="bg-destructive/5 border border-destructive/10 text-destructive px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3">
+                <div className="bg-destructive/5 border border-destructive/10 text-destructive px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3 animate-in slide-in-from-top-2">
                     <div className="size-2 rounded-full bg-destructive animate-pulse" />
                     {state.error}
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                    <Label htmlFor="recipient" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Recipient *</Label>
-                    <Select value={selectedRecipient} onValueChange={setSelectedRecipient} required>
-                        <SelectTrigger className="rounded-2xl border-border/50 bg-muted/20 h-14 px-5 focus:ring-primary/10 transition-all font-bold">
-                            <SelectValue placeholder="Select a recipient" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-2xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
-                            {recipients.map((recipient) => (
-                                <SelectItem key={recipient.id} value={recipient.id} className="rounded-xl py-3 px-4 focus:bg-primary/5 transition-colors">
-                                    <div className="flex flex-col gap-0.5">
-                                        <span className="font-black text-sm tracking-tight">{recipient.name}</span>
-                                    </div>
+            {/* Document Properties Header */}
+            <div className="bg-background border border-border/50 rounded-2xl p-6 shadow-xl shadow-foreground/[0.02] flex flex-col gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Recipient</Label>
+                        <Select value={selectedRecipient} onValueChange={setSelectedRecipient} required>
+                            <SelectTrigger className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus:ring-primary/10 transition-all font-bold text-sm">
+                                <SelectValue placeholder="Select recipient" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
+                                {recipients.map((recipient) => (
+                                    <SelectItem key={recipient.id} value={recipient.id} className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
+                                        <span className="font-black text-xs tracking-tight">{recipient.name}</span>
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Category</Label>
+                        <Select value={category} onValueChange={(v: any) => setCategory(v)} required>
+                            <SelectTrigger className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus:ring-primary/10 transition-all font-bold text-sm">
+                                <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
+                                <SelectItem value="RESPONSE_REQUIRED" className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
+                                    <span className="font-black text-xs tracking-tight">Response Required</span>
                                 </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                                <SelectItem value="NO_RESPONSE_REQUIRED" className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
+                                    <span className="font-black text-xs tracking-tight">Informational</span>
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Subject</Label>
+                        <Input
+                            id="subject"
+                            name="subject"
+                            placeholder="Document Subject"
+                            required
+                            defaultValue={defaultSubject}
+                            className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus-visible:ring-primary/10 transition-all font-black text-sm tracking-tight"
+                        />
+                    </div>
                 </div>
 
-                <div className="space-y-3">
-                    <Label htmlFor="category" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Category *</Label>
-                    <Select value={category} onValueChange={(v: any) => setCategory(v)} required>
-                        <SelectTrigger className="rounded-2xl border-border/50 bg-muted/20 h-14 px-5 focus:ring-primary/10 transition-all font-bold">
-                            <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-2xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
-                            <SelectItem value="RESPONSE_REQUIRED" className="rounded-xl py-3 px-4 focus:bg-primary/5 transition-colors">
-                                <div className="flex flex-col gap-0.5">
-                                    <span className="font-black text-sm tracking-tight">Response Required</span>
-                                </div>
-                            </SelectItem>
-                            <SelectItem value="NO_RESPONSE_REQUIRED" className="rounded-xl py-3 px-4 focus:bg-primary/5 transition-colors">
-                                <div className="flex flex-col gap-0.5">
-                                    <span className="font-black text-sm tracking-tight">No Response Required</span>
-                                </div>
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
+                <div className="flex items-center justify-end gap-4 pt-4 border-t border-border/50">
+                    <Button
+                        type="submit"
+                        disabled={isPending || !selectedRecipient || !body}
+                        onClick={() => setShouldSend(false)}
+                        variant="ghost"
+                        className="rounded-xl h-11 px-6 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-muted transition-all active:scale-[0.98]"
+                    >
+                        {isPending && !shouldSend ? 'Saving...' : 'Save Draft'}
+                    </Button>
+                    <Button
+                        type="submit"
+                        disabled={isPending || !selectedRecipient || !body}
+                        onClick={() => setShouldSend(true)}
+                        className="rounded-xl h-11 px-8 font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all bg-[#0078D4] hover:bg-[#006ABD] text-white border-none"
+                    >
+                        {isPending && shouldSend ? 'Sending...' : 'Send Document'}
+                    </Button>
                 </div>
             </div>
 
-            <div className="space-y-3">
-                <Label htmlFor="subject" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Subject *</Label>
-                <Input
-                    id="subject"
-                    name="subject"
-                    placeholder="Enter a descriptive subject line"
-                    required
-                    defaultValue={defaultSubject}
-                    className="rounded-2xl border-border/50 bg-muted/20 h-14 px-5 focus-visible:ring-primary/10 transition-all font-black text-lg tracking-tight placeholder:font-bold placeholder:text-muted-foreground/30"
-                />
-            </div>
-
-            <div className="space-y-3">
-                <Label htmlFor="body" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Message *</Label>
+            {/* The Word Editor */}
+            <div className="flex-1 min-h-[800px]">
                 <RichTextEditor
                     content={body}
                     onChange={setBody}
-                    placeholder="Write your professional letter here..."
+                    placeholder="Start typing your professional document..."
                 />
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-6 pt-6 border-t border-border/50">
-                <Button
-                    type="submit"
-                    disabled={isPending || !selectedRecipient || !body}
-                    onClick={() => setShouldSend(false)}
-                    variant="outline"
-                    className="flex-1 rounded-2xl h-14 font-black uppercase tracking-[0.2em] text-xs hover:bg-muted/50 hover:border-border transition-all active:scale-[0.98]"
-                >
-                    {isPending && !shouldSend ? 'Saving Draft...' : 'Save as Draft'}
-                </Button>
-                <Button
-                    type="submit"
-                    disabled={isPending || !selectedRecipient || !body}
-                    onClick={() => setShouldSend(true)}
-                    className="flex-1 rounded-2xl h-14 font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
-                >
-                    {isPending && shouldSend ? 'Sending...' : 'Send Letter'}
-                </Button>
             </div>
         </form>
     )

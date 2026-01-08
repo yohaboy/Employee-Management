@@ -86,24 +86,24 @@ export default async function DashboardPage() {
     ]
 
     return (
-        <div className="space-y-10 animate-in fade-in duration-700 pb-10">
+        <div className="space-y-8 md:space-y-10 animate-in fade-in duration-700 pb-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h2 className="text-4xl font-extrabold tracking-tight mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <div className="space-y-2">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                         Welcome back, {currentNode.name}
                     </h2>
-                    <p className="text-muted-foreground text-sm font-medium flex items-center gap-2">
-                        <span className="px-2 py-0.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] uppercase tracking-wider font-bold">
+                    <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-xs font-bold uppercase tracking-widest opacity-60">
+                        <span className="px-2 py-0.5 rounded-md bg-primary/5 border border-primary/10 text-primary">
                             {currentNode.position}
                         </span>
-                        <span className="text-border">•</span>
-                        Secure Hierarchy Management System
-                    </p>
+                        <span className="hidden sm:inline text-border">•</span>
+                        <span className="hidden sm:inline">Secure Hierarchy Management System</span>
+                    </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button asChild size="lg" className="rounded-xl px-6 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    <Button asChild size="lg" className="w-full md:w-auto rounded-xl px-6 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98] h-12">
                         <Link href="/dashboard/letters/new">
-                            <Send className="mr-2 h-4 w-4" /> New Letter
+                            <Send className="mr-2 h-4 w-4" /> New Document
                         </Link>
                     </Button>
                 </div>

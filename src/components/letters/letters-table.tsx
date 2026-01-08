@@ -54,14 +54,14 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
             <Table>
                 <TableHeader>
                     <TableRow className="bg-muted/10 border-b border-border/50 hover:bg-muted/10">
-                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Subject</TableHead>
-                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Category</TableHead>
-                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-4 md:px-6">Subject</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6 hidden lg:table-cell">Category</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-4 md:px-6">
                             {type === 'received' ? 'Sender' : 'Recipient'}
                         </TableHead>
-                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Status</TableHead>
-                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Date</TableHead>
-                        <TableHead className="text-right text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Actions</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6 hidden sm:table-cell">Status</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6 hidden md:table-cell">Date</TableHead>
+                        <TableHead className="text-right text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-4 md:px-6">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -73,42 +73,47 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
                                 key={letter.id}
                                 className="hover:bg-muted/20 transition-all border-b border-border/50 last:border-0 group"
                             >
-                                <TableCell className="px-6 py-5">
+                                <TableCell className="px-4 md:px-6 py-4 md:py-5">
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="font-black text-sm tracking-tight group-hover:text-primary transition-colors">{letter.subject}</span>
+                                        <span className="font-black text-sm tracking-tight group-hover:text-primary transition-colors truncate max-w-[150px] md:max-w-none">{letter.subject}</span>
                                         {letter.parentId && (
-                                            <span className="text-[9px] font-black bg-primary/10 text-primary px-2 py-0.5 rounded-md w-fit uppercase tracking-widest">Thread Reply</span>
+                                            <span className="text-[9px] font-black bg-primary/10 text-primary px-2 py-0.5 rounded-md w-fit uppercase tracking-widest">Reply</span>
                                         )}
+                                        <div className="sm:hidden mt-1">
+                                            <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-black text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-md shadow-sm`}>
+                                                {letter.status}
+                                            </Badge>
+                                        </div>
                                     </div>
                                 </TableCell>
-                                <TableCell className="px-6 py-5">
+                                <TableCell className="px-6 py-5 hidden lg:table-cell">
                                     <span className="text-[9px] font-black text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-muted/30 uppercase tracking-widest">
                                         {letter.category?.replace('_', ' ') || 'GENERAL'}
                                     </span>
                                 </TableCell>
-                                <TableCell className="px-6 py-5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="size-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground font-black text-[10px] group-hover:bg-primary/5 group-hover:text-primary transition-all">
+                                <TableCell className="px-4 md:px-6 py-4 md:py-5">
+                                    <div className="flex items-center gap-2 md:gap-3">
+                                        <div className="size-7 md:size-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground font-black text-[9px] md:text-[10px] group-hover:bg-primary/5 group-hover:text-primary transition-all hidden xs:flex">
                                             {otherParty.name.split(' ').map(n => n[0]).join('')}
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-black tracking-tight">{otherParty.name}</p>
-                                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">{otherParty.position}</p>
+                                        <div className="min-w-0">
+                                            <p className="text-xs md:text-sm font-black tracking-tight truncate">{otherParty.name}</p>
+                                            <p className="text-[9px] md:text-[10px] text-muted-foreground font-bold uppercase tracking-wider truncate hidden md:block">{otherParty.position}</p>
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell className="px-6 py-5">
+                                <TableCell className="px-6 py-5 hidden sm:table-cell">
                                     <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-black text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm`}>
                                         {letter.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="px-6 py-5 text-muted-foreground/60 text-[10px] font-black uppercase tracking-tighter">
+                                <TableCell className="px-6 py-5 text-muted-foreground/60 text-[10px] font-black uppercase tracking-tighter hidden md:table-cell">
                                     {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                                 </TableCell>
-                                <TableCell className="px-6 py-5 text-right">
+                                <TableCell className="px-4 md:px-6 py-4 md:py-5 text-right">
                                     <Link href={`/dashboard/letters/${letter.id}`}>
-                                        <Button variant="ghost" size="sm" className="rounded-xl h-9 px-4 text-[10px] font-black uppercase tracking-widest hover:bg-primary/5 hover:text-primary transition-all group/btn">
-                                            <Eye className="size-3.5 mr-2 group-hover/btn:scale-110 transition-transform" />
+                                        <Button variant="ghost" size="sm" className="rounded-xl h-8 md:h-9 px-3 md:px-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-primary/5 hover:text-primary transition-all group/btn">
+                                            <Eye className="size-3 md:size-3.5 mr-1.5 md:mr-2 group-hover/btn:scale-110 transition-transform" />
                                             Open
                                         </Button>
                                     </Link>

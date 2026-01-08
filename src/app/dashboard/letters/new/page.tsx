@@ -36,38 +36,31 @@ export default async function NewLetterPage({ searchParams }: NewLetterPageProps
         .sort((a, b) => a.name.localeCompare(b.name))
 
     return (
-        <div className="space-y-8 pb-10">
-            <div className="flex items-center gap-4">
-                <Link href="/dashboard/letters">
-                    <Button variant="ghost" size="sm" className="rounded-lg font-medium text-muted-foreground hover:text-foreground">
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back to Letters
-                    </Button>
-                </Link>
+        <div className="flex flex-col h-[calc(100vh-120px)] animate-in fade-in duration-700">
+            <div className="flex items-center justify-between mb-6 px-2">
+                <div className="flex items-center gap-4">
+                    <Link href="/dashboard/letters">
+                        <Button variant="ghost" size="sm" className="rounded-xl font-bold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back
+                        </Button>
+                    </Link>
+                    <div>
+                        <h2 className="text-2xl font-black tracking-tight">
+                            {parentId ? 'Compose Reply' : 'New Document'}
+                        </h2>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <h2 className="text-3xl font-bold tracking-tight">
-                    {parentId ? 'Compose Reply' : 'Compose New Letter'}
-                </h2>
-                <p className="text-muted-foreground text-sm mt-1">
-                    {parentId ? 'Replying to a previous communication' : 'Send a secure letter to your parent or subordinates'}
-                </p>
+            <div className="flex-1 min-h-0">
+                <NewLetterForm
+                    recipients={potentialRecipients}
+                    parentId={parentId}
+                    defaultSubject={subject}
+                    defaultRecipientId={recipientId}
+                />
             </div>
-
-            <Card className="w-full border-none shadow-sm ring-1 ring-border/50 overflow-hidden">
-                <CardHeader className="bg-muted/10 border-b">
-                    <CardTitle className="text-sm font-bold">Letter Details</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 md:p-8">
-                    <NewLetterForm
-                        recipients={potentialRecipients}
-                        parentId={parentId}
-                        defaultSubject={subject}
-                        defaultRecipientId={recipientId}
-                    />
-                </CardContent>
-            </Card>
         </div>
     )
 }

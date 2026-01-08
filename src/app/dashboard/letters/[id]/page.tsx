@@ -17,10 +17,10 @@ interface LetterPageProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-slate-100 text-slate-700 border-slate-200',
-    SENT: 'bg-blue-100 text-blue-700 border-blue-200',
-    SIGNED: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-    RESPONDED: 'bg-purple-100 text-purple-700 border-purple-200',
+    DRAFT: 'bg-slate-500/10 text-slate-600 dark:text-slate-400',
+    SENT: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    SIGNED: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+    RESPONDED: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
 }
 
 export default async function LetterPage({ params }: LetterPageProps) {
@@ -92,12 +92,12 @@ export default async function LetterPage({ params }: LetterPageProps) {
     const canReply = (isSender || isReceiver) && letter.status !== 'DRAFT'
 
     return (
-        <div className="space-y-10 pb-20 animate-in fade-in duration-700">
+        <div className="space-y-8 md:space-y-10 pb-20 animate-in fade-in duration-700">
             <div className="flex items-center gap-4">
                 <Link href="/dashboard/letters">
                     <Button variant="ghost" size="sm" className="rounded-xl font-bold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all group">
                         <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-                        Back to Communications
+                        Back
                     </Button>
                 </Link>
             </div>
@@ -109,14 +109,14 @@ export default async function LetterPage({ params }: LetterPageProps) {
                         <HistoryIcon className="size-3" />
                         Thread History
                     </h3>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2 md:gap-3">
                         {thread.map((prevLetter) => (
                             <Link key={prevLetter.id} href={`/dashboard/letters/${prevLetter.id}`}>
-                                <div className="px-4 py-2 rounded-xl bg-muted/30 border border-border/50 hover:bg-muted/50 hover:border-primary/20 transition-all flex items-center gap-3 group">
+                                <div className="px-3 md:px-4 py-2 rounded-xl bg-muted/30 border border-border/50 hover:bg-muted/50 hover:border-primary/20 transition-all flex items-center gap-2 md:gap-3 group">
                                     <div className="p-1.5 rounded-lg bg-background shadow-sm text-muted-foreground group-hover:text-primary transition-colors">
                                         <Mail className="size-3.5" />
                                     </div>
-                                    <span className="text-xs font-bold truncate max-w-[150px]">{prevLetter.subject}</span>
+                                    <span className="text-[11px] md:text-xs font-bold truncate max-w-[120px] md:max-w-[150px]">{prevLetter.subject}</span>
                                     <ChevronRight className="size-3 text-muted-foreground/30 group-hover:text-primary transition-colors" />
                                 </div>
                             </Link>
@@ -125,30 +125,30 @@ export default async function LetterPage({ params }: LetterPageProps) {
                 </div>
             )}
 
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-border/50 pb-8">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 md:gap-8 border-b border-border/50 pb-8">
                 <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                        <Badge variant="outline" className={`${statusColors[letter.status]} border-none rounded-full font-black text-[9px] uppercase tracking-widest px-3 py-1 shadow-sm`}>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant="outline" className={`${statusColors[letter.status]} border-none rounded-md font-black text-[9px] uppercase tracking-widest px-2.5 py-1 shadow-sm`}>
                             {letter.status}
                         </Badge>
-                        <Badge variant="secondary" className="rounded-full font-black text-[9px] uppercase tracking-widest px-3 py-1 bg-muted/50 text-muted-foreground border-none">
+                        <Badge variant="secondary" className="rounded-md font-black text-[9px] uppercase tracking-widest px-2.5 py-1 bg-muted/50 text-muted-foreground border-none">
                             {letter.category?.replace('_', ' ') || 'GENERAL'}
                         </Badge>
                     </div>
-                    <h1 className="text-4xl font-black tracking-tight text-foreground leading-tight">{letter.subject}</h1>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground font-bold">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight">{letter.subject}</h1>
+                    <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-muted-foreground font-bold">
                         <div className="p-2 rounded-lg bg-muted/30">
                             <Calendar className="size-4" />
                         </div>
                         <span>{format(new Date(letter.createdAt), 'PPPP')}</span>
-                        <span className="text-border">•</span>
+                        <span className="hidden sm:inline text-border">•</span>
                         <span>{format(new Date(letter.createdAt), 'p')}</span>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     <DownloadPdfButton letter={letter} />
                     {canReply && (
-                        <Button asChild className="rounded-xl shadow-lg shadow-primary/10 font-bold h-11 px-6 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        <Button asChild className="rounded-xl shadow-xl shadow-primary/10 font-black uppercase tracking-widest text-[10px] h-11 px-6 hover:scale-[1.02] active:scale-[0.98] transition-all">
                             <Link href={`/dashboard/letters/new?parentId=${letter.id}&subject=Re: ${letter.subject}&recipientId=${isSender ? letter.receiverId : letter.senderId}`}>
                                 <Reply className="size-4 mr-2" />
                                 Reply
@@ -158,17 +158,17 @@ export default async function LetterPage({ params }: LetterPageProps) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
                 {/* Main Letter Content */}
                 <div className="lg:col-span-2 space-y-8">
                     <Card className="border-none shadow-2xl shadow-foreground/[0.02] ring-1 ring-border/50 overflow-hidden bg-background relative">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 via-primary/5 to-primary/20" />
-                        <CardHeader className="border-b border-border/50 bg-muted/5 px-10 py-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                        <CardHeader className="border-b border-border/50 bg-muted/5 px-6 md:px-10 py-6 md:py-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 relative">
                                 <div className="space-y-2">
                                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">From</p>
                                     <div className="flex items-center gap-3">
-                                        <div className="size-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary font-black text-xs">
+                                        <div className="size-9 md:size-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary font-black text-xs">
                                             {letter.sender.name.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
@@ -180,7 +180,7 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                 <div className="space-y-2 md:text-right">
                                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">To</p>
                                     <div className="flex items-center gap-3 md:flex-row-reverse">
-                                        <div className="size-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground font-black text-xs">
+                                        <div className="size-9 md:size-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground font-black text-xs">
                                             {letter.receiver.name.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
@@ -196,34 +196,34 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-10 md:p-16 lg:p-20">
+                        <CardContent className="p-6 md:p-12 lg:p-16">
                             <div
                                 className="prose prose-slate dark:prose-invert max-w-none text-foreground leading-relaxed selection:bg-primary/10"
                                 dangerouslySetInnerHTML={{ __html: letter.body }}
                             />
 
                             {letter.signature && (
-                                <div className="mt-20 pt-12 border-t border-dashed border-border/50 relative">
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 bg-background text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+                                <div className="mt-16 md:mt-20 pt-10 md:pt-12 border-t border-dashed border-border/50 relative">
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 bg-background text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] whitespace-nowrap">
                                         Authentication
                                     </div>
-                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10">
                                         <div className="space-y-6">
                                             <div className="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 px-4 py-2 rounded-xl w-fit">
                                                 <FileCheck className="size-4" />
                                                 <span className="text-[10px] font-black uppercase tracking-widest">Digital Signature Verified</span>
                                             </div>
                                             <div className="space-y-2">
-                                                <p className="text-4xl font-serif italic text-foreground/70 opacity-80 select-none tracking-tight">
+                                                <p className="text-3xl md:text-4xl font-serif italic text-foreground/70 opacity-80 select-none tracking-tight">
                                                     {letter.signature.signedBy.name}
                                                 </p>
-                                                <div className="h-0.5 w-64 bg-gradient-to-r from-foreground/20 to-transparent" />
+                                                <div className="h-0.5 w-48 md:w-64 bg-gradient-to-r from-foreground/20 to-transparent" />
                                                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
                                                     Authenticated by {letter.signature.signedBy.name}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="text-right space-y-2">
+                                        <div className="md:text-right space-y-2">
                                             <div className="inline-block px-3 py-1.5 rounded-lg bg-muted/50 border border-border/50">
                                                 <p className="text-[9px] font-mono font-black text-muted-foreground tracking-tighter">
                                                     CERT_ID: {Buffer.from(letter.id).toString('hex').slice(0, 16).toUpperCase()}
@@ -236,10 +236,10 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                     </div>
 
                                     {letter.signature.response && (
-                                        <div className="mt-12 p-8 rounded-2xl bg-muted/20 border border-border/50 relative overflow-hidden group hover:bg-muted/30 transition-all">
+                                        <div className="mt-10 md:mt-12 p-6 md:p-8 rounded-2xl bg-muted/20 border border-border/50 relative overflow-hidden group hover:bg-muted/30 transition-all">
                                             <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/10 group-hover:bg-primary/20 transition-all" />
                                             <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-4">Official Response / Remarks</p>
-                                            <p className="text-base text-foreground/90 italic leading-relaxed font-medium">
+                                            <p className="text-sm md:text-base text-foreground/90 italic leading-relaxed font-medium">
                                                 "{letter.signature.response}"
                                             </p>
                                         </div>
