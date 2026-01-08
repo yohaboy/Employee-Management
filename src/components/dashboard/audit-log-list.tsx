@@ -23,37 +23,55 @@ const actionLabels: Record<string, string> = {
     LOGOUT: 'Logged out',
 }
 
+const actionColors: Record<string, string> = {
+    NODE_CREATED: 'bg-emerald-500',
+    NODE_UPDATED: 'bg-blue-500',
+    NODE_DELETED: 'bg-rose-500',
+    LETTER_CREATED: 'bg-amber-500',
+    LETTER_SENT: 'bg-indigo-500',
+    LETTER_SIGNED: 'bg-emerald-500',
+    LETTER_RESPONDED: 'bg-purple-500',
+    LOGIN_SUCCESS: 'bg-emerald-500',
+    LOGIN_FAILED: 'bg-rose-500',
+}
+
 export async function AuditLogList({ nodeId, limit = 5, logs: providedLogs }: AuditLogListProps) {
     const logs = providedLogs || (nodeId ? await getNodeAuditLogs(nodeId, limit) : [])
 
     if (logs.length === 0) {
         return (
-            <div className="text-center py-8 text-muted-foreground">
-                <p>No activity yet</p>
+            <div className="text-center py-12 bg-muted/5 rounded-2xl border border-dashed border-border/50">
+                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">No activity recorded</p>
             </div>
         )
     }
 
     return (
-        <div className="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-px before:bg-border/50">
+        <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-border/50 before:via-border/20 before:to-transparent">
             {logs.map((log: any) => (
                 <div
                     key={log.id}
-                    className="flex items-start gap-4 relative"
+                    className="flex items-start gap-5 relative group"
                 >
-                    <div className="p-2 rounded-full bg-background ring-4 ring-background flex-shrink-0 z-10">
-                        <div className="size-2 rounded-full bg-primary" />
+                    <div className="relative flex-shrink-0 mt-1">
+                        <div className={`size-6 rounded-full bg-background ring-4 ring-background flex items-center justify-center z-10 relative border border-border/50`}>
+                            <div className={`size-1.5 rounded-full ${actionColors[log.action] || 'bg-primary'} shadow-[0_0_8px_rgba(0,0,0,0.1)]`} />
+                        </div>
                     </div>
-                    <div className="flex-1 min-w-0 pt-0.5">
-                        <p className="text-xs font-bold text-foreground">
-                            {actionLabels[log.action] || log.action}
-                        </p>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                            <p className="text-xs font-black text-foreground tracking-tight">
+                                {actionLabels[log.action] || log.action.replace(/_/g, ' ')}
+                            </p>
+                            <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-tighter whitespace-nowrap">
+                                {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
+                            </span>
+                        </div>
                         {log.details && (
-                            <p className="text-[10px] text-muted-foreground truncate mt-0.5 font-medium">{log.details}</p>
+                            <p className="text-[10px] text-muted-foreground/70 truncate mt-1 font-bold leading-relaxed">
+                                {log.details}
+                            </p>
                         )}
-                        <p className="text-[10px] text-muted-foreground/60 mt-1 font-medium">
-                            {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
-                        </p>
                     </div>
                 </div>
             ))}

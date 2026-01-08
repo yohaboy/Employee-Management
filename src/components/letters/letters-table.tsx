@@ -34,34 +34,34 @@ interface LettersTableProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-slate-100 text-slate-700 border-slate-200',
-    SENT: 'bg-blue-100 text-blue-700 border-blue-200',
-    SIGNED: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-    RESPONDED: 'bg-purple-100 text-purple-700 border-purple-200',
+    DRAFT: 'bg-slate-500/10 text-slate-600 dark:text-slate-400',
+    SENT: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    SIGNED: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+    RESPONDED: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
 }
 
 export function LettersTable({ letters, currentNodeId, type }: LettersTableProps) {
     if (letters.length === 0) {
         return (
-            <div className="text-center py-20 bg-muted/10 border border-dashed rounded-xl">
-                <p className="text-sm font-medium text-muted-foreground">No letters found in this section</p>
+            <div className="text-center py-24 bg-muted/5 border border-dashed border-border/50 rounded-2xl">
+                <p className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">No communications found</p>
             </div>
         )
     }
 
     return (
-        <div className="border rounded-xl overflow-hidden shadow-sm bg-background">
+        <div className="border border-border/50 rounded-2xl overflow-hidden shadow-2xl shadow-foreground/[0.02] bg-background">
             <Table>
                 <TableHeader>
-                    <TableRow className="bg-muted/30 border-b">
-                        <TableHead className="text-xs font-semibold text-muted-foreground">Subject</TableHead>
-                        <TableHead className="text-xs font-semibold text-muted-foreground">Category</TableHead>
-                        <TableHead className="text-xs font-semibold text-muted-foreground">
-                            {type === 'received' ? 'From' : 'To'}
+                    <TableRow className="bg-muted/10 border-b border-border/50 hover:bg-muted/10">
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Subject</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Category</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">
+                            {type === 'received' ? 'Sender' : 'Recipient'}
                         </TableHead>
-                        <TableHead className="text-xs font-semibold text-muted-foreground">Status</TableHead>
-                        <TableHead className="text-xs font-semibold text-muted-foreground">Date</TableHead>
-                        <TableHead className="text-right text-xs font-semibold text-muted-foreground">Actions</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Status</TableHead>
+                        <TableHead className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Date</TableHead>
+                        <TableHead className="text-right text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] h-14 px-6">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -71,39 +71,44 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
                         return (
                             <TableRow
                                 key={letter.id}
-                                className="hover:bg-muted/20 transition-colors border-b last:border-0"
+                                className="hover:bg-muted/20 transition-all border-b border-border/50 last:border-0 group"
                             >
-                                <TableCell>
-                                    <div className="flex flex-col gap-1">
-                                        <span className="font-semibold text-sm">{letter.subject}</span>
+                                <TableCell className="px-6 py-5">
+                                    <div className="flex flex-col gap-1.5">
+                                        <span className="font-black text-sm tracking-tight group-hover:text-primary transition-colors">{letter.subject}</span>
                                         {letter.parentId && (
-                                            <span className="text-[10px] font-medium bg-primary/5 text-primary px-2 py-0.5 rounded-full w-fit">Reply</span>
+                                            <span className="text-[9px] font-black bg-primary/10 text-primary px-2 py-0.5 rounded-md w-fit uppercase tracking-widest">Thread Reply</span>
                                         )}
                                     </div>
                                 </TableCell>
-                                <TableCell>
-                                    <span className="text-[10px] font-medium text-muted-foreground border px-2 py-1 rounded-md bg-muted/10">
+                                <TableCell className="px-6 py-5">
+                                    <span className="text-[9px] font-black text-muted-foreground/60 border border-border/50 px-2.5 py-1 rounded-md bg-muted/30 uppercase tracking-widest">
                                         {letter.category?.replace('_', ' ') || 'GENERAL'}
                                     </span>
                                 </TableCell>
-                                <TableCell>
-                                    <div>
-                                        <p className="text-sm font-semibold">{otherParty.name}</p>
-                                        <p className="text-[10px] text-muted-foreground font-medium">{otherParty.position}</p>
+                                <TableCell className="px-6 py-5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="size-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground font-black text-[10px] group-hover:bg-primary/5 group-hover:text-primary transition-all">
+                                            {otherParty.name.split(' ').map(n => n[0]).join('')}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-black tracking-tight">{otherParty.name}</p>
+                                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">{otherParty.position}</p>
+                                        </div>
                                     </div>
                                 </TableCell>
-                                <TableCell>
-                                    <Badge variant="outline" className={`${statusColors[letter.status]} border rounded-full font-semibold text-[10px] px-2.5 py-0.5`}>
+                                <TableCell className="px-6 py-5">
+                                    <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-black text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm`}>
                                         {letter.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-muted-foreground text-[10px] font-medium">
+                                <TableCell className="px-6 py-5 text-muted-foreground/60 text-[10px] font-black uppercase tracking-tighter">
                                     {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                                 </TableCell>
-                                <TableCell className="text-right">
+                                <TableCell className="px-6 py-5 text-right">
                                     <Link href={`/dashboard/letters/${letter.id}`}>
-                                        <Button variant="ghost" size="sm" className="rounded-lg h-8 text-xs font-medium hover:bg-muted">
-                                            <Eye className="size-3.5 mr-2" />
+                                        <Button variant="ghost" size="sm" className="rounded-xl h-9 px-4 text-[10px] font-black uppercase tracking-widest hover:bg-primary/5 hover:text-primary transition-all group/btn">
+                                            <Eye className="size-3.5 mr-2 group-hover/btn:scale-110 transition-transform" />
                                             Open
                                         </Button>
                                     </Link>
