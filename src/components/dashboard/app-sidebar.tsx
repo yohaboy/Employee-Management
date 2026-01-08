@@ -50,7 +50,7 @@ const navItems = [
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
     { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
-    { href: "#", label: "Settings", icon: Settings2 },
+    { href: "/dashboard/settings", label: "Settings", icon: Settings2 },
 ]
 
 export function AppSidebar({ user }: { user: any }) {

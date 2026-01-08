@@ -68,19 +68,19 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
     return (
         <form action={formAction} className="space-y-8">
             {state?.error && (
-                <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-xl text-sm font-semibold">
                     {state.error}
                 </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <Label htmlFor="recipient" className="text-xs font-black uppercase tracking-widest">Recipient *</Label>
+                    <Label htmlFor="recipient" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Recipient *</Label>
                     <Select value={selectedRecipient} onValueChange={setSelectedRecipient} required>
-                        <SelectTrigger className="rounded-none border-2 border-foreground h-12">
+                        <SelectTrigger className="rounded-xl border-muted-foreground/20 h-11">
                             <SelectValue placeholder="Select a recipient" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-none border-2 border-foreground">
+                        <SelectContent className="rounded-xl">
                             {recipients.map((recipient) => (
                                 <SelectItem key={recipient.id} value={recipient.id} className="font-medium">
                                     {recipient.name} - {recipient.position}
@@ -91,12 +91,12 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="category" className="text-xs font-black uppercase tracking-widest">Category *</Label>
+                    <Label htmlFor="category" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Category *</Label>
                     <Select value={category} onValueChange={(v: any) => setCategory(v)} required>
-                        <SelectTrigger className="rounded-none border-2 border-foreground h-12">
+                        <SelectTrigger className="rounded-xl border-muted-foreground/20 h-11">
                             <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-none border-2 border-foreground">
+                        <SelectContent className="rounded-xl">
                             <SelectItem value="RESPONSE_REQUIRED" className="font-medium">Response Required</SelectItem>
                             <SelectItem value="NO_RESPONSE_REQUIRED" className="font-medium">No Response Required</SelectItem>
                         </SelectContent>
@@ -105,19 +105,19 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="subject" className="text-xs font-black uppercase tracking-widest">Subject *</Label>
+                <Label htmlFor="subject" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Subject *</Label>
                 <Input
                     id="subject"
                     name="subject"
                     placeholder="Enter letter subject"
                     required
                     defaultValue={defaultSubject}
-                    className="rounded-none border-2 border-foreground h-12 font-bold"
+                    className="rounded-xl border-muted-foreground/20 h-11 font-medium"
                 />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="body" className="text-xs font-black uppercase tracking-widest">Message *</Label>
+                <Label htmlFor="body" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Message *</Label>
                 <RichTextEditor
                     content={body}
                     onChange={setBody}
@@ -131,7 +131,7 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
                     disabled={isPending || !selectedRecipient || !body}
                     onClick={() => setShouldSend(false)}
                     variant="outline"
-                    className="flex-1 rounded-none border-2 border-foreground h-14 font-black uppercase tracking-widest hover:bg-muted transition-all"
+                    className="flex-1 rounded-xl h-12 font-bold hover:bg-muted transition-all"
                 >
                     {isPending ? 'Saving...' : 'Save as Draft'}
                 </Button>
@@ -139,7 +139,7 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
                     type="submit"
                     disabled={isPending || !selectedRecipient || !body}
                     onClick={() => setShouldSend(true)}
-                    className="flex-1 rounded-none border-2 border-foreground h-14 font-black uppercase tracking-widest shadow-brutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                    className="flex-1 rounded-xl h-12 font-bold shadow-sm transition-all"
                 >
                     {isPending ? 'Sending...' : 'Send Letter'}
                 </Button>

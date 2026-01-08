@@ -27,23 +27,23 @@ interface RecentLettersProps {
 }
 
 const statusColors: Record<string, string> = {
-    DRAFT: 'bg-muted text-muted-foreground',
-    SENT: 'bg-primary text-primary-foreground',
-    SIGNED: 'bg-green-500/10 text-green-600 border-green-200',
-    RESPONDED: 'bg-purple-500/10 text-purple-600 border-purple-200',
+    DRAFT: 'bg-slate-100 text-slate-700',
+    SENT: 'bg-blue-100 text-blue-700',
+    SIGNED: 'bg-emerald-100 text-emerald-700',
+    RESPONDED: 'bg-purple-100 text-purple-700',
 }
 
 export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
     if (letters.length === 0) {
         return (
             <div className="text-center py-8 text-muted-foreground">
-                <p>No letters yet</p>
+                <p className="text-sm font-medium">No recent communications</p>
             </div>
         )
     }
 
     return (
-        <div className="divide-y border-t">
+        <div className="space-y-1">
             {letters.map((letter) => {
                 const isSender = letter.senderId === currentNodeId
                 const otherParty = isSender ? letter.receiver : letter.sender

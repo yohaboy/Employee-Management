@@ -2,7 +2,6 @@
 
 import { useActionState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { signLetterAction } from '@/app/actions/letters'
 
@@ -11,64 +10,68 @@ interface SignLetterFormProps {
 }
 
 export function SignLetterForm({ letterId }: SignLetterFormProps) {
-    async function handleSign(_prevState: any, formData: FormData) {
-        const confirmed = formData.get('confirm_signature')
-        if (!confirmed) {
-            return { error: 'You must confirm your digital signature' }
-        }
-        return signLetterAction(letterId, formData)
-    }
-
-    const [state, formAction, isPending] = useActionState(handleSign, null)
+    const [state, formAction, isPending] = useActionState(
+        async (_prevState: any, formData: FormData) => {
+            return signLetterAction(letterId, formData)
+        },
+        null
+    )
 
     return (
         <form action={formAction} className="space-y-8">
             {state?.error && (
-                <div className="bg-destructive/10 border-2 border-destructive text-destructive px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-xl text-sm font-semibold">
                     {state.error}
                 </div>
             )}
 
             {state && 'success' in state && state.success && (
-                <div className="bg-green-500/10 border-2 border-green-500 text-green-600 dark:text-green-400 px-4 py-3 rounded-none text-sm font-bold shadow-brutal-sm">
+                <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-4 py-3 rounded-xl text-sm font-semibold">
                     Letter signed and authenticated successfully!
                 </div>
             )}
 
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="response" className="text-xs font-black uppercase tracking-widest">
-                        Official Response (Optional)
-                    </Label>
+                    <label htmlFor="response" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                        Official Response / Remarks
+                    </label>
                     <Textarea
                         id="response"
                         name="response"
-                        placeholder="Add your official response or remarks here..."
-                        rows={6}
-                        className="rounded-none border-2 border-foreground focus:ring-0"
+                        placeholder="Enter your official response or remarks here..."
+                        className="min-h-[100px] rounded-xl border-muted-foreground/20 focus:ring-primary/20"
                     />
                 </div>
 
-                <div className="flex items-start gap-3 p-4 bg-muted/30 border-2 border-foreground/10">
+                <div className="flex items-start space-x-3 p-4 rounded-xl bg-muted/30 border border-border/50">
                     <input
                         type="checkbox"
-                        id="confirm_signature"
-                        name="confirm_signature"
-                        className="mt-1 w-4 h-4 rounded-none border-2 border-foreground accent-primary"
+                        id="confirm"
+                        name="confirm"
                         required
+                        className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                     />
-                    <Label htmlFor="confirm_signature" className="text-xs font-bold leading-tight cursor-pointer">
-                        I hereby confirm that I have read and understood the contents of this letter, and I am applying my digital signature as a formal acknowledgement and/or response.
-                    </Label>
+                    <div className="grid gap-1.5 leading-none">
+                        <label
+                            htmlFor="confirm"
+                            className="text-xs font-semibold leading-none cursor-pointer"
+                        >
+                            I confirm my digital signature
+                        </label>
+                        <p className="text-[10px] text-muted-foreground font-medium">
+                            By checking this, you are applying your official digital signature to this document.
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full rounded-none border-2 border-foreground h-14 font-black uppercase tracking-widest shadow-brutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                className="w-full rounded-xl h-11 font-bold shadow-sm transition-all"
             >
-                {isPending ? 'Authenticating...' : 'Apply Digital Signature'}
+                {isPending ? 'Authenticating...' : 'Sign and Authenticate Document'}
             </Button>
         </form>
     )

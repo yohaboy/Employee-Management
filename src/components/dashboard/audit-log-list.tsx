@@ -35,23 +35,23 @@ export async function AuditLogList({ nodeId, limit = 5, logs: providedLogs }: Au
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-px before:bg-border/50">
             {logs.map((log: any) => (
                 <div
                     key={log.id}
-                    className="flex items-start gap-4 p-4 rounded-lg border bg-muted/30"
+                    className="flex items-start gap-4 relative"
                 >
-                    <div className="p-2 rounded-full bg-primary/10 flex-shrink-0">
-                        <Activity className="size-4 text-primary" />
+                    <div className="p-2 rounded-full bg-background ring-4 ring-background flex-shrink-0 z-10">
+                        <div className="size-2 rounded-full bg-primary" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold">
+                    <div className="flex-1 min-w-0 pt-0.5">
+                        <p className="text-xs font-bold text-foreground">
                             {actionLabels[log.action] || log.action}
                         </p>
                         {log.details && (
-                            <p className="text-xs text-muted-foreground truncate mt-0.5">{log.details}</p>
+                            <p className="text-[10px] text-muted-foreground truncate mt-0.5 font-medium">{log.details}</p>
                         )}
-                        <p className="text-[10px] text-muted-foreground mt-2">
+                        <p className="text-[10px] text-muted-foreground/60 mt-1 font-medium">
                             {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
                         </p>
                     </div>

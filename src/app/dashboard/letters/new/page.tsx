@@ -36,10 +36,10 @@ export default async function NewLetterPage({ searchParams }: NewLetterPageProps
         .sort((a, b) => a.name.localeCompare(b.name))
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 pb-10">
             <div className="flex items-center gap-4">
                 <Link href="/dashboard/letters">
-                    <Button variant="outline" size="sm" className="rounded-none border-2 border-foreground font-bold uppercase tracking-widest">
+                    <Button variant="ghost" size="sm" className="rounded-lg font-medium text-muted-foreground hover:text-foreground">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to Letters
                     </Button>
@@ -47,19 +47,19 @@ export default async function NewLetterPage({ searchParams }: NewLetterPageProps
             </div>
 
             <div>
-                <h2 className="text-5xl font-black text-foreground uppercase tracking-tighter leading-none">
+                <h2 className="text-3xl font-bold tracking-tight">
                     {parentId ? 'Compose Reply' : 'Compose New Letter'}
                 </h2>
-                <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs mt-2">
+                <p className="text-muted-foreground text-sm mt-1">
                     {parentId ? 'Replying to a previous communication' : 'Send a secure letter to your parent or subordinates'}
                 </p>
             </div>
 
-            <Card className="max-w-4xl rounded-none border-2 border-foreground shadow-brutal overflow-hidden">
-                <CardHeader className="bg-muted/50 border-b-2 border-foreground">
-                    <CardTitle className="text-xl font-black uppercase tracking-tight">Letter Details</CardTitle>
+            <Card className="w-full border-none shadow-sm ring-1 ring-border/50 overflow-hidden">
+                <CardHeader className="bg-muted/10 border-b">
+                    <CardTitle className="text-sm font-bold">Letter Details</CardTitle>
                 </CardHeader>
-                <CardContent className="p-8">
+                <CardContent className="p-4 md:p-8">
                     <NewLetterForm
                         recipients={potentialRecipients}
                         parentId={parentId}

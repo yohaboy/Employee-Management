@@ -49,7 +49,18 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
             }),
             CharacterCount,
         ],
-        content: content,
+        content: content || `
+            <h1>Official Communication</h1>
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+            <p><strong>Subject:</strong> [Enter Subject Here]</p>
+            <hr />
+            <p>Dear [Recipient Name],</p>
+            <p>I am writing to inform you regarding...</p>
+            <br />
+            <br />
+            <p>Sincerely,</p>
+            <p>[Your Name]<br />[Your Position]</p>
+        `,
         immediatelyRender: false,
         onUpdate: ({ editor }) => {
             onChange(editor.getHTML())
@@ -61,36 +72,38 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
     }
 
     return (
-        <div className="flex flex-col border-2 border-foreground bg-background shadow-brutal overflow-hidden min-h-[600px]">
-            {/* WPS-style Ribbon Toolbar */}
-            <div className="bg-muted/50 border-b-2 border-foreground p-2 flex flex-wrap gap-1 items-center sticky top-0 z-10">
-                <div className="flex items-center gap-1 px-2 border-r-2 border-foreground/20 mr-1">
+        <div className="flex flex-col border rounded-xl bg-background shadow-sm overflow-hidden min-h-[500px] focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+            {/* Ribbon Toolbar */}
+            <div className="bg-muted/30 border-b p-2 flex flex-wrap gap-1 items-center sticky top-0 z-10 backdrop-blur-sm">
+                <div className="flex items-center gap-1 px-2 border-r mr-1">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 hover:bg-primary hover:text-primary-foreground transition-colors"
+                        className="h-8 w-8 rounded-md"
                         onClick={() => editor.chain().focus().undo().run()}
                         disabled={!editor.can().undo()}
+                        type="button"
                     >
                         <Undo className="h-4 w-4" />
                     </Button>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 hover:bg-primary hover:text-primary-foreground transition-colors"
+                        className="h-8 w-8 rounded-md"
                         onClick={() => editor.chain().focus().redo().run()}
                         disabled={!editor.can().redo()}
+                        type="button"
                     >
                         <Redo className="h-4 w-4" />
                     </Button>
                 </div>
 
-                <div className="flex items-center gap-1 px-2 border-r-2 border-foreground/20 mr-1">
+                <div className="flex items-center gap-1 px-2 border-r mr-1">
                     <Toggle
                         size="sm"
                         pressed={editor.isActive('bold')}
                         onPressedChange={() => editor.chain().focus().toggleBold().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <Bold className="h-4 w-4" />
                     </Toggle>
@@ -98,7 +111,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('italic')}
                         onPressedChange={() => editor.chain().focus().toggleItalic().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <Italic className="h-4 w-4" />
                     </Toggle>
@@ -106,18 +119,18 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('underline')}
                         onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <UnderlineIcon className="h-4 w-4" />
                     </Toggle>
                 </div>
 
-                <div className="flex items-center gap-1 px-2 border-r-2 border-foreground/20 mr-1">
+                <div className="flex items-center gap-1 px-2 border-r mr-1">
                     <Toggle
                         size="sm"
                         pressed={editor.isActive('heading', { level: 1 })}
                         onPressedChange={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <Heading1 className="h-4 w-4" />
                     </Toggle>
@@ -125,18 +138,18 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('heading', { level: 2 })}
                         onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <Heading2 className="h-4 w-4" />
                     </Toggle>
                 </div>
 
-                <div className="flex items-center gap-1 px-2 border-r-2 border-foreground/20 mr-1">
+                <div className="flex items-center gap-1 px-2 border-r mr-1">
                     <Toggle
                         size="sm"
                         pressed={editor.isActive({ textAlign: 'left' })}
                         onPressedChange={() => editor.chain().focus().setTextAlign('left').run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <AlignLeft className="h-4 w-4" />
                     </Toggle>
@@ -144,7 +157,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive({ textAlign: 'center' })}
                         onPressedChange={() => editor.chain().focus().setTextAlign('center').run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <AlignCenter className="h-4 w-4" />
                     </Toggle>
@@ -152,7 +165,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive({ textAlign: 'right' })}
                         onPressedChange={() => editor.chain().focus().setTextAlign('right').run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <AlignRight className="h-4 w-4" />
                     </Toggle>
@@ -163,7 +176,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('bulletList')}
                         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <List className="h-4 w-4" />
                     </Toggle>
@@ -171,7 +184,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('orderedList')}
                         onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <ListOrdered className="h-4 w-4" />
                     </Toggle>
@@ -179,32 +192,35 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
                         size="sm"
                         pressed={editor.isActive('blockquote')}
                         onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
-                        className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        className="rounded-md"
                     >
                         <Quote className="h-4 w-4" />
                     </Toggle>
                 </div>
             </div>
 
-            {/* Page-like Editing Area */}
-            <div className="flex-1 bg-muted/30 p-8 overflow-auto flex justify-center">
-                <div className="w-full max-w-[800px] bg-background shadow-2xl border border-foreground/10 min-h-[1000px] p-[2cm] relative">
-                    {/* Page Watermark or Guide Lines could go here */}
+            {/* Editing Area */}
+            <div
+                className="flex-1 bg-muted/5 p-4 md:p-8 overflow-auto flex justify-center cursor-text"
+                onClick={() => editor.chain().focus().run()}
+            >
+                <div className="w-full bg-background shadow-sm border rounded-lg min-h-[800px] p-6 md:p-12 lg:p-16 relative">
                     <EditorContent
                         editor={editor}
-                        className="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none max-w-none h-full"
+                        className="prose prose-sm sm:prose-base lg:prose-lg focus:outline-none max-w-none h-full dark:prose-invert"
                     />
                 </div>
             </div>
 
             {/* Status Bar */}
-            <div className="bg-muted border-t-2 border-foreground px-4 py-1 text-[10px] font-bold uppercase flex justify-between items-center">
+            <div className="bg-muted/30 border-t px-4 py-2 text-[10px] font-medium text-muted-foreground flex justify-between items-center">
                 <div className="flex gap-4">
                     <span>Words: {editor.storage.characterCount?.words?.() || 0}</span>
                     <span>Characters: {editor.storage.characterCount?.characters?.() || 0}</span>
                 </div>
-                <div>
-                    <span>WPS Mode: Active</span>
+                <div className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    <span>Editor Ready</span>
                 </div>
             </div>
         </div>
