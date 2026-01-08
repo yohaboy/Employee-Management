@@ -17,8 +17,10 @@ export async function createLetterAction(formData: FormData) {
     const subject = formData.get('subject') as string
     const body = formData.get('body') as string
     const receiverId = formData.get('receiverId') as string
+    const category = formData.get('category') as string
+    const parentId = formData.get('parentId') as string || null
 
-    const validation = createLetterSchema.safeParse({ subject, body, receiverId })
+    const validation = createLetterSchema.safeParse({ subject, body, receiverId, category, parentId })
     if (!validation.success) {
         return { error: validation.error.issues[0].message }
     }
@@ -29,10 +31,12 @@ export async function createLetterAction(formData: FormData) {
         return { error: 'You cannot send a letter to this recipient' }
     }
 
-    const letter = {
+    const letter: any = {
         id: uuidv4(),
         subject,
         body,
+        category,
+        parentId,
         senderId: currentNode.id,
         receiverId,
         status: 'DRAFT' as LetterStatus,

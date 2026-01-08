@@ -17,6 +17,8 @@ export interface Letter {
     subject: string
     body: string
     status: LetterStatus
+    category: 'RESPONSE_REQUIRED' | 'NO_RESPONSE_REQUIRED'
+    parentId: string | null
     senderId: string
     receiverId: string
     createdAt: Date

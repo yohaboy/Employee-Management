@@ -18,6 +18,8 @@ export const createLetterSchema = z.object({
     subject: z.string().min(1, 'Subject is required').max(200, 'Subject too long'),
     body: z.string().min(1, 'Body is required'),
     receiverId: z.string().uuid('Invalid receiver ID'),
+    category: z.enum(['RESPONSE_REQUIRED', 'NO_RESPONSE_REQUIRED']),
+    parentId: z.string().uuid('Invalid parent ID').nullable().optional(),
 })
 
 export const updateLetterSchema = z.object({

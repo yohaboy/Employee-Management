@@ -40,6 +40,21 @@ export default async function LetterPage({ params }: LetterPageProps) {
         notFound()
     }
 
+    // Fetch the entire thread
+    const thread: any[] = []
+    let currentParentId = rawLetter.parentId
+    while (currentParentId) {
+        const parent = db.letters.find(l => l.id === currentParentId)
+        if (parent) {
+            thread.unshift(parent)
+            currentParentId = parent.parentId
+        } else {
+            currentParentId = null
+        }
+    }
+
+    const replies = db.letters.filter(l => l.parentId === id)
+
     const sender = db.nodes.find(n => n.id === rawLetter.senderId)
     const receiver = db.nodes.find(n => n.id === rawLetter.receiverId)
     const signature = db.signatures.find(s => s.letterId === rawLetter.id)
@@ -72,83 +87,133 @@ export default async function LetterPage({ params }: LetterPageProps) {
         } : null
     }
 
-    if (!letter) {
-        notFound()
-    }
-
     const isSender = letter.senderId === currentNode.id
     const isReceiver = letter.receiverId === currentNode.id
     const canSign = isReceiver && letter.status === 'SENT' && !letter.signature
+    const canReply = (isSender || isReceiver) && letter.status !== 'DRAFT'
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 pb-20">
             <div className="flex items-center gap-4">
                 <Link href="/dashboard/letters">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="rounded-none border-2 border-foreground font-bold uppercase tracking-widest">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to Letters
                     </Button>
                 </Link>
             </div>
 
+            {/* Thread Navigation */}
+            {thread.length > 0 && (
+                <div className="space-y-4">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Previous Letters in Thread</p>
+                    <div className="flex flex-col gap-2">
+                        {thread.map((l, i) => (
+                            <Link key={l.id} href={`/dashboard/letters/${l.id}`}>
+                                <div className="p-3 bg-muted/50 border-2 border-foreground/10 hover:border-foreground transition-all flex justify-between items-center group">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-1 h-8 bg-foreground/20 group-hover:bg-primary transition-colors" />
+                                        <div>
+                                            <p className="text-sm font-bold">{l.subject}</p>
+                                            <p className="text-[10px] text-muted-foreground uppercase font-bold">{format(new Date(l.createdAt), 'PP')}</p>
+                                        </div>
+                                    </div>
+                                    <Badge className="rounded-none text-[10px] font-black uppercase tracking-widest">View</Badge>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
-                    <h2 className="text-4xl font-black text-foreground mb-3 uppercase tracking-tighter">{letter.subject}</h2>
-                    <div className="flex items-center gap-4">
-                        <Badge className={`${statusColors[letter.status]} rounded-none font-bold uppercase tracking-widest px-3 py-1`}>
+                    <div className="flex items-center gap-2 mb-2">
+                        <Badge className={`${statusColors[letter.status]} rounded-none font-black uppercase tracking-widest px-3 py-1`}>
                             {letter.status}
                         </Badge>
+                        <Badge variant="outline" className="rounded-none font-black uppercase tracking-widest px-3 py-1 border-2 border-foreground">
+                            {letter.category?.replace('_', ' ') || 'GENERAL'}
+                        </Badge>
+                    </div>
+                    <h2 className="text-5xl font-black text-foreground mb-3 uppercase tracking-tighter leading-none">{letter.subject}</h2>
+                    <div className="flex items-center gap-4">
                         <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                            {format(new Date(letter.createdAt), 'PPpp')}
+                            Sent {format(new Date(letter.createdAt), 'PPpp')}
                         </span>
                     </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                     {letter.status !== 'DRAFT' && <DownloadPdfButton letter={letter} />}
                     {isSender && <LetterActions letter={letter} />}
+                    {canReply && (
+                        <Link href={`/dashboard/letters/new?parentId=${letter.id}&subject=Re: ${letter.subject}&recipientId=${isSender ? letter.receiverId : letter.senderId}`}>
+                            <Button className="rounded-none border-2 border-foreground font-black uppercase tracking-widest shadow-brutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                                Reply to Letter
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
-                    <Card>
-                        <CardHeader>
+                    <Card className="rounded-none border-2 border-foreground shadow-brutal overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b-2 border-foreground">
                             <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
                                 <FileText className="w-6 h-6" />
-                                Letter Content
+                                Document Content
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="prose dark:prose-invert max-w-none">
-                                <p className="text-foreground font-medium leading-relaxed whitespace-pre-wrap">{letter.body}</p>
+                        <CardContent className="p-0">
+                            <div className="bg-muted/10 p-8 md:p-12 min-h-[500px]">
+                                <div className="bg-background border border-foreground/10 shadow-2xl p-8 md:p-16 prose dark:prose-invert max-w-none min-h-[600px]">
+                                    <div
+                                        dangerouslySetInnerHTML={{ __html: letter.body }}
+                                        className="text-foreground font-medium leading-relaxed"
+                                    />
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
 
                     {letter.signature && (
-                        <Card className="border-green-500 shadow-[4px_4px_0px_0px_rgba(34,197,94,1)]">
-                            <CardHeader>
+                        <Card className="rounded-none border-2 border-green-500 shadow-[8px_8px_0px_0px_rgba(34,197,94,1)] overflow-hidden">
+                            <CardHeader className="bg-green-500/10 border-b-2 border-green-500">
                                 <CardTitle className="text-green-600 dark:text-green-400 font-black uppercase tracking-tight flex items-center gap-2">
                                     <FileCheck className="w-6 h-6" />
-                                    Digital Signature
+                                    Digital Signature Verified
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed by</p>
-                                        <p className="text-foreground font-bold text-lg">{letter.signature.signedBy.name}</p>
-                                        <p className="text-sm text-muted-foreground font-medium">{letter.signature.signedBy.position}</p>
+                            <CardContent className="p-8 space-y-8">
+                                <div className="flex flex-col md:flex-row justify-between gap-8">
+                                    <div className="space-y-4">
+                                        <div>
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signatory</p>
+                                            <p className="text-foreground font-black text-2xl uppercase tracking-tighter">{letter.signature.signedBy.name}</p>
+                                            <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest">{letter.signature.signedBy.position}</p>
+                                        </div>
+                                        <div className="pt-4 border-t-2 border-green-500/10">
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Verification Hash</p>
+                                            <code className="text-[10px] bg-muted px-2 py-1 rounded font-mono break-all">
+                                                {Buffer.from(letter.id + letter.signature.signedAt).toString('hex').slice(0, 32)}
+                                            </code>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed at</p>
-                                        <p className="text-foreground font-bold">{format(new Date(letter.signature.signedAt), 'PPpp')}</p>
+                                    <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-green-500/30 bg-green-500/5 min-w-[200px]">
+                                        <div className="text-4xl font-serif italic text-green-600/50 select-none mb-2">
+                                            {letter.signature.signedBy.name}
+                                        </div>
+                                        <p className="text-[10px] font-black text-green-600 uppercase tracking-widest">Digitally Signed</p>
+                                        <p className="text-[10px] text-green-600/70 font-bold">{format(new Date(letter.signature.signedAt), 'PPpp')}</p>
                                     </div>
                                 </div>
                                 {letter.signature.response && (
-                                    <div className="pt-4 border-t-2 border-green-500/20">
-                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Response</p>
-                                        <p className="text-foreground font-medium whitespace-pre-wrap bg-green-500/5 p-4 border-l-4 border-green-500">{letter.signature.response}</p>
+                                    <div className="pt-8 border-t-2 border-green-500/20">
+                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">Official Response</p>
+                                        <div className="text-foreground font-medium whitespace-pre-wrap bg-green-500/5 p-6 border-l-4 border-green-500 italic text-lg">
+                                            "{letter.signature.response}"
+                                        </div>
                                     </div>
                                 )}
                             </CardContent>
@@ -156,71 +221,98 @@ export default async function LetterPage({ params }: LetterPageProps) {
                     )}
 
                     {canSign && (
-                        <Card className="border-primary shadow-brutal">
-                            <CardHeader>
-                                <CardTitle className="text-primary font-black uppercase tracking-tight">Sign This Letter</CardTitle>
+                        <Card className="rounded-none border-2 border-primary shadow-brutal overflow-hidden">
+                            <CardHeader className="bg-primary/10 border-b-2 border-primary">
+                                <CardTitle className="text-primary font-black uppercase tracking-tight">Sign and Authenticate</CardTitle>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="p-8">
                                 <SignLetterForm letterId={letter.id} />
                             </CardContent>
                         </Card>
                     )}
+
+                    {/* Replies Section */}
+                    {replies.length > 0 && (
+                        <div className="space-y-4">
+                            <h3 className="text-2xl font-black uppercase tracking-tighter">Replies</h3>
+                            <div className="space-y-4">
+                                {replies.map(reply => (
+                                    <Link key={reply.id} href={`/dashboard/letters/${reply.id}`}>
+                                        <Card className="rounded-none border-2 border-foreground/20 hover:border-foreground transition-all group">
+                                            <CardContent className="p-4 flex justify-between items-center">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-1 h-10 bg-foreground/10 group-hover:bg-primary transition-colors" />
+                                                    <div>
+                                                        <p className="font-bold text-lg">{reply.subject}</p>
+                                                        <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
+                                                            {format(new Date(reply.createdAt), 'PPpp')}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <Badge className="rounded-none font-black uppercase tracking-widest">View Reply</Badge>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="space-y-8">
-                    <Card>
-                        <CardHeader>
+                    <Card className="rounded-none border-2 border-foreground shadow-brutal-sm">
+                        <CardHeader className="bg-muted/30 border-b-2 border-foreground">
                             <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <User className="w-5 h-5" />
-                                From
+                                Sender
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-6">
                             <div>
-                                <p className="font-bold text-foreground text-lg">{letter.sender.name}</p>
-                                <p className="text-sm text-muted-foreground font-bold uppercase tracking-tight">{letter.sender.position}</p>
-                                <p className="text-xs text-muted-foreground mt-2 font-medium">{letter.sender.email}</p>
+                                <p className="font-black text-foreground text-xl uppercase tracking-tighter">{letter.sender.name}</p>
+                                <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">{letter.sender.position}</p>
+                                <p className="text-[10px] text-muted-foreground mt-4 font-bold uppercase tracking-widest border-t border-foreground/10 pt-4">{letter.sender.email}</p>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader>
+                    <Card className="rounded-none border-2 border-foreground shadow-brutal-sm">
+                        <CardHeader className="bg-muted/30 border-b-2 border-foreground">
                             <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <User className="w-5 h-5" />
-                                To
+                                Recipient
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-6">
                             <div>
-                                <p className="font-bold text-foreground text-lg">{letter.receiver.name}</p>
-                                <p className="text-sm text-muted-foreground font-bold uppercase tracking-tight">{letter.receiver.position}</p>
-                                <p className="text-xs text-muted-foreground mt-2 font-medium">{letter.receiver.email}</p>
+                                <p className="font-black text-foreground text-xl uppercase tracking-tighter">{letter.receiver.name}</p>
+                                <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">{letter.receiver.position}</p>
+                                <p className="text-[10px] text-muted-foreground mt-4 font-bold uppercase tracking-widest border-t border-foreground/10 pt-4">{letter.receiver.email}</p>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader>
+                    <Card className="rounded-none border-2 border-foreground shadow-brutal-sm">
+                        <CardHeader className="bg-muted/30 border-b-2 border-foreground">
                             <CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                                 <Calendar className="w-5 h-5" />
-                                Timeline
+                                Document Timeline
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent className="p-6 space-y-6">
                             <div>
-                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Created</p>
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Drafted</p>
                                 <p className="text-sm text-foreground font-bold">{format(new Date(letter.createdAt), 'PPp')}</p>
                             </div>
                             {letter.updatedAt.getTime() !== letter.createdAt.getTime() && (
                                 <div>
-                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Last Updated</p>
+                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Last Modified</p>
                                     <p className="text-sm text-foreground font-bold">{format(new Date(letter.updatedAt), 'PPp')}</p>
                                 </div>
                             )}
                             {letter.signature && (
                                 <div>
-                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Signed</p>
+                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Authenticated</p>
                                     <p className="text-sm text-foreground font-bold">{format(new Date(letter.signature.signedAt), 'PPp')}</p>
                                 </div>
                             )}
