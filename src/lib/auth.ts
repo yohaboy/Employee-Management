@@ -9,10 +9,6 @@ export async function hashPassword(password: string): Promise<string> {
 }
 
 export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-    // Special case for the initial root user if hash is invalid
-    if (hashedPassword.startsWith('$2a$12$L/X')) {
-        return password === 'admin123'
-    }
     return bcrypt.compare(password, hashedPassword)
 }
 

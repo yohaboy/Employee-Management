@@ -3,8 +3,9 @@ import { formatDistanceToNow } from 'date-fns'
 import { Activity } from 'lucide-react'
 
 interface AuditLogListProps {
-    nodeId: string
+    nodeId?: string
     limit?: number
+    logs?: any[]
 }
 
 const actionLabels: Record<string, string> = {
@@ -22,8 +23,8 @@ const actionLabels: Record<string, string> = {
     LOGOUT: 'Logged out',
 }
 
-export async function AuditLogList({ nodeId, limit = 5 }: AuditLogListProps) {
-    const logs = await getNodeAuditLogs(nodeId, limit)
+export async function AuditLogList({ nodeId, limit = 5, logs: providedLogs }: AuditLogListProps) {
+    const logs = providedLogs || (nodeId ? await getNodeAuditLogs(nodeId, limit) : [])
 
     if (logs.length === 0) {
         return (

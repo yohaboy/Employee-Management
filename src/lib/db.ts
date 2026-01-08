@@ -53,7 +53,7 @@ class InMemoryStore {
         this.nodes.push({
             id: 'root-node',
             email: 'admin@company.com',
-            password: '$2a$12$L/X.s/w.w/w.w/w.w/w.w/w.w/w.w/w.w/w.w/w.w/w.w/w.w/w.', // Mock hash
+            password: '$2b$12$knWF6dVFoJgm9jMQhXHnDOe.glXIGrrqFTrGm6gU/MxAzPbiQUxci', // Real hash for 'admin123'
             name: 'Root Admin',
             position: 'CEO',
             parentId: null,
@@ -63,5 +63,8 @@ class InMemoryStore {
     }
 }
 
-// Singleton instance
-export const db = new InMemoryStore()
+// Singleton instance with HMR support
+const globalForDb = globalThis as unknown as { db: InMemoryStore }
+export const db = globalForDb.db || new InMemoryStore()
+
+if (process.env.NODE_ENV !== 'production') globalForDb.db = db

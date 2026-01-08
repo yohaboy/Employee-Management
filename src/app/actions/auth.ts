@@ -17,7 +17,7 @@ export async function loginAction(_prevState: any, formData: FormData) {
         return { error: validation.error.issues[0].message }
     }
 
-    const node = db.nodes.find(n => n.email === email)
+    const node = db.nodes.find(n => n.email.toLowerCase() === email.toLowerCase())
 
     if (!node) {
         return { error: 'Invalid email or password' }
@@ -70,7 +70,7 @@ export async function createNodeAction(_prevState: any, formData: FormData) {
     }
 
     // Check if email already exists
-    const existingNode = db.nodes.find(n => n.email === email)
+    const existingNode = db.nodes.find(n => n.email.toLowerCase() === email.toLowerCase())
 
     if (existingNode) {
         return { error: 'Email already exists' }

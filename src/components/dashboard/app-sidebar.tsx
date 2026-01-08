@@ -15,6 +15,8 @@ import {
     User,
     Calendar,
     Hash,
+    Shield,
+    Activity,
 } from "lucide-react"
 
 import {
@@ -47,14 +49,8 @@ const navItems = [
     { href: "/dashboard/letters", label: "Letters", icon: Mail },
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
-    { href: "#", label: "Calendar/Meetings", icon: Calendar },
+    { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
     { href: "#", label: "Settings", icon: Settings2 },
-]
-
-const projects = [
-    { name: "Design Engineering", icon: Hash },
-    { name: "Sales & Marketing", icon: Hash },
-    { name: "Travel", icon: Hash },
 ]
 
 export function AppSidebar({ user }: { user: any }) {
@@ -65,11 +61,11 @@ export function AppSidebar({ user }: { user: any }) {
             <SidebarHeader className="h-16 flex items-center px-6 border-b">
                 <div className="flex items-center gap-3">
                     <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-                        <Mail className="size-4" />
+                        <Shield className="size-4" />
                     </div>
                     <div className="flex flex-col gap-0 leading-none group-data-[collapsible=icon]:hidden">
-                        <span className="font-bold text-sm tracking-tight">OfficeNext</span>
-                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Management</span>
+                        <span className="font-bold text-sm tracking-tight">SecureHierarchy</span>
+                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Enterprise</span>
                     </div>
                 </div>
             </SidebarHeader>
@@ -87,42 +83,10 @@ export function AppSidebar({ user }: { user: any }) {
                                     <Link href={item.href} className="flex items-center gap-3">
                                         <item.icon className="size-4.5 text-muted-foreground group-data-[active=true]:text-primary transition-colors" />
                                         <span className="font-medium text-sm">{item.label}</span>
-                                        {item.label === "Letters" && (
-                                            <span className="ml-auto bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full group-data-[collapsible=icon]:hidden">
-                                                12
-                                            </span>
-                                        )}
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
-                    </SidebarMenu>
-                </SidebarGroup>
-
-                <SidebarGroup className="mt-4">
-                    <SidebarGroupLabel className="px-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 group-data-[collapsible=icon]:hidden">
-                        Projects
-                    </SidebarGroupLabel>
-                    <SidebarMenu>
-                        {projects.map((project) => (
-                            <SidebarMenuItem key={project.name}>
-                                <SidebarMenuButton
-                                    tooltip={project.name}
-                                    className="h-9 px-3 rounded-lg transition-all hover:bg-sidebar-accent group"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <project.icon className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                                        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">{project.name}</span>
-                                    </div>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        ))}
-                        <SidebarMenuItem>
-                            <SidebarMenuButton className="h-9 px-3 text-muted-foreground hover:text-foreground">
-                                <MoreHorizontal className="size-4 mr-3" />
-                                <span className="text-sm font-medium">More</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
