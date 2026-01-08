@@ -18,11 +18,6 @@ export default async function NodesPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h2 className="text-3xl font-bold tracking-tight">Organization Hierarchy</h2>
-                <p className="text-muted-foreground">View your position in the organizational structure</p>
-            </div>
-
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">

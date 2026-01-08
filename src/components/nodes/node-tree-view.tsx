@@ -59,7 +59,7 @@ function TreeNode({ node, currentNodeId }: { node: Node; currentNodeId: string }
             {hasChildren && (
                 <>
                     {/* Vertical line from parent */}
-                    <div className="w-px h-12 bg-border" />
+                    <div className="w-0.5 h-12 bg-muted-foreground/30" />
 
                     {/* Horizontal line covering all children */}
                     <div className="relative flex justify-center">
@@ -67,11 +67,11 @@ function TreeNode({ node, currentNodeId }: { node: Node; currentNodeId: string }
                             {node.children!.map((child, index) => (
                                 <div key={child.id} className="flex flex-col items-center relative">
                                     {/* Vertical line to child */}
-                                    <div className="w-px h-12 bg-border" />
+                                    <div className="w-0.5 h-12 bg-muted-foreground/30" />
 
                                     {/* Horizontal connector logic for multiple children */}
                                     {node.children!.length > 1 && (
-                                        <div className={`absolute top-0 h-px bg-border ${index === 0 ? 'left-1/2 right-0 w-1/2' :
+                                        <div className={`absolute top-0 h-0.5 bg-muted-foreground/30 ${index === 0 ? 'left-1/2 right-0 w-1/2' :
                                             index === node.children!.length - 1 ? 'left-0 right-1/2 w-1/2' : 'w-full'
                                             }`} />
                                     )}
@@ -134,34 +134,34 @@ export function NodeTreeView({ treeData, currentNodeId }: NodeTreeViewProps) {
     }, [])
 
     return (
-        <div className="relative w-full h-[750px] border rounded-xl bg-slate-50 overflow-hidden select-none cursor-grab active:cursor-grabbing shadow-inner group"
+        <div className="relative w-full h-[750px] border rounded-xl bg-background overflow-hidden select-none cursor-grab active:cursor-grabbing shadow-inner group"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
             ref={containerRef}
             style={{
-                backgroundImage: `radial-gradient(#cbd5e1 1px, transparent 1px)`,
-                backgroundSize: `${20 * scale}px ${20 * scale}px`,
-                backgroundPosition: `${position.x}px ${position.y}px`
+                backgroundImage: `radial-gradient(circle, var(--grid-color) 1px, transparent 1px)`,
+                backgroundSize: `${24 * scale}px ${24 * scale}px`,
+                backgroundPosition: `${position.x}px ${position.y}px`,
             }}
         >
             {/* Controls */}
             <div className="absolute top-4 right-4 z-50 flex flex-col gap-2">
-                <div className="flex flex-col bg-white border rounded-lg shadow-sm p-1">
-                    <Button variant="ghost" size="icon" onClick={handleZoomIn} className="h-8 w-8 rounded-md" title="Zoom In">
+                <div className="flex flex-col bg-card border rounded-lg shadow-lg p-1">
+                    <Button variant="ghost" size="icon" onClick={handleZoomIn} className="h-8 w-8 rounded-md hover:bg-muted" title="Zoom In">
                         <ZoomIn className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={handleZoomOut} className="h-8 w-8 rounded-md" title="Zoom Out">
+                    <Button variant="ghost" size="icon" onClick={handleZoomOut} className="h-8 w-8 rounded-md hover:bg-muted" title="Zoom Out">
                         <ZoomOut className="h-4 w-4" />
                     </Button>
                     <div className="h-px bg-border mx-1 my-1" />
-                    <Button variant="ghost" size="icon" onClick={handleReset} className="h-8 w-8 rounded-md" title="Reset View">
+                    <Button variant="ghost" size="icon" onClick={handleReset} className="h-8 w-8 rounded-md hover:bg-muted" title="Reset View">
                         <Maximize className="h-4 w-4" />
                     </Button>
                 </div>
-                <div className="bg-white border rounded-lg shadow-sm px-2 py-1 text-[10px] font-bold text-muted-foreground flex items-center gap-1">
-                    <Move className="h-3 w-3" /> Drag to pan
+                <div className="bg-card border rounded-lg shadow-md px-2 py-1.5 text-[10px] font-bold text-muted-foreground flex items-center gap-2 backdrop-blur-sm">
+                    <Move className="h-3.5 w-3.5" /> DRAG TO PAN
                 </div>
             </div>
 
@@ -176,7 +176,7 @@ export function NodeTreeView({ treeData, currentNodeId }: NodeTreeViewProps) {
                     {treeData.parent && (
                         <div className="flex flex-col items-center">
                             <NodeCard node={treeData.parent} isCurrentNode={false} isParent={true} />
-                            <div className="w-px h-12 bg-border" />
+                            <div className="w-0.5 h-12 bg-muted-foreground/30" />
                         </div>
                     )}
 
