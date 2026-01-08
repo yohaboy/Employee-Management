@@ -1,9 +1,10 @@
 'use client'
 
+import { useState, useRef, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { User } from 'lucide-react'
-import { format } from 'date-fns'
+import { User, ZoomIn, ZoomOut, Maximize, Move } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface Node {
     id: string
@@ -87,16 +88,101 @@ function TreeNode({ node, currentNodeId }: { node: Node; currentNodeId: string }
 }
 
 export function NodeTreeView({ treeData, currentNodeId }: NodeTreeViewProps) {
-    return (
-        <div className="flex flex-col items-center p-12 overflow-x-auto min-w-full">
-            {treeData.parent && (
-                <div className="flex flex-col items-center">
-                    <NodeCard node={treeData.parent} isCurrentNode={false} isParent={true} />
-                    <div className="w-px h-12 bg-border" />
-                </div>
-            )}
+    const [scale, setScale] = useState(1)
+    const [position, setPosition] = useState({ x: 0, y: 0 })
+    const [isDragging, setIsDragging] = useState(false)
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+    const containerRef = useRef<HTMLDivElement>(null)
 
-            <TreeNode node={treeData.node} currentNodeId={currentNodeId} />
+    const handleZoomIn = () => setScale(prev => Math.min(prev + 0.1, 2))
+    const handleZoomOut = () => setScale(prev => Math.max(prev - 0.1, 0.3))
+    const handleReset = () => {
+        setScale(1)
+        setPosition({ x: 0, y: 0 })
+    }
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (e.button !== 0) return // Only left click
+        setIsDragging(true)
+        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
+    }
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return
+        setPosition({
+            x: e.clientX - dragStart.x,
+            y: e.clientY - dragStart.y
+        })
+    }
+
+    const handleMouseUp = () => setIsDragging(false)
+
+    useEffect(() => {
+        const container = containerRef.current
+        if (!container) return
+
+        const handleWheelRaw = (e: WheelEvent) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault()
+                const delta = e.deltaY > 0 ? -0.1 : 0.1
+                setScale(prev => Math.max(Math.min(prev + delta, 2), 0.3))
+            }
+        }
+
+        container.addEventListener('wheel', handleWheelRaw, { passive: false })
+        return () => container.removeEventListener('wheel', handleWheelRaw)
+    }, [])
+
+    return (
+        <div className="relative w-full h-[750px] border rounded-xl bg-slate-50 overflow-hidden select-none cursor-grab active:cursor-grabbing shadow-inner group"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            ref={containerRef}
+            style={{
+                backgroundImage: `radial-gradient(#cbd5e1 1px, transparent 1px)`,
+                backgroundSize: `${20 * scale}px ${20 * scale}px`,
+                backgroundPosition: `${position.x}px ${position.y}px`
+            }}
+        >
+            {/* Controls */}
+            <div className="absolute top-4 right-4 z-50 flex flex-col gap-2">
+                <div className="flex flex-col bg-white border rounded-lg shadow-sm p-1">
+                    <Button variant="ghost" size="icon" onClick={handleZoomIn} className="h-8 w-8 rounded-md" title="Zoom In">
+                        <ZoomIn className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={handleZoomOut} className="h-8 w-8 rounded-md" title="Zoom Out">
+                        <ZoomOut className="h-4 w-4" />
+                    </Button>
+                    <div className="h-px bg-border mx-1 my-1" />
+                    <Button variant="ghost" size="icon" onClick={handleReset} className="h-8 w-8 rounded-md" title="Reset View">
+                        <Maximize className="h-4 w-4" />
+                    </Button>
+                </div>
+                <div className="bg-white border rounded-lg shadow-sm px-2 py-1 text-[10px] font-bold text-muted-foreground flex items-center gap-1">
+                    <Move className="h-3 w-3" /> Drag to pan
+                </div>
+            </div>
+
+            {/* Tree Container */}
+            <div
+                className="absolute inset-0 flex items-center justify-center p-24 transition-transform duration-75 ease-out origin-center"
+                style={{
+                    transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                }}
+            >
+                <div className="flex flex-col items-center">
+                    {treeData.parent && (
+                        <div className="flex flex-col items-center">
+                            <NodeCard node={treeData.parent} isCurrentNode={false} isParent={true} />
+                            <div className="w-px h-12 bg-border" />
+                        </div>
+                    )}
+
+                    <TreeNode node={treeData.node} currentNodeId={currentNodeId} />
+                </div>
+            </div>
         </div>
     )
 }

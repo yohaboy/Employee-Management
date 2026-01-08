@@ -30,7 +30,7 @@ export default async function NodesPage() {
                         Hierarchy Tree
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-0 overflow-hidden">
                     <NodeTreeView treeData={treeData} currentNodeId={currentNode.id} />
                 </CardContent>
             </Card>
