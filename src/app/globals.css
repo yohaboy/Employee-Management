@@ -5,40 +5,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-<<<<<<< HEAD
-  /* Industrial Amber SaaS - Bold, High-Vis, Professional */
-
-  /* Primary Scale: Industrial Amber (High visibility, distinct, non-agricultural) */
-  --brand-50: oklch(0.98 0.02 85);
-  --brand-100: oklch(0.95 0.05 85);
-  --brand-200: oklch(0.90 0.10 85);
-  --brand-300: oklch(0.82 0.15 85);
-  --brand-400: oklch(0.75 0.18 85);
-  --brand-500: oklch(0.65 0.20 85);
-  /* Main Brand Color */
-  --brand-600: oklch(0.55 0.18 85);
-  --brand-700: oklch(0.45 0.15 85);
-  --brand-800: oklch(0.35 0.12 85);
-  --brand-900: oklch(0.25 0.10 85);
-  --brand-950: oklch(0.15 0.06 85);
-
-  /* Neutral Scale: Cool Concrete (Professional SaaS base) */
-  --neutral-50: oklch(0.99 0.001 200);
-  /* Pure, crisp white-ish */
-  --neutral-100: oklch(0.96 0.003 200);
-  --neutral-200: oklch(0.92 0.005 200);
-  --neutral-300: oklch(0.87 0.01 200);
-  --neutral-400: oklch(0.70 0.02 200);
-  --neutral-500: oklch(0.55 0.03 200);
-  --neutral-600: oklch(0.40 0.03 200);
-  --neutral-700: oklch(0.30 0.03 200);
-  --neutral-800: oklch(0.20 0.02 200);
-  --neutral-900: oklch(0.15 0.02 200);
-  --neutral-950: oklch(0.10 0.02 200);
-
-  --radius: 0;
-  /* Strict sharp edges - The "Cool" Factor */
-=======
   /* Mint & Sage - Fresh, Modern, Clean */
 
   /* Primary Scale: Fresh Mint (Light, approachable, professional) */
@@ -69,23 +35,19 @@
   --neutral-950: oklch(0.10 0.02 180);
 
   --radius: 0.3rem;
->>>>>>> bc373ad (updated-hero)
 
   --background: var(--neutral-50);
-  --foreground: var(--neutral-950);
+  --foreground: var(--neutral-900);
 
   --card: oklch(1 0 0);
-  --card-foreground: var(--neutral-950);
+  --card-foreground: var(--neutral-900);
 
   --popover: oklch(1 0 0);
-  --popover-foreground: var(--neutral-950);
+  --popover-foreground: var(--neutral-900);
 
   --primary: var(--brand-500);
   --primary-foreground: var(--brand-950);
-<<<<<<< HEAD
-=======
   /* Dark text on light green for readability */
->>>>>>> bc373ad (updated-hero)
 
   --secondary: var(--neutral-100);
   --secondary-foreground: var(--neutral-900);
@@ -96,22 +58,11 @@
   --accent: var(--brand-100);
   --accent-foreground: var(--brand-900);
 
-  --destructive: var(--brand-600);
-  /* Monochromatic destructive */
-  --destructive-foreground: var(--neutral-50);
+  --destructive: oklch(0.6 0.18 25);
+  --destructive-foreground: oklch(0.98 0 0);
 
   --border: var(--neutral-200);
   --input: var(--neutral-100);
-<<<<<<< HEAD
-  --ring: var(--brand-500);
-
-  /* Monochromatic Charts */
-  --chart-1: var(--brand-500);
-  --chart-2: var(--brand-400);
-  --chart-3: var(--brand-600);
-  --chart-4: var(--brand-300);
-  --chart-5: var(--brand-700);
-=======
   --ring: var(--brand-400);
 
   /* Fresh Charts */
@@ -124,7 +75,6 @@
   /* Cyan */
   --chart-5: oklch(0.6 0.15 240);
   /* Blue */
->>>>>>> bc373ad (updated-hero)
 
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);
@@ -137,11 +87,7 @@
 }
 
 .dark {
-<<<<<<< HEAD
-  /* Dark Mode: Asphalt & Amber */
-=======
   /* Dark Mode: Deep Forest & Night Mist */
->>>>>>> bc373ad (updated-hero)
   --background: var(--neutral-950);
   --foreground: var(--neutral-100);
 
@@ -163,25 +109,18 @@
   --accent: var(--brand-900);
   --accent-foreground: var(--brand-50);
 
-  --destructive: var(--brand-600);
-  --destructive-foreground: var(--neutral-50);
+  --destructive: oklch(0.4 0.18 25);
+  --destructive-foreground: oklch(0.98 0 0);
 
   --border: var(--neutral-800);
   --input: var(--neutral-900);
   --ring: var(--brand-400);
 
   --chart-1: var(--brand-500);
-<<<<<<< HEAD
-  --chart-2: var(--brand-400);
-  --chart-3: var(--brand-600);
-  --chart-4: var(--brand-300);
-  --chart-5: var(--brand-700);
-=======
   --chart-2: oklch(0.6 0.15 180);
   --chart-3: oklch(0.65 0.15 120);
   --chart-4: oklch(0.55 0.15 200);
   --chart-5: oklch(0.5 0.15 240);
->>>>>>> bc373ad (updated-hero)
 
   --sidebar: var(--neutral-900);
   --sidebar-foreground: var(--neutral-100);
@@ -194,17 +133,10 @@
 }
 
 @theme inline {
-<<<<<<< HEAD
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-=======
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: calc(var(--radius) - 1px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 2px);
->>>>>>> bc373ad (updated-hero)
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -259,15 +191,6 @@
     @apply bg-background text-foreground;
   }
 
-<<<<<<< HEAD
-  /* Hard, Monochromatic Shadows - Kept for the "Cool" factor */
-  .shadow-sm,
-  .shadow-md,
-  .shadow-lg,
-  .shadow-xl,
-  .shadow-2xl {
-    box-shadow: 4px 4px 0px 0px var(--border);
-=======
   /* Soft, Modern Shadows */
   .shadow-sm {
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -279,18 +202,12 @@
 
   .shadow-lg {
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
->>>>>>> bc373ad (updated-hero)
   }
 
   .shadow-none {
     box-shadow: none;
   }
 
-<<<<<<< HEAD
-  /* Thick Borders - Industrial SaaS */
-  .border {
-    border-width: 2px;
-=======
   /* Refined Borders */
   .border {
     border-width: 1px;
@@ -308,27 +225,12 @@
   button:hover,
   [role="button"]:hover {
     @apply opacity-70;
->>>>>>> bc373ad (updated-hero)
   }
 
   ::selection {
     @apply bg-primary/20 text-primary;
   }
 
-<<<<<<< HEAD
-  /* Industrial Scrollbar */
-  ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-muted border-l-2 border-border;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-400 dark:bg-neutral-600 border-2 border-border hover:bg-primary transition-colors;
-=======
   /* Clean Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
@@ -341,6 +243,5 @@
 
   ::-webkit-scrollbar-thumb {
     @apply bg-neutral-300 dark:bg-neutral-700 rounded-full hover:bg-neutral-400 dark:hover:bg-neutral-600 transition-colors;
->>>>>>> bc373ad (updated-hero)
   }
 }
