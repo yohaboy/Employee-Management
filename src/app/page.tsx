@@ -74,7 +74,7 @@ export default async function Home() {
               <div className="mt-16 w-full max-w-5xl mx-auto rounded-xl border bg-muted/30 p-2 shadow-2xl">
                 <div className="rounded-lg border bg-background overflow-hidden aspect-[16/9] relative">
                   <Image
-                    src="/light.png"
+                    src="/dark.png"
                     alt="Dashboard Preview Light"
                     fill
                     className="object-cover block dark:hidden"
@@ -82,7 +82,7 @@ export default async function Home() {
                     unoptimized
                   />
                   <Image
-                    src="/dark.png"
+                    src="/light.png"
                     alt="Dashboard Preview Dark"
                     fill
                     className="object-cover hidden dark:block"

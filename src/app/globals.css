@@ -4,37 +4,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Lexend';
+  src: url('/fonts/Lexend/Lexend-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* Mint & Sage - Fresh, Modern, Clean */
+  /* Oceanic Teal Palette - A unique, secure, and modern aesthetic */
+  --brand-50: oklch(0.97 0.02 175);
+  --brand-100: oklch(0.93 0.05 175);
+  --brand-200: oklch(0.86 0.09 175);
+  --brand-300: oklch(0.78 0.12 175);
+  --brand-400: oklch(0.68 0.15 175);
+  --brand-500: oklch(0.58 0.17 175);
+  --brand-600: oklch(0.48 0.16 175);
+  --brand-700: oklch(0.38 0.13 175);
+  --brand-800: oklch(0.28 0.10 175);
+  --brand-900: oklch(0.18 0.07 175);
+  --brand-950: oklch(0.10 0.04 175);
 
-  /* Primary Scale: Fresh Mint (Light, approachable, professional) */
-  --brand-50: oklch(0.98 0.02 150);
-  --brand-100: oklch(0.95 0.05 150);
-  --brand-200: oklch(0.90 0.08 150);
-  --brand-300: oklch(0.82 0.12 150);
-  --brand-400: oklch(0.75 0.15 150);
-  --brand-500: oklch(0.65 0.18 150);
-  /* Main Brand Color - Vibrant Mint */
-  --brand-600: oklch(0.55 0.16 150);
-  --brand-700: oklch(0.45 0.14 150);
-  --brand-800: oklch(0.35 0.12 150);
-  --brand-900: oklch(0.25 0.10 150);
-  --brand-950: oklch(0.15 0.06 150);
+  /* Slate Neutrals - Clean and professional */
+  --neutral-50: oklch(0.98 0.002 240);
+  --neutral-100: oklch(0.96 0.005 240);
+  --neutral-200: oklch(0.90 0.01 240);
+  --neutral-300: oklch(0.82 0.02 240);
+  --neutral-400: oklch(0.65 0.03 240);
+  --neutral-500: oklch(0.50 0.04 240);
+  --neutral-600: oklch(0.40 0.04 240);
+  --neutral-700: oklch(0.30 0.03 240);
+  --neutral-800: oklch(0.20 0.02 240);
+  --neutral-900: oklch(0.15 0.01 240);
+  --neutral-950: oklch(0.10 0.01 240);
 
-  /* Neutral Scale: Cool Mist (Clean, airy greys) */
-  --neutral-50: oklch(0.99 0.002 180);
-  --neutral-100: oklch(0.97 0.005 180);
-  --neutral-200: oklch(0.92 0.01 180);
-  --neutral-300: oklch(0.87 0.015 180);
-  --neutral-400: oklch(0.75 0.02 180);
-  --neutral-500: oklch(0.60 0.03 180);
-  --neutral-600: oklch(0.45 0.03 180);
-  --neutral-700: oklch(0.35 0.03 180);
-  --neutral-800: oklch(0.25 0.02 180);
-  --neutral-900: oklch(0.15 0.02 180);
-  --neutral-950: oklch(0.10 0.02 180);
-
-  --radius: 0.3rem;
+  --radius: 0.5rem;
 
   --background: var(--neutral-50);
   --foreground: var(--neutral-900);
@@ -45,9 +50,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: var(--neutral-900);
 
-  --primary: var(--brand-500);
-  --primary-foreground: var(--brand-950);
-  /* Dark text on light green for readability */
+  --primary: var(--brand-600);
+  --primary-foreground: var(--brand-50);
 
   --secondary: var(--neutral-100);
   --secondary-foreground: var(--neutral-900);
@@ -55,31 +59,26 @@
   --muted: var(--neutral-100);
   --muted-foreground: var(--neutral-500);
 
-  --accent: var(--brand-100);
+  --accent: var(--brand-50);
   --accent-foreground: var(--brand-900);
 
   --destructive: oklch(0.6 0.18 25);
   --destructive-foreground: oklch(0.98 0 0);
 
   --border: var(--neutral-200);
-  --input: var(--neutral-100);
-  --ring: var(--brand-400);
+  --input: var(--neutral-200);
+  --ring: var(--brand-500);
 
-  /* Fresh Charts */
   --chart-1: var(--brand-500);
-  --chart-2: oklch(0.7 0.15 180);
-  /* Teal */
-  --chart-3: oklch(0.75 0.15 120);
-  /* Lime */
-  --chart-4: oklch(0.65 0.15 200);
-  /* Cyan */
-  --chart-5: oklch(0.6 0.15 240);
-  /* Blue */
+  --chart-2: oklch(0.6 0.15 220);
+  --chart-3: oklch(0.6 0.15 30);
+  --chart-4: oklch(0.6 0.15 280);
+  --chart-5: oklch(0.6 0.15 140);
 
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);
-  --sidebar-primary: var(--brand-500);
-  --sidebar-primary-foreground: var(--brand-950);
+  --sidebar-primary: var(--brand-600);
+  --sidebar-primary-foreground: var(--brand-50);
   --sidebar-accent: var(--neutral-100);
   --sidebar-accent-foreground: var(--neutral-900);
   --sidebar-border: var(--neutral-200);
@@ -87,15 +86,14 @@
 }
 
 .dark {
-  /* Dark Mode: Deep Forest & Night Mist */
   --background: var(--neutral-950);
-  --foreground: var(--neutral-100);
+  --foreground: var(--neutral-50);
 
   --card: var(--neutral-900);
-  --card-foreground: var(--neutral-100);
+  --card-foreground: var(--neutral-50);
 
   --popover: var(--neutral-900);
-  --popover-foreground: var(--neutral-100);
+  --popover-foreground: var(--neutral-50);
 
   --primary: var(--brand-500);
   --primary-foreground: var(--brand-950);
@@ -113,30 +111,30 @@
   --destructive-foreground: oklch(0.98 0 0);
 
   --border: var(--neutral-800);
-  --input: var(--neutral-900);
+  --input: var(--neutral-800);
   --ring: var(--brand-400);
 
-  --chart-1: var(--brand-500);
-  --chart-2: oklch(0.6 0.15 180);
-  --chart-3: oklch(0.65 0.15 120);
-  --chart-4: oklch(0.55 0.15 200);
-  --chart-5: oklch(0.5 0.15 240);
+  --chart-1: var(--brand-400);
+  --chart-2: oklch(0.5 0.15 220);
+  --chart-3: oklch(0.5 0.15 30);
+  --chart-4: oklch(0.5 0.15 280);
+  --chart-5: oklch(0.5 0.15 140);
 
   --sidebar: var(--neutral-900);
-  --sidebar-foreground: var(--neutral-100);
+  --sidebar-foreground: var(--neutral-50);
   --sidebar-primary: var(--brand-500);
   --sidebar-primary-foreground: var(--brand-950);
   --sidebar-accent: var(--neutral-800);
-  --sidebar-accent-foreground: var(--neutral-100);
+  --sidebar-accent-foreground: var(--neutral-50);
   --sidebar-border: var(--neutral-800);
   --sidebar-ring: var(--brand-400);
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: calc(var(--radius) - 1px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -185,63 +183,14 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: 'Lexend', sans-serif;
   }
 
   body {
     @apply bg-background text-foreground;
   }
 
-  /* Soft, Modern Shadows */
-  .shadow-sm {
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  }
-
-  .shadow-md {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-
-  .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-
-  .shadow-none {
-    box-shadow: none;
-  }
-
-  /* Refined Borders */
-  .border {
-    border-width: 1px;
-  }
-
-  /* Ghost Hover Effect - Low Opacity on Hover */
-  a,
-  button,
-  [role="button"] {
-    @apply transition-all duration-300 ease-in-out;
-  }
-
-  /* When hovering, reduce opacity significantly to give that "low opacity" feel */
-  a:hover,
-  button:hover,
-  [role="button"]:hover {
-    @apply opacity-70;
-  }
-
   ::selection {
     @apply bg-primary/20 text-primary;
-  }
-
-  /* Clean Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-300 dark:bg-neutral-700 rounded-full hover:bg-neutral-400 dark:hover:bg-neutral-600 transition-colors;
   }
 }
