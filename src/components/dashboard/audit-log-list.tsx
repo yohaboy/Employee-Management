@@ -40,35 +40,35 @@ export async function AuditLogList({ nodeId, limit = 5, logs: providedLogs }: Au
 
     if (logs.length === 0) {
         return (
-            <div className="text-center py-12 bg-muted/5 rounded-2xl border border-dashed border-border/50">
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">No activity recorded</p>
+            <div className="text-center py-10 bg-muted/30 rounded-lg border border-dashed border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">No activity recorded</p>
             </div>
         )
     }
 
     return (
-        <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-border/50 before:via-border/20 before:to-transparent">
+        <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-px before:bg-border">
             {logs.map((log: any) => (
                 <div
                     key={log.id}
-                    className="flex items-start gap-5 relative group"
+                    className="flex items-start gap-4 relative group"
                 >
                     <div className="relative flex-shrink-0 mt-1">
-                        <div className={`size-6 rounded-full bg-background ring-4 ring-background flex items-center justify-center z-10 relative border border-border/50`}>
-                            <div className={`size-1.5 rounded-full ${actionColors[log.action] || 'bg-primary'} shadow-[0_0_8px_rgba(0,0,0,0.1)]`} />
+                        <div className="size-6 rounded-full bg-background ring-4 ring-background flex items-center justify-center z-10 relative border border-border">
+                            <div className={`size-1.5 rounded-full ${actionColors[log.action] || 'bg-primary'}`} />
                         </div>
                     </div>
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                            <p className="text-xs font-black text-foreground tracking-tight">
+                            <p className="text-xs font-bold text-foreground tracking-tight">
                                 {actionLabels[log.action] || log.action.replace(/_/g, ' ')}
                             </p>
-                            <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-tighter whitespace-nowrap">
+                            <span className="text-[10px] font-medium text-muted-foreground/60 whitespace-nowrap">
                                 {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
                             </span>
                         </div>
                         {log.details && (
-                            <p className="text-[10px] text-muted-foreground/70 truncate mt-1 font-bold leading-relaxed">
+                            <p className="text-[11px] text-muted-foreground/80 truncate mt-0.5 font-medium">
                                 {log.details}
                             </p>
                         )}
@@ -78,3 +78,4 @@ export async function AuditLogList({ nodeId, limit = 5, logs: providedLogs }: Au
         </div>
     )
 }
+

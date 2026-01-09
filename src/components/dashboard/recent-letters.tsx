@@ -36,8 +36,8 @@ const statusColors: Record<string, string> = {
 export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
     if (letters.length === 0) {
         return (
-            <div className="text-center py-12 bg-muted/5 rounded-2xl border border-dashed border-border/50">
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">No recent communications</p>
+            <div className="text-center py-10 bg-muted/30 rounded-lg border border-dashed border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">No recent communications</p>
             </div>
         )
     }
@@ -52,38 +52,38 @@ export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
                     <Link
                         key={letter.id}
                         href={`/dashboard/letters/${letter.id}`}
-                        className="flex items-center justify-between py-5 hover:bg-muted/30 transition-all group px-4 -mx-4 rounded-2xl relative overflow-hidden"
+                        className="flex items-center justify-between py-4 hover:bg-muted/50 transition-colors group px-3 -mx-3 rounded-lg relative overflow-hidden"
                     >
-                        <div className="flex items-center gap-5 flex-1 min-w-0">
-                            <div className="size-12 rounded-xl bg-muted/50 border border-border/50 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/5 group-hover:border-primary/20 transition-all duration-300">
-                                <Mail className="size-5 text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all" />
+                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                            <div className="size-10 rounded bg-muted/50 border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 group-hover:border-primary/20 transition-colors">
+                                <Mail className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-black text-[15px] text-foreground tracking-tight truncate group-hover:text-primary transition-colors">
+                                <h4 className="font-semibold text-sm text-foreground tracking-tight truncate group-hover:text-primary transition-colors">
                                     {letter.subject}
                                 </h4>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                                <div className="flex items-center gap-2 mt-0.5">
+                                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                                         {isSender ? 'Recipient' : 'Sender'}
                                     </span>
                                     <span className="text-border text-[10px]">•</span>
-                                    <p className="text-xs font-bold text-foreground/70 truncate">
+                                    <p className="text-xs font-medium text-foreground/70 truncate">
                                         {otherParty.name}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex items-center gap-8 ml-4">
+                        <div className="flex items-center gap-6 ml-4">
                             <div className="hidden md:flex flex-col items-end gap-1">
-                                <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-black text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm`}>
+                                <Badge variant="outline" className={`${statusColors[letter.status]} border-none font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded`}>
                                     {letter.status}
                                 </Badge>
-                                <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-tighter">
+                                <span className="text-[10px] font-medium text-muted-foreground/60">
                                     {formatDistanceToNow(new Date(letter.createdAt), { addSuffix: true })}
                                 </span>
                             </div>
-                            <div className="p-2 rounded-lg bg-muted/30 group-hover:bg-primary/10 group-hover:text-primary transition-all">
-                                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
+                            <div className="p-1.5 rounded bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                                <ArrowRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
                             </div>
                         </div>
                     </Link>
@@ -92,3 +92,4 @@ export function RecentLetters({ letters, currentNodeId }: RecentLettersProps) {
         </div>
     )
 }
+

@@ -68,25 +68,25 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
     return (
         <form action={formAction} className="flex flex-col h-full gap-6">
             {state?.error && (
-                <div className="bg-destructive/5 border border-destructive/10 text-destructive px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3 animate-in slide-in-from-top-2">
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md text-sm font-semibold flex items-center gap-3">
                     <div className="size-2 rounded-full bg-destructive animate-pulse" />
                     {state.error}
                 </div>
             )}
 
             {/* Document Properties Header */}
-            <div className="bg-background border border-border/50 rounded-2xl p-6 shadow-xl shadow-foreground/[0.02] flex flex-col gap-6">
+            <div className="bg-background border border-border rounded-lg p-6 flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
-                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Recipient</Label>
+                        <Label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Recipient</Label>
                         <Select value={selectedRecipient} onValueChange={setSelectedRecipient} required>
-                            <SelectTrigger className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus:ring-primary/10 transition-all font-bold text-sm">
+                            <SelectTrigger className="rounded-md border-border bg-muted/30 h-10 px-3 focus:ring-1 focus:ring-ring transition-all font-medium text-sm">
                                 <SelectValue placeholder="Select recipient" />
                             </SelectTrigger>
-                            <SelectContent className="rounded-xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
+                            <SelectContent className="rounded-md p-1 shadow-lg border-border">
                                 {recipients.map((recipient) => (
-                                    <SelectItem key={recipient.id} value={recipient.id} className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
-                                        <span className="font-black text-xs tracking-tight">{recipient.name}</span>
+                                    <SelectItem key={recipient.id} value={recipient.id} className="rounded-sm py-2 px-2 focus:bg-accent transition-colors">
+                                        <span className="font-semibold text-xs">{recipient.name}</span>
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -94,42 +94,42 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
                     </div>
 
                     <div className="space-y-2">
-                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Category</Label>
+                        <Label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Category</Label>
                         <Select value={category} onValueChange={(v: any) => setCategory(v)} required>
-                            <SelectTrigger className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus:ring-primary/10 transition-all font-bold text-sm">
+                            <SelectTrigger className="rounded-md border-border bg-muted/30 h-10 px-3 focus:ring-1 focus:ring-ring transition-all font-medium text-sm">
                                 <SelectValue placeholder="Select category" />
                             </SelectTrigger>
-                            <SelectContent className="rounded-xl p-2 shadow-2xl border-border/50 backdrop-blur-xl">
-                                <SelectItem value="RESPONSE_REQUIRED" className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
-                                    <span className="font-black text-xs tracking-tight">Response Required</span>
+                            <SelectContent className="rounded-md p-1 shadow-lg border-border">
+                                <SelectItem value="RESPONSE_REQUIRED" className="rounded-sm py-2 px-2 focus:bg-accent transition-colors">
+                                    <span className="font-semibold text-xs">Response Required</span>
                                 </SelectItem>
-                                <SelectItem value="NO_RESPONSE_REQUIRED" className="rounded-lg py-2.5 px-3 focus:bg-primary/5 transition-colors">
-                                    <span className="font-black text-xs tracking-tight">Informational</span>
+                                <SelectItem value="NO_RESPONSE_REQUIRED" className="rounded-sm py-2 px-2 focus:bg-accent transition-colors">
+                                    <span className="font-semibold text-xs">Informational</span>
                                 </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-2">
-                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] pl-1">Subject</Label>
+                        <Label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Subject</Label>
                         <Input
                             id="subject"
                             name="subject"
                             placeholder="Document Subject"
                             required
                             defaultValue={defaultSubject}
-                            className="rounded-xl border-border/50 bg-muted/20 h-12 px-4 focus-visible:ring-primary/10 transition-all font-black text-sm tracking-tight"
+                            className="rounded-md border-border bg-muted/30 h-10 px-3 focus-visible:ring-1 focus-visible:ring-ring transition-all font-semibold text-sm"
                         />
                     </div>
                 </div>
 
-                <div className="flex items-center justify-end gap-4 pt-4 border-t border-border/50">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
                     <Button
                         type="submit"
                         disabled={isPending || !selectedRecipient || !body}
                         onClick={() => setShouldSend(false)}
-                        variant="ghost"
-                        className="rounded-xl h-11 px-6 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-muted transition-all active:scale-[0.98]"
+                        variant="outline"
+                        className="rounded-md h-9 px-4 font-bold uppercase tracking-wider text-[11px] hover:bg-muted transition-colors"
                     >
                         {isPending && !shouldSend ? 'Saving...' : 'Save Draft'}
                     </Button>
@@ -137,15 +137,15 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
                         type="submit"
                         disabled={isPending || !selectedRecipient || !body}
                         onClick={() => setShouldSend(true)}
-                        className="rounded-xl h-11 px-8 font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all bg-[#0078D4] hover:bg-[#006ABD] text-white border-none"
+                        className="rounded-md h-9 px-6 font-bold uppercase tracking-wider text-[11px] transition-all bg-primary hover:bg-primary/90 text-primary-foreground border-none"
                     >
                         {isPending && shouldSend ? 'Sending...' : 'Send Document'}
                     </Button>
                 </div>
             </div>
 
-            {/* The Word Editor */}
-            <div className="flex-1 min-h-[800px]">
+            {/* The Editor */}
+            <div className="flex-1 min-h-[600px]">
                 <RichTextEditor
                     content={body}
                     onChange={setBody}
@@ -155,3 +155,4 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
         </form>
     )
 }
+

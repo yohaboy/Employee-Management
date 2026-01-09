@@ -1,128 +1,170 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getCurrentNode } from '@/lib/auth'
-import { Shield, TreePine, Mail, Lock, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Shield, TreePine, Mail, Lock, CheckCircle2, ArrowRight, Activity, Globe, Zap } from 'lucide-react'
 
 export default async function Home() {
   const currentNode = await getCurrentNode()
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-        <Link className="flex items-center justify-center gap-2" href="#">
-          <div className="bg-primary p-1.5 rounded-lg">
+      <header className="px-6 lg:px-10 h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <Link className="flex items-center justify-center gap-2.5" href="/">
+          <div className="bg-primary p-1.5 rounded-md">
             <Shield className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="font-bold text-xl tracking-tight">SecureHierarchy</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-          <Link className="text-sm font-medium hover:text-primary transition-colors" href="#features">
+        <nav className="ml-auto flex gap-8 items-center">
+          <Link className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors" href="#features">
             Features
           </Link>
+          <Link className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors" href="#solutions">
+            Solutions
+          </Link>
+          <div className="h-4 w-px bg-border mx-2" />
           {currentNode ? (
-            <Button asChild variant="default" size="sm" className="rounded-full px-6">
-              <Link href="/dashboard">Go to Dashboard</Link>
+            <Button asChild variant="default" size="sm" className="font-semibold">
+              <Link href="/dashboard">Dashboard</Link>
             </Button>
           ) : (
-            <Button asChild variant="default" size="sm" className="rounded-full px-6">
-              <Link href="/login">Login</Link>
-            </Button>
+            <div className="flex items-center gap-4">
+              <Link className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors" href="/login">
+                Sign in
+              </Link>
+              <Button asChild variant="default" size="sm" className="font-semibold">
+                <Link href="/login">Get Started</Link>
+              </Button>
+            </div>
           )}
         </nav>
       </header>
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted/30">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4 animate-in fade-in slide-in-from-bottom-3 duration-700">
-                Secure Office Management v1.0
+        <section className="relative overflow-hidden bg-background pt-16 pb-24 lg:pt-32 lg:pb-40">
+          <div className="container px-4 md:px-6 mx-auto relative z-10">
+            <div className="flex flex-col items-center text-center space-y-8">
+              <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-medium text-primary">
+                <span className="flex h-2 w-2 rounded-full bg-primary mr-2" />
+                Enterprise-Grade Security
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none max-w-3xl">
-                Manage Your Organization with <span className="text-primary">Absolute Security</span>
+              <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl max-w-4xl leading-[1.1]">
+                The Operating System for <span className="text-primary">Secure Organizations</span>
               </h1>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                A strict tree-based hierarchy system with secure digital signatures,
-                audit trails, and encrypted letter management for modern enterprises.
+              <p className="mx-auto max-w-[800px] text-lg text-muted-foreground md:text-xl leading-relaxed">
+                Streamline your organizational hierarchy with military-grade security. 
+                Manage communications, track audit trails, and ensure compliance with 
+                our unified hierarchy management platform.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <Button asChild size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-lg shadow-primary/20">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button asChild size="lg" className="h-12 px-8 text-base font-semibold">
                   <Link href={currentNode ? "/dashboard" : "/login"}>
-                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                    Start Building Your Hierarchy <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base font-semibold">
-                  View Documentation
+                <Button variant="outline" size="lg" className="h-12 px-8 text-base font-semibold">
+                  Book a Demo
                 </Button>
               </div>
+              
+              {/* Hero Image/Mockup Placeholder */}
+              <div className="mt-16 w-full max-w-5xl mx-auto rounded-xl border bg-muted/30 p-2 shadow-2xl">
+                <div className="rounded-lg border bg-background overflow-hidden aspect-[16/9] flex items-center justify-center text-muted-foreground">
+                  <div className="flex flex-col items-center gap-4">
+                    <Activity className="h-12 w-12 opacity-20" />
+                    <p className="font-medium opacity-40">Dashboard Preview</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Subtle Background Elements */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-[0.03] pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-full bg-[grid-linear-gradient(to_right,#80808012_1px,transparent_1px),grid-linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
+          </div>
+        </section>
+
+        {/* Trust Section */}
+        <section className="py-12 border-y bg-muted/30">
+          <div className="container px-4 mx-auto">
+            <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">
+              Trusted by forward-thinking institutions
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-50 grayscale">
+              <div className="font-bold text-2xl tracking-tighter">TECHCORP</div>
+              <div className="font-bold text-2xl tracking-tighter">SECURENET</div>
+              <div className="font-bold text-2xl tracking-tighter">GLOBALBANK</div>
+              <div className="font-bold text-2xl tracking-tighter">NODESYSTEMS</div>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-background">
+        <section id="features" className="py-24 bg-background">
           <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Core Features</h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Everything you need to manage your organizational structure and communications securely.
+            <div className="flex flex-col items-center text-center mb-16 space-y-4">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Built for Scale and Security</h2>
+              <p className="max-w-[700px] text-muted-foreground text-lg">
+                Our platform provides the tools necessary for modern organizations to maintain 
+                clear structures and secure communication channels.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <TreePine className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Strict Hierarchy</h3>
-                <p className="text-muted-foreground text-center">
-                  Define clear reporting lines with our tree-based node system. Manage departments and teams with ease.
+                <h3 className="text-xl font-bold mb-3">Dynamic Hierarchy</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Visualize and manage complex organizational structures with our intuitive tree-based node system.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <Mail className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Secure Letters</h3>
-                <p className="text-muted-foreground text-center">
-                  Send official communications that are tracked, signed, and archived with full integrity.
+                <h3 className="text-xl font-bold mb-3">Verified Letters</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Official communications are cryptographically signed and tracked from creation to delivery.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <Lock className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Digital Signatures</h3>
-                <p className="text-muted-foreground text-center">
-                  Verify authenticity with built-in digital signatures for every official document and response.
+                <h3 className="text-xl font-bold mb-3">Zero-Trust Access</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Granular permissions ensure that users only access information relevant to their position.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <CheckCircle2 className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Audit Trails</h3>
-                <p className="text-muted-foreground text-center">
-                  Every action is logged. Track who did what, when, and from where with detailed audit logs.
+                <h3 className="text-xl font-bold mb-3">Immutable Audit</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Every action is recorded in a tamper-proof audit log, providing full transparency and accountability.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
-                  <Shield className="h-6 w-6" />
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Globe className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Role-Based Access</h3>
-                <p className="text-muted-foreground text-center">
-                  Granular permissions based on the organizational hierarchy. Users only see what they need to.
+                <h3 className="text-xl font-bold mb-3">Global Compliance</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Meet international standards for data protection and organizational management out of the box.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-3 p-6 rounded-2xl border bg-card hover:shadow-md transition-shadow">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
-                  <Activity className="h-6 w-6" />
+              <div className="group p-8 rounded-2xl border bg-card hover:border-primary/50 transition-all">
+                <div className="mb-6 inline-flex p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Zap className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Real-time Analytics</h3>
-                <p className="text-muted-foreground text-center">
-                  Monitor the flow of information and task completion across your entire organization.
+                <h3 className="text-xl font-bold mb-3">Real-time Insights</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Monitor organizational health and communication flow with advanced real-time analytics.
                 </p>
               </div>
             </div>
@@ -130,20 +172,32 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">© 2024 SecureHierarchy Inc. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </Link>
-        </nav>
+      <footer className="py-12 border-t bg-muted/20">
+        <div className="container px-4 md:px-6 mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="font-bold text-lg tracking-tight">SecureHierarchy</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              © 2024 SecureHierarchy Inc. All rights reserved. Built for secure enterprises.
+            </p>
+            <nav className="flex gap-6">
+              <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" href="#">
+                Terms
+              </Link>
+              <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" href="#">
+                Privacy
+              </Link>
+              <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" href="#">
+                Contact
+              </Link>
+            </nav>
+          </div>
+        </div>
       </footer>
     </div>
   )
 }
 
-import { Activity } from 'lucide-react'
 
