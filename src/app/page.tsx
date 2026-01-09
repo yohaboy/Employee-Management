@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getCurrentNode } from '@/lib/auth'
-import { Shield, TreePine, Mail, Lock, CheckCircle2, ArrowRight, Activity, Globe, Zap } from 'lucide-react'
+import { Shield, TreePine, Mail, Lock, CheckCircle2, ArrowRight, Globe, Zap } from 'lucide-react'
 
 export default async function Home() {
   const currentNode = await getCurrentNode()
@@ -54,8 +55,8 @@ export default async function Home() {
                 The Operating System for <span className="text-primary">Secure Organizations</span>
               </h1>
               <p className="mx-auto max-w-[800px] text-lg text-muted-foreground md:text-xl leading-relaxed">
-                Streamline your organizational hierarchy with military-grade security. 
-                Manage communications, track audit trails, and ensure compliance with 
+                Streamline your organizational hierarchy with military-grade security.
+                Manage communications, track audit trails, and ensure compliance with
                 our unified hierarchy management platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -68,19 +69,31 @@ export default async function Home() {
                   Book a Demo
                 </Button>
               </div>
-              
-              {/* Hero Image/Mockup Placeholder */}
+
+              {/* Hero Image */}
               <div className="mt-16 w-full max-w-5xl mx-auto rounded-xl border bg-muted/30 p-2 shadow-2xl">
-                <div className="rounded-lg border bg-background overflow-hidden aspect-[16/9] flex items-center justify-center text-muted-foreground">
-                  <div className="flex flex-col items-center gap-4">
-                    <Activity className="h-12 w-12 opacity-20" />
-                    <p className="font-medium opacity-40">Dashboard Preview</p>
-                  </div>
+                <div className="rounded-lg border bg-background overflow-hidden aspect-[16/9] relative">
+                  <Image
+                    src="/dark.png"
+                    alt="Dashboard Preview Light"
+                    fill
+                    className="object-cover block dark:hidden"
+                    priority
+                    unoptimized
+                  />
+                  <Image
+                    src="/light.png"
+                    alt="Dashboard Preview Dark"
+                    fill
+                    className="object-cover hidden dark:block"
+                    priority
+                    unoptimized
+                  />
                 </div>
               </div>
             </div>
           </div>
-          
+
           {/* Subtle Background Elements */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-[0.03] pointer-events-none">
             <div className="absolute top-0 left-0 w-full h-full bg-[grid-linear-gradient(to_right,#80808012_1px,transparent_1px),grid-linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -108,7 +121,7 @@ export default async function Home() {
             <div className="flex flex-col items-center text-center mb-16 space-y-4">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Built for Scale and Security</h2>
               <p className="max-w-[700px] text-muted-foreground text-lg">
-                Our platform provides the tools necessary for modern organizations to maintain 
+                Our platform provides the tools necessary for modern organizations to maintain
                 clear structures and secure communication channels.
               </p>
             </div>
