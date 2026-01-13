@@ -130,4 +130,3 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
         </div>
     )
 }
-

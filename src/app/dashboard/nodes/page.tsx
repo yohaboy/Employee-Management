@@ -54,7 +54,7 @@ export default async function NodesPage({
     }
 
     return (
-        <div key={nodeId || 'root'} className="space-y-6 animate-in fade-in duration-500 bg-dot-pattern min-h-[80vh] rounded-xl p-4">
+        <div key={nodeId || 'root'} className="space-y-6 animate-in fade-in duration-500">
             <Card className="border-none shadow-sm ring-1 ring-border/50">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                     <CardTitle className="text-lg font-semibold flex items-center gap-2">
@@ -65,7 +65,7 @@ export default async function NodesPage({
                         Interactive View
                     </div>
                 </CardHeader>
-                <CardContent className="p-0 overflow-hidden">
+                <CardContent className="p-0 overflow-hidden bg-dot-pattern min-h-[750px] rounded-b-xl">
                     <Suspense fallback={
                         <div className="h-[750px] w-full flex items-center justify-center bg-muted/10">
                             <div className="flex flex-col items-center gap-2">

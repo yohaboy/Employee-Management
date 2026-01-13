@@ -11,8 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { createLetterAction, sendLetterAction } from '@/app/actions/letters'
 import { useState } from 'react'
 
-import { RichTextEditor } from '@/components/ui/rich-text-editor'
-
 interface Recipient {
     id: string
     name: string
@@ -148,13 +146,14 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
 
                     <div className="flex-1 min-h-[300px] border border-border rounded-lg overflow-hidden flex flex-col bg-background shadow-sm">
                         <div className="bg-muted/30 border-b border-border px-4 py-2 flex items-center justify-between">
-                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Message Body</span>
+                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Remarks / Notes (Optional)</span>
                         </div>
-                        <div className="flex-1">
-                            <RichTextEditor
-                                content={body}
-                                onChange={setBody}
-                                placeholder="Type your message here..."
+                        <div className="flex-1 p-4">
+                            <Textarea
+                                value={body}
+                                onChange={(e) => setBody(e.target.value)}
+                                placeholder="Add any additional notes or remarks here..."
+                                className="h-full min-h-[200px] border-none focus-visible:ring-0 resize-none p-0"
                             />
                         </div>
                     </div>
@@ -255,4 +254,3 @@ export function NewLetterForm({ recipients, parentId, defaultSubject, defaultRec
         </form>
     )
 }
-

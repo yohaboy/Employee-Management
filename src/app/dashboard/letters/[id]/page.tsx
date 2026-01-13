@@ -5,7 +5,7 @@ import { canViewLetter } from '@/lib/hierarchy'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, User, Calendar, FileText, FileCheck, History as HistoryIcon, Mail, ChevronRight, Reply, Shield } from 'lucide-react'
+import { ArrowLeft, User, Calendar, FileText, FileCheck, History as HistoryIcon, Mail, ChevronRight, Reply, Shield, Download } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
@@ -197,6 +197,43 @@ export default async function LetterPage({ params }: LetterPageProps) {
                             </div>
                         </CardHeader>
                         <CardContent className="p-6 md:p-12 lg:p-16">
+                            {letter.attachment ? (
+                                <div className="mb-8 space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
+                                            <FileText className="size-3" />
+                                            Attached Document
+                                        </h3>
+                                        <a href={letter.attachment} download={`attachment-${letter.id}`}>
+                                            <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
+                                                <Download className="size-3" />
+                                                Download File
+                                            </Button>
+                                        </a>
+                                    </div>
+                                    <div className="border border-border rounded-xl overflow-hidden bg-muted/10 min-h-[500px] relative">
+                                        {letter.attachment.startsWith('data:application/pdf') ? (
+                                            <iframe src={letter.attachment} className="w-full h-[600px]" />
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center h-[300px] gap-4">
+                                                <FileText className="size-16 text-muted-foreground/50" />
+                                                <p className="text-sm font-medium text-muted-foreground">Preview not available for this file type</p>
+                                            </div>
+                                        )}
+
+                                        {letter.signature && (
+                                            <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-sm border-2 border-primary text-primary px-6 py-3 rounded-lg shadow-xl transform -rotate-2 flex flex-col items-center z-20 pointer-events-none">
+                                                <span className="font-serif italic text-2xl font-bold">Digitally Signed</span>
+                                                <span className="text-[10px] uppercase tracking-widest font-bold opacity-70">Verified & Approved</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            <div className="space-y-2 mb-4">
+                                <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Remarks / Notes</h3>
+                            </div>
                             <div
                                 className="prose prose-slate dark:prose-invert max-w-none text-foreground leading-relaxed selection:bg-primary/10"
                                 dangerouslySetInnerHTML={{ __html: letter.body }}

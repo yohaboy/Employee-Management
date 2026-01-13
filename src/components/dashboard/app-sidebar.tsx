@@ -147,4 +147,3 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
         </Sidebar>
     )
 }
-
