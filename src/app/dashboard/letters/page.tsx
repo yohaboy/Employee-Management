@@ -22,18 +22,19 @@ export default async function LettersPage() {
             ...l,
             sender: sender ? { id: sender.id, name: sender.name, position: sender.position } : { id: 'unknown', name: 'Unknown', position: 'Unknown' },
             receiver: receiver ? { id: receiver.id, name: receiver.name, position: receiver.position } : { id: 'unknown', name: 'Unknown', position: 'Unknown' },
-            signature: signature || null
+            signature: signature || null,
+            attachment: l.attachment || null
         }
     }
 
     // Get all letters visible to this node
     const receivedLetters = db.letters
-        .filter(l => visibleNodeIds.includes(l.receiverId))
+        .filter(l => l.receiverId === currentNode.id)
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
         .map(mapLetter)
 
     const sentLetters = db.letters
-        .filter(l => visibleNodeIds.includes(l.senderId))
+        .filter(l => l.senderId === currentNode.id)
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
         .map(mapLetter)
 

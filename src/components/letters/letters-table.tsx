@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Eye } from 'lucide-react'
+import { Eye, Paperclip } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface Letter {
@@ -25,6 +25,7 @@ interface Letter {
         position: string
     }
     signature: any
+    attachment?: string | null
 }
 
 interface LettersTableProps {
@@ -75,7 +76,10 @@ export function LettersTable({ letters, currentNodeId, type }: LettersTableProps
                             >
                                 <TableCell className="px-4 md:px-6 py-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="font-semibold text-sm tracking-tight group-hover:text-primary transition-colors truncate max-w-[150px] md:max-w-none">{letter.subject}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-semibold text-sm tracking-tight group-hover:text-primary transition-colors truncate max-w-[150px] md:max-w-none">{letter.subject}</span>
+                                            {letter.attachment && <Paperclip className="size-3 text-muted-foreground" />}
+                                        </div>
                                         {letter.parentId && (
                                             <span className="text-[10px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded w-fit uppercase tracking-wide">Reply</span>
                                         )}

@@ -19,8 +19,10 @@ export async function createLetterAction(formData: FormData) {
     const receiverId = formData.get('receiverId') as string
     const category = formData.get('category') as string
     const parentId = formData.get('parentId') as string || null
+    const attachment = formData.get('attachment') as string || undefined
+    const signedBySender = formData.get('signedBySender') === 'true'
 
-    const validation = createLetterSchema.safeParse({ subject, body, receiverId, category, parentId })
+    const validation = createLetterSchema.safeParse({ subject, body, receiverId, category, parentId, attachment, signedBySender })
     if (!validation.success) {
         return { error: validation.error.issues[0].message }
     }
@@ -37,6 +39,8 @@ export async function createLetterAction(formData: FormData) {
         body,
         category,
         parentId,
+        attachment,
+        signedBySender,
         senderId: currentNode.id,
         receiverId,
         status: 'DRAFT' as LetterStatus,

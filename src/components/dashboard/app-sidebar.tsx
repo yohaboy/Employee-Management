@@ -53,7 +53,7 @@ const navItems = [
     { href: "/dashboard/settings", label: "Settings", icon: Settings2 },
 ]
 
-export function AppSidebar({ user }: { user: any }) {
+export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?: number }) {
     const pathname = usePathname()
 
     return (
@@ -82,11 +82,18 @@ export function AppSidebar({ user }: { user: any }) {
                                         tooltip={item.label}
                                         className="h-10 px-3 rounded-md transition-colors hover:bg-accent group data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
                                     >
-                                        <Link href={item.href} className="flex items-center gap-3">
-                                            <item.icon className={`size-4.5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
-                                            <span className={`font-medium text-sm ${isActive ? 'text-primary-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
-                                                {item.label}
-                                            </span>
+                                        <Link href={item.href} className="flex items-center gap-3 justify-between w-full">
+                                            <div className="flex items-center gap-3">
+                                                <item.icon className={`size-4.5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                                                <span className={`font-medium text-sm ${isActive ? 'text-primary-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
+                                                    {item.label}
+                                                </span>
+                                            </div>
+                                            {item.label === 'Letters' && unreadCount > 0 && (
+                                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                                                    {unreadCount}
+                                                </span>
+                                            )}
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

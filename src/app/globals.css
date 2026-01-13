@@ -194,3 +194,13 @@
     @apply bg-primary/20 text-primary;
   }
 }
+
+.bg-dot-pattern {
+  background-image: radial-gradient(var(--neutral-300) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.dark .bg-dot-pattern {
+  background-image: radial-gradient(var(--neutral-700) 1px, transparent 1px);
+}

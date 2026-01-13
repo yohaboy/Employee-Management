@@ -8,6 +8,8 @@ import { Search, Bell, UserPlus } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
+import { db } from '@/lib/db'
+
 export default async function DashboardLayout({
     children,
 }: {
@@ -19,9 +21,11 @@ export default async function DashboardLayout({
         redirect('/login')
     }
 
+    const unreadCount = db.letters.filter(l => l.receiverId === currentNode.id && l.status === 'SENT').length
+
     return (
         <SidebarProvider>
-            <AppSidebar user={currentNode} />
+            <AppSidebar user={currentNode} unreadCount={unreadCount} />
             <SidebarInset className="bg-background flex flex-col min-h-screen">
                 <header className="flex h-16 shrink-0 items-center gap-4 border-b border-border bg-background px-4 md:px-6 sticky top-0 z-30 transition-all">
                     <div className="flex items-center gap-4 flex-1">

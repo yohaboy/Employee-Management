@@ -20,6 +20,8 @@ export const createLetterSchema = z.object({
     receiverId: z.string().uuid('Invalid receiver ID'),
     category: z.enum(['RESPONSE_REQUIRED', 'NO_RESPONSE_REQUIRED']),
     parentId: z.string().uuid('Invalid parent ID').nullable().optional(),
+    attachment: z.string().optional(), // Base64 string or URL
+    signedBySender: z.boolean().optional(),
 })
 
 export const updateLetterSchema = z.object({
