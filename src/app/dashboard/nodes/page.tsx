@@ -65,7 +65,7 @@ export default async function NodesPage({
                         Interactive View
                     </div>
                 </CardHeader>
-                <CardContent className="p-0 overflow-hidden bg-dot-pattern min-h-[750px] rounded-b-xl">
+                <CardContent className="p-0 overflow-hidden min-h-[750px] rounded-b-xl">
                     <Suspense fallback={
                         <div className="h-[750px] w-full flex items-center justify-center bg-muted/10">
                             <div className="flex flex-col items-center gap-2">

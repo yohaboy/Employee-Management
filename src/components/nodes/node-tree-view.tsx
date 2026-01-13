@@ -228,8 +228,8 @@ export function NodeTreeView({ treeData, currentNodeId }: NodeTreeViewProps) {
                 onMouseLeave={handleMouseUp}
                 ref={containerRef}
                 style={{
-                    backgroundImage: `radial-gradient(circle, var(--grid-color) 1px, transparent 1px)`,
-                    backgroundSize: `${24 * scale}px ${24 * scale}px`,
+                    backgroundImage: `radial-gradient(circle, var(--grid-color) 1.5px, transparent 1.5px)`,
+                    backgroundSize: `${32 * scale}px ${32 * scale}px`,
                     backgroundPosition: `${position.x}px ${position.y}px`,
                 }}
             >
