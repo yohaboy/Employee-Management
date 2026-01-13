@@ -17,6 +17,7 @@ import {
     Hash,
     Shield,
     Activity,
+    Send,
 } from "lucide-react"
 
 import {
@@ -53,9 +54,9 @@ const navItems = [
             { href: "/dashboard/letters/inbox", label: "Inbox" },
             { href: "/dashboard/letters/outbox", label: "Outbox" },
             { href: "/dashboard/letters/drafts", label: "Drafts" },
-            { href: "/dashboard/letters/new", label: "New Letter" },
         ]
     },
+    { href: "/dashboard/letters/new", label: "New Letter", icon: Send },
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
     { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
@@ -112,7 +113,7 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                             </div>
                                         </SidebarMenuButton>
                                         {isOpen && (
-                                            <SidebarMenuSub className="ml-0 border-l-0 px-0 animate-in slide-in-from-top-1 duration-200">
+                                            <SidebarMenuSub className="ml-[21px] border-l border-border/50 px-0 animate-in slide-in-from-top-1 duration-200">
                                                 {item.items.map((subItem) => {
                                                     const isSubActive = pathname === subItem.href
                                                     return (
@@ -120,7 +121,7 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                                             <SidebarMenuSubButton
                                                                 asChild
                                                                 isActive={isSubActive}
-                                                                className="h-9 pl-11 pr-3 rounded-md transition-colors hover:bg-accent data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
+                                                                className="h-9 pl-6 pr-3 rounded-md transition-colors hover:bg-accent data-[active=true]:bg-primary/10 data-[active=true]:text-primary relative"
                                                             >
                                                                 <Link href={subItem.href} className="flex items-center justify-between w-full">
                                                                     <span className="font-medium text-xs">{subItem.label}</span>

@@ -207,33 +207,12 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                             Attached Document
                                         </h3>
                                         <div className="flex items-center gap-2">
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
-                                                        <Maximize2 className="size-3" />
-                                                        Full Screen
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent className="max-w-[95vw] w-full h-[95vh] p-0 border-none bg-transparent shadow-none">
-                                                    <div className="relative w-full h-full bg-background rounded-lg overflow-hidden flex flex-col">
-                                                        <div className="absolute top-4 right-4 z-50">
-                                                            <DialogClose asChild>
-                                                                <Button variant="outline" size="icon" className="rounded-full bg-background/50 backdrop-blur-sm hover:bg-background">
-                                                                    <X className="size-4" />
-                                                                </Button>
-                                                            </DialogClose>
-                                                        </div>
-                                                        {letter.attachment.startsWith('data:application/pdf') ? (
-                                                            <iframe src={letter.attachment} className="w-full h-full" />
-                                                        ) : (
-                                                            <div className="flex flex-col items-center justify-center h-full gap-4 bg-muted/10">
-                                                                <FileText className="size-24 text-muted-foreground/50" />
-                                                                <p className="text-lg font-medium text-muted-foreground">Preview not available for this file type</p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </DialogContent>
-                                            </Dialog>
+                                            <Link href={`/letters/${letter.id}/fullscreen`} target="_blank">
+                                                <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
+                                                    <Maximize2 className="size-3" />
+                                                    Full Screen
+                                                </Button>
+                                            </Link>
                                             <a href={letter.attachment} download={`attachment-${letter.id}`}>
                                                 <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
                                                     <Download className="size-3" />
@@ -252,7 +231,7 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                             </div>
                                         )}
 
-                                        {letter.signature && (
+                                        {(letter.signature || letter.signedBySender) && (
                                             <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-sm border-2 border-primary text-primary px-6 py-3 rounded-lg shadow-xl transform -rotate-2 flex flex-col items-center z-20 pointer-events-none">
                                                 <span className="font-serif italic text-2xl font-bold">Digitally Signed</span>
                                                 <span className="text-[10px] uppercase tracking-widest font-bold opacity-70">Verified & Approved</span>
