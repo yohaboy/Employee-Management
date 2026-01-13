@@ -46,7 +46,16 @@ import { logoutAction } from "@/app/actions/auth"
 
 const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/dashboard/letters", label: "Letters", icon: Mail },
+    {
+        label: "Conversations",
+        icon: Mail,
+        items: [
+            { href: "/dashboard/letters/inbox", label: "Inbox" },
+            { href: "/dashboard/letters/outbox", label: "Outbox" },
+            { href: "/dashboard/letters/drafts", label: "Drafts" },
+            { href: "/dashboard/letters/new", label: "New Letter" },
+        ]
+    },
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
     { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
@@ -55,6 +64,15 @@ const navItems = [
 
 export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?: number }) {
     const pathname = usePathname()
+    const [openMenus, setOpenMenus] = React.useState<string[]>(["Conversations"])
+
+    const toggleMenu = (label: string) => {
+        setOpenMenus(prev =>
+            prev.includes(label)
+                ? prev.filter(l => l !== label)
+                : [...prev, label]
+        )
+    }
 
     return (
         <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
@@ -73,6 +91,55 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                 <SidebarGroup>
                     <SidebarMenu className="gap-1">
                         {navItems.map((item) => {
+                            if (item.items) {
+                                const isActive = item.items.some(subItem => pathname === subItem.href)
+                                const isOpen = openMenus.includes(item.label)
+                                return (
+                                    <SidebarMenuItem key={item.label}>
+                                        <SidebarMenuButton
+                                            tooltip={item.label}
+                                            onClick={() => toggleMenu(item.label)}
+                                            className={`h-10 px-3 rounded-md transition-colors hover:bg-accent group ${isActive ? 'bg-accent text-accent-foreground' : ''}`}
+                                        >
+                                            <div className="flex items-center gap-3 justify-between w-full">
+                                                <div className="flex items-center gap-3">
+                                                    <item.icon className={`size-4.5 ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                                                    <span className={`font-medium text-sm ${isActive ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
+                                                        {item.label}
+                                                    </span>
+                                                </div>
+                                                <ChevronRight className={`ml-auto size-4 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+                                            </div>
+                                        </SidebarMenuButton>
+                                        {isOpen && (
+                                            <SidebarMenuSub className="ml-0 border-l-0 px-0 animate-in slide-in-from-top-1 duration-200">
+                                                {item.items.map((subItem) => {
+                                                    const isSubActive = pathname === subItem.href
+                                                    return (
+                                                        <SidebarMenuSubItem key={subItem.label}>
+                                                            <SidebarMenuSubButton
+                                                                asChild
+                                                                isActive={isSubActive}
+                                                                className="h-9 pl-11 pr-3 rounded-md transition-colors hover:bg-accent data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
+                                                            >
+                                                                <Link href={subItem.href} className="flex items-center justify-between w-full">
+                                                                    <span className="font-medium text-xs">{subItem.label}</span>
+                                                                    {subItem.label === 'Inbox' && unreadCount > 0 && (
+                                                                        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
+                                                                            {unreadCount}
+                                                                        </span>
+                                                                    )}
+                                                                </Link>
+                                                            </SidebarMenuSubButton>
+                                                        </SidebarMenuSubItem>
+                                                    )
+                                                })}
+                                            </SidebarMenuSub>
+                                        )}
+                                    </SidebarMenuItem>
+                                )
+                            }
+
                             const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
                             return (
                                 <SidebarMenuItem key={item.label}>
@@ -89,11 +156,6 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                                     {item.label}
                                                 </span>
                                             </div>
-                                            {item.label === 'Letters' && unreadCount > 0 && (
-                                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                                                    {unreadCount}
-                                                </span>
-                                            )}
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

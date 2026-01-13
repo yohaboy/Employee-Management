@@ -5,7 +5,8 @@ import { canViewLetter } from '@/lib/hierarchy'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, User, Calendar, FileText, FileCheck, History as HistoryIcon, Mail, ChevronRight, Reply, Shield, Download } from 'lucide-react'
+import { ArrowLeft, User, Calendar, FileText, FileCheck, History as HistoryIcon, Mail, ChevronRight, Reply, Shield, Download, Maximize2, X } from 'lucide-react'
+import { Dialog, DialogContent, DialogTrigger, DialogClose } from '@/components/ui/dialog'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
@@ -65,6 +66,7 @@ export default async function LetterPage({ params }: LetterPageProps) {
 
     const letter = {
         ...rawLetter,
+        attachment: rawLetter.attachment || null,
         sender: sender ? {
             id: sender.id,
             name: sender.name,
@@ -204,12 +206,41 @@ export default async function LetterPage({ params }: LetterPageProps) {
                                             <FileText className="size-3" />
                                             Attached Document
                                         </h3>
-                                        <a href={letter.attachment} download={`attachment-${letter.id}`}>
-                                            <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
-                                                <Download className="size-3" />
-                                                Download File
-                                            </Button>
-                                        </a>
+                                        <div className="flex items-center gap-2">
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
+                                                        <Maximize2 className="size-3" />
+                                                        Full Screen
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="max-w-[95vw] w-full h-[95vh] p-0 border-none bg-transparent shadow-none">
+                                                    <div className="relative w-full h-full bg-background rounded-lg overflow-hidden flex flex-col">
+                                                        <div className="absolute top-4 right-4 z-50">
+                                                            <DialogClose asChild>
+                                                                <Button variant="outline" size="icon" className="rounded-full bg-background/50 backdrop-blur-sm hover:bg-background">
+                                                                    <X className="size-4" />
+                                                                </Button>
+                                                            </DialogClose>
+                                                        </div>
+                                                        {letter.attachment.startsWith('data:application/pdf') ? (
+                                                            <iframe src={letter.attachment} className="w-full h-full" />
+                                                        ) : (
+                                                            <div className="flex flex-col items-center justify-center h-full gap-4 bg-muted/10">
+                                                                <FileText className="size-24 text-muted-foreground/50" />
+                                                                <p className="text-lg font-medium text-muted-foreground">Preview not available for this file type</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
+                                            <a href={letter.attachment} download={`attachment-${letter.id}`}>
+                                                <Button variant="outline" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-wider gap-2">
+                                                    <Download className="size-3" />
+                                                    Download File
+                                                </Button>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div className="border border-border rounded-xl overflow-hidden bg-muted/10 min-h-[500px] relative">
                                         {letter.attachment.startsWith('data:application/pdf') ? (

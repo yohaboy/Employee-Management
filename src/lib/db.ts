@@ -23,6 +23,8 @@ export interface Letter {
     receiverId: string
     createdAt: Date
     updatedAt: Date
+    attachment?: string
+    signedBySender?: boolean
 }
 
 export interface Signature {
