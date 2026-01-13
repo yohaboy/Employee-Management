@@ -18,6 +18,8 @@ import {
     Shield,
     Activity,
     Send,
+    Plus,
+    PlusCircle
 } from "lucide-react"
 
 import {
@@ -47,6 +49,7 @@ import { logoutAction } from "@/app/actions/auth"
 
 const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
+    { href: "/dashboard/letters/new", label: "New Letter", icon: PlusCircle },
     {
         label: "Conversations",
         icon: Mail,
@@ -56,7 +59,6 @@ const navItems = [
             { href: "/dashboard/letters/drafts", label: "Drafts" },
         ]
     },
-    { href: "/dashboard/letters/new", label: "New Letter", icon: Send },
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
     { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
