@@ -67,6 +67,8 @@ const navItems = [
 
 export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?: number }) {
     const pathname = usePathname()
+    const { state } = useSidebar()
+    const isCollapsed = state === "collapsed"
     const [openMenus, setOpenMenus] = React.useState<string[]>(["Conversations"])
 
     const toggleMenu = (label: string) => {
@@ -79,10 +81,10 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
 
     return (
         <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
-            <SidebarHeader className="h-16 flex items-center px-6 border-b border-border">
+            <SidebarHeader className="h-16 flex items-center px-6 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-b border-border">
                 <div className="flex items-center gap-3">
-                    <div className="flex aspect-square size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                        <Shield className="size-5" />
+                    <div className="flex aspect-square size-10 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
+                        <Shield className="size-6" />
                     </div>
                     <div className="flex flex-col gap-0 leading-none group-data-[collapsible=icon]:hidden">
                         <span className="font-bold text-base tracking-tight">SECURE</span>
@@ -90,9 +92,9 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                     </div>
                 </div>
             </SidebarHeader>
-            <SidebarContent className="px-3 py-4">
+            <SidebarContent className="px-3 py-4 group-data-[collapsible=icon]:px-2">
                 <SidebarGroup>
-                    <SidebarMenu className="gap-1">
+                    <SidebarMenu className="gap-1 group-data-[collapsible=icon]:items-center">
                         {navItems.map((item) => {
                             if (item.items) {
                                 const isActive = item.items.some(subItem => pathname === subItem.href)
@@ -101,20 +103,20 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                     <SidebarMenuItem key={item.label}>
                                         <SidebarMenuButton
                                             tooltip={item.label}
-                                            onClick={() => toggleMenu(item.label)}
-                                            className={`h-10 px-3 rounded-md transition-colors hover:bg-accent group ${isActive ? 'bg-accent text-accent-foreground' : ''}`}
+                                            onClick={() => !isCollapsed && toggleMenu(item.label)}
+                                            className={`h-10 px-3 rounded-md transition-colors hover:bg-accent group group-data-[collapsible=icon]:justify-center ${isActive ? 'bg-accent text-accent-foreground' : ''}`}
                                         >
-                                            <div className="flex items-center gap-3 justify-between w-full">
+                                            <div className="flex items-center gap-3 justify-between w-full group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-auto">
                                                 <div className="flex items-center gap-3">
-                                                    <item.icon className={`size-4.5 ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
-                                                    <span className={`font-medium text-sm ${isActive ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
+                                                    <item.icon className={`size-5 shrink-0 ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                                                    <span className={`font-medium text-sm group-data-[collapsible=icon]:hidden ${isActive ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
                                                         {item.label}
                                                     </span>
                                                 </div>
-                                                <ChevronRight className={`ml-auto size-4 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+                                                <ChevronRight className={`ml-auto size-4 transition-transform duration-200 group-data-[collapsible=icon]:hidden ${isOpen ? 'rotate-90' : ''}`} />
                                             </div>
                                         </SidebarMenuButton>
-                                        {isOpen && (
+                                        {isOpen && !isCollapsed && (
                                             <SidebarMenuSub className="ml-[21px] border-l border-foreground/40 px-0 animate-in slide-in-from-top-1 duration-200">
                                                 {item.items.map((subItem) => {
                                                     const isSubActive = pathname === subItem.href
@@ -150,12 +152,12 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                         asChild
                                         isActive={isActive}
                                         tooltip={item.label}
-                                        className="h-10 px-3 rounded-md transition-colors hover:bg-accent group data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
+                                        className="h-10 px-3 rounded-md transition-colors hover:bg-accent group data-[active=true]:bg-primary data-[active=true]:text-primary-foreground group-data-[collapsible=icon]:justify-center"
                                     >
-                                        <Link href={item.href} className="flex items-center gap-3 justify-between w-full">
+                                        <Link href={item.href} className="flex items-center gap-3 justify-between w-full group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-auto">
                                             <div className="flex items-center gap-3">
-                                                <item.icon className={`size-4.5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
-                                                <span className={`font-medium text-sm ${isActive ? 'text-primary-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
+                                                <item.icon className={`size-5 shrink-0 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                                                <span className={`font-medium text-sm group-data-[collapsible=icon]:hidden ${isActive ? 'text-primary-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
                                                     {item.label}
                                                 </span>
                                             </div>
@@ -167,17 +169,17 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter className="p-4 border-t border-border bg-muted/30">
-                <SidebarMenu>
+            <SidebarFooter className="p-4 group-data-[collapsible=icon]:p-2 border-t border-border bg-muted/30">
+                <SidebarMenu className="group-data-[collapsible=icon]:items-center">
                     <SidebarMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton
                                     size="lg"
-                                    className="w-full rounded-md border border-border bg-background hover:bg-accent transition-colors p-2 h-12"
+                                    className="w-full rounded-md border border-border bg-background hover:bg-accent transition-colors p-2 h-12 group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:justify-center"
                                 >
-                                    <div className="flex aspect-square size-8 items-center justify-center rounded bg-primary/10 text-primary">
-                                        <User className="size-4" />
+                                    <div className="flex aspect-square size-9 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+                                        <User className="size-5" />
                                     </div>
                                     <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden ml-3">
                                         <span className="truncate font-semibold text-foreground">{user.name}</span>
@@ -199,7 +201,7 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                 <DropdownMenuItem asChild className="rounded-md cursor-pointer focus:bg-destructive/10 focus:text-destructive transition-colors">
                                     <form action={logoutAction} className="w-full">
                                         <button className="flex w-full items-center gap-3 py-1.5 px-2">
-                                            <LogOut className="size-4" />
+                                            <LogOut className="size-5" />
                                             <span className="font-medium text-sm">Sign out</span>
                                         </button>
                                     </form>

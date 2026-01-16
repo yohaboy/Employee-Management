@@ -4,7 +4,7 @@ import { AppSidebar } from '@/components/dashboard/app-sidebar'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { ModeToggle } from '@/components/mode-toggle'
 import { Separator } from '@/components/ui/separator'
-import { Search, Bell, UserPlus } from 'lucide-react'
+import { Search, Bell, UserPlus, Shield } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -28,10 +28,19 @@ export default async function DashboardLayout({
             <AppSidebar user={currentNode} unreadCount={unreadCount} />
             <SidebarInset className="bg-background flex flex-col min-h-screen">
                 <header className="flex h-16 shrink-0 items-center gap-4 border-b border-border bg-background px-4 md:px-6 sticky top-0 z-30 transition-all">
-                    <div className="flex items-center gap-4 flex-1">
-                        <SidebarTrigger className="-ml-1 h-8 w-8 rounded-md hover:bg-accent transition-colors" />
-                        <Separator orientation="vertical" className="h-6" />
-                        <div className="relative w-full max-w-md hidden sm:block">
+                    <div className="flex items-center gap-2 md:gap-4 flex-1">
+                        <SidebarTrigger className="-ml-1 h-9 w-9 rounded-md hover:bg-accent transition-colors" />
+                        <Separator orientation="vertical" className="h-6 hidden sm:block" />
+
+                        {/* Mobile Logo */}
+                        <div className="flex items-center gap-2 md:hidden">
+                            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                                <Shield className="size-4.5" />
+                            </div>
+                            <span className="font-bold text-sm tracking-tight hidden xs:block">SECURE</span>
+                        </div>
+
+                        <div className="relative w-full max-w-md hidden md:block ml-2">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
                                 type="search"
@@ -40,7 +49,10 @@ export default async function DashboardLayout({
                             />
                         </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
+                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-md relative md:flex hidden">
+                            <Search className="h-5 w-5 text-muted-foreground" />
+                        </Button>
                         <Button variant="ghost" size="icon" className="h-9 w-9 rounded-md relative">
                             <Bell className="h-5 w-5 text-muted-foreground" />
                             <span className="absolute top-2 right-2 h-2 w-2 bg-primary rounded-full ring-2 ring-background" />

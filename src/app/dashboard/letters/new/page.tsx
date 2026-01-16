@@ -36,7 +36,7 @@ export default async function NewLetterPage({ searchParams }: NewLetterPageProps
         .sort((a, b) => a.name.localeCompare(b.name))
 
     return (
-        <div className="flex flex-col h-[calc(100vh-120px)] animate-in fade-in duration-700">
+        <div className="flex flex-col min-h-[calc(100vh-120px)] lg:h-[calc(100vh-120px)] animate-in fade-in duration-700">
             <div className="flex items-center justify-between mb-6 px-2">
                 <div className="flex items-center gap-4">
                     <Link href="/dashboard/letters">
