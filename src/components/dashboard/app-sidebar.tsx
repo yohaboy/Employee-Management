@@ -115,7 +115,7 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                             </div>
                                         </SidebarMenuButton>
                                         {isOpen && (
-                                            <SidebarMenuSub className="ml-[21px] border-l border-border/50 px-0 animate-in slide-in-from-top-1 duration-200">
+                                            <SidebarMenuSub className="ml-[21px] border-l border-foreground/40 px-0 animate-in slide-in-from-top-1 duration-200">
                                                 {item.items.map((subItem) => {
                                                     const isSubActive = pathname === subItem.href
                                                     return (
@@ -123,7 +123,7 @@ export function AppSidebar({ user, unreadCount = 0 }: { user: any, unreadCount?:
                                                             <SidebarMenuSubButton
                                                                 asChild
                                                                 isActive={isSubActive}
-                                                                className="h-9 pl-6 pr-3 rounded-md transition-colors hover:bg-accent data-[active=true]:bg-primary/10 data-[active=true]:text-primary relative"
+                                                                className="h-9 pl-6 pr-3 rounded-md transition-colors  data-[active=true]:bg-primary/10 data-[active=true]:text-primary relative"
                                                             >
                                                                 <Link href={subItem.href} className="flex items-center justify-between w-full">
                                                                     <span className="font-medium text-xs">{subItem.label}</span>
