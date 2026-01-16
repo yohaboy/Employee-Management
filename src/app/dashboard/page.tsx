@@ -76,6 +76,14 @@ export default async function DashboardPage() {
             bg: 'bg-indigo-50'
         },
         {
+            title: 'Sick Leave Balance',
+            value: `${currentNode.sickLeaveBalance} Days`,
+            description: `Out of ${currentNode.yearlySickLeaveAllowance} yearly`,
+            icon: Activity,
+            color: 'text-rose-600',
+            bg: 'bg-rose-50'
+        },
+        {
             title: 'Security Alerts',
             value: '0',
             description: 'No violations detected',

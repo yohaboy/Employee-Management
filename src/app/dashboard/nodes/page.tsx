@@ -114,6 +114,41 @@ export default async function NodesPage({
                             </div>
 
                             <div className="space-y-4">
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Sick Leave Statistics</h3>
+                                <div className="p-4 bg-muted/20 rounded-xl border border-dashed space-y-4">
+                                    <div className="flex justify-between items-end">
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Remaining Balance</p>
+                                            <p className="text-3xl font-black text-primary">{selectedNode.sickLeaveBalance} Days</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Yearly Allowance</p>
+                                            <p className="text-lg font-bold">{selectedNode.yearlySickLeaveAllowance} Days</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[10px] font-bold uppercase">
+                                            <span>Usage</span>
+                                            <span>{Math.round(((selectedNode.yearlySickLeaveAllowance - selectedNode.sickLeaveBalance) / selectedNode.yearlySickLeaveAllowance) * 100)}%</span>
+                                        </div>
+                                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-primary transition-all duration-500"
+                                                style={{ width: `${((selectedNode.yearlySickLeaveAllowance - selectedNode.sickLeaveBalance) / selectedNode.yearlySickLeaveAllowance) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                    {currentNode.id === selectedNode.parentId && (
+                                        <Link href="/dashboard/sick-leave/stats">
+                                            <Button variant="outline" size="sm" className="w-full mt-2 rounded-none border-2 font-bold uppercase text-[10px] h-8">
+                                                View Team Stats
+                                            </Button>
+                                        </Link>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
                                 <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Communication History</h3>
                                 {nodeLetters.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-8 bg-muted/20 rounded-xl border border-dashed">
@@ -129,7 +164,12 @@ export default async function NodesPage({
                                                 className="flex items-center justify-between p-3 rounded-lg border bg-card hover:border-primary/30 hover:shadow-sm transition-all group"
                                             >
                                                 <div className="flex flex-col min-w-0">
-                                                    <span className="text-sm font-bold truncate">{letter.subject}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-bold truncate">{letter.subject}</span>
+                                                        {letter.requestType === 'SICK_LEAVE' && (
+                                                            <Badge variant="secondary" className="text-[8px] font-black uppercase h-4 px-1">Sick Leave</Badge>
+                                                        )}
+                                                    </div>
                                                     <span className="text-[10px] text-muted-foreground uppercase">
                                                         {letter.senderId === selectedNode.id ? `To: ${letter.receiverName}` : `From: ${letter.senderName}`}
                                                     </span>

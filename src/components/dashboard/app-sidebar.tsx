@@ -60,6 +60,14 @@ const navItems = [
         ]
     },
     { href: "/dashboard/nodes", label: "Hierarchy", icon: Users },
+    {
+        label: "Sick Leave",
+        icon: Activity,
+        items: [
+            { href: "/dashboard/sick-leave/new", label: "Request Leave" },
+            { href: "/dashboard/sick-leave/stats", label: "Team Statistics" },
+        ]
+    },
     { href: "/dashboard/users", label: "Manage Users", icon: FileText },
     { href: "/dashboard/audit", label: "Audit Logs", icon: Activity },
     { href: "/dashboard/settings", label: "Settings", icon: Settings2 },

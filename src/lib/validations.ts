@@ -17,11 +17,15 @@ export const createNodeSchema = z.object({
 export const createLetterSchema = z.object({
     subject: z.string().min(1, 'Subject is required').max(200, 'Subject too long'),
     body: z.string().min(1, 'Body is required'),
-    receiverId: z.string().uuid('Invalid receiver ID'),
+    receiverId: z.string().min(1, 'Invalid receiver ID'),
     category: z.enum(['RESPONSE_REQUIRED', 'NO_RESPONSE_REQUIRED']),
-    parentId: z.string().uuid('Invalid parent ID').nullable().optional(),
+    parentId: z.string().min(1, 'Invalid parent ID').nullable().optional(),
     attachment: z.string().optional(), // Base64 string or URL
     signedBySender: z.boolean().optional(),
+    requestType: z.enum(['GENERAL', 'SICK_LEAVE']).optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+    daysCount: z.number().optional(),
 })
 
 export const updateLetterSchema = z.object({

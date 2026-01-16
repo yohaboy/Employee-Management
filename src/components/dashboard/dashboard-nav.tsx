@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Home, Mail, Users, FileText, LogOut } from 'lucide-react'
+import { Home, Mail, Users, FileText, LogOut, Activity } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { logoutAction } from '@/app/actions/auth'
 
@@ -11,6 +11,7 @@ const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/dashboard/letters', label: 'Letters', icon: Mail },
     { href: '/dashboard/nodes', label: 'Hierarchy', icon: Users },
+    { href: '/dashboard/sick-leave/stats', label: 'Sick Leave', icon: Activity },
     { href: '/dashboard/users', label: 'Manage Users', icon: FileText },
 ]
 

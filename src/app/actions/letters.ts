@@ -21,8 +21,15 @@ export async function createLetterAction(formData: FormData) {
     const parentId = formData.get('parentId') as string || null
     const attachment = formData.get('attachment') as string || undefined
     const signedBySender = formData.get('signedBySender') === 'true'
+    const requestType = formData.get('requestType') as 'GENERAL' | 'SICK_LEAVE' || 'GENERAL'
+    const startDate = formData.get('startDate') as string || undefined
+    const endDate = formData.get('endDate') as string || undefined
+    const daysCount = formData.get('daysCount') ? Number(formData.get('daysCount')) : undefined
 
-    const validation = createLetterSchema.safeParse({ subject, body, receiverId, category, parentId, attachment, signedBySender })
+    const validation = createLetterSchema.safeParse({
+        subject, body, receiverId, category, parentId, attachment, signedBySender,
+        requestType, startDate, endDate, daysCount
+    })
     if (!validation.success) {
         return { error: validation.error.issues[0].message }
     }
@@ -41,6 +48,10 @@ export async function createLetterAction(formData: FormData) {
         parentId,
         attachment,
         signedBySender,
+        requestType,
+        startDate,
+        endDate,
+        daysCount,
         senderId: currentNode.id,
         receiverId,
         status: 'DRAFT' as LetterStatus,
@@ -54,7 +65,7 @@ export async function createLetterAction(formData: FormData) {
     await createAuditLog({
         nodeId: currentNode.id,
         action: 'LETTER_CREATED',
-        details: `Created letter: ${subject}`,
+        details: `Created ${requestType === 'SICK_LEAVE' ? 'sick leave request' : 'letter'}: ${subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
         userAgent: headersList.get('user-agent') || undefined,
@@ -208,12 +219,20 @@ export async function signLetterAction(letterId: string, formData: FormData) {
         updatedAt: new Date(),
     }
 
+    // SPECIAL LOGIC: If this is a sick leave request, decrease the sender's balance
+    if (letter.requestType === 'SICK_LEAVE' && letter.daysCount) {
+        const senderIndex = db.nodes.findIndex(n => n.id === letter.senderId)
+        if (senderIndex !== -1) {
+            db.nodes[senderIndex].sickLeaveBalance -= letter.daysCount
+        }
+    }
+
     // Log signature
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
         action: response ? 'LETTER_RESPONDED' : 'LETTER_SIGNED',
-        details: `Signed letter: ${letter.subject}`,
+        details: `Signed ${letter.requestType === 'SICK_LEAVE' ? 'sick leave request' : 'letter'}: ${letter.subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
         userAgent: headersList.get('user-agent') || undefined,
@@ -221,6 +240,8 @@ export async function signLetterAction(letterId: string, formData: FormData) {
 
     revalidatePath('/dashboard/letters')
     revalidatePath(`/dashboard/letters/${letterId}`)
+    revalidatePath('/dashboard/sick-leave/stats')
+    revalidatePath('/dashboard/nodes')
     return { success: true }
 }
 

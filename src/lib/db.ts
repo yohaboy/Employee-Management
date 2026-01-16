@@ -10,6 +10,8 @@ export interface Node {
     parentId: string | null
     createdAt: Date
     updatedAt: Date
+    sickLeaveBalance: number
+    yearlySickLeaveAllowance: number
 }
 
 export interface Letter {
@@ -25,6 +27,10 @@ export interface Letter {
     updatedAt: Date
     attachment?: string
     signedBySender?: boolean
+    requestType?: 'GENERAL' | 'SICK_LEAVE'
+    startDate?: string
+    endDate?: string
+    daysCount?: number
 }
 
 export interface Signature {
@@ -63,6 +69,8 @@ class InMemoryStore {
             parentId: null,
             createdAt: new Date(),
             updatedAt: new Date(),
+            sickLeaveBalance: 15,
+            yearlySickLeaveAllowance: 15,
         })
     }
 }
