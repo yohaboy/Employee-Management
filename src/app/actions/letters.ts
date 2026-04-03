@@ -53,7 +53,7 @@ export async function createLetterAction(formData: FormData) {
         daysCount,
         senderId: currentNode.id,
         receiverId,
-        status: 'DRAFT' as LetterStatus,
+        status: LetterStatus.DRAFT,
         createdAt: new Date(),
         updatedAt: new Date(),
     }
@@ -149,7 +149,7 @@ export async function sendLetterAction(letterId: string) {
 
     db.letters[letterIndex] = {
         ...letter,
-        status: 'SENT',
+        status: LetterStatus.SENT,
         updatedAt: new Date(),
     }
 
@@ -211,7 +211,7 @@ export async function signLetterAction(letterId: string, formData: FormData) {
     db.signatures.push(signature)
 
     // Update letter status
-    const newStatus: LetterStatus = response ? 'RESPONDED' : 'SIGNED'
+    const newStatus: LetterStatus = response ? LetterStatus.RESPONDED : LetterStatus.SIGNED
     db.letters[letterIndex] = {
         ...letter,
         status: newStatus,
