@@ -9,7 +9,7 @@ import { canSendLetterTo, canViewLetter } from '@/lib/hierarchy'
 import { createAuditLog } from '@/lib/audit'
 import { headers } from 'next/headers'
 import { v4 as uuidv4 } from 'uuid'
-import { LetterStatus } from '@prisma/client'
+import { LetterStatus } from '@/lib/db'
 
 export async function createLetterAction(formData: FormData) {
     const currentNode = await requireAuth()

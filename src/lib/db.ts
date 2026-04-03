@@ -1,4 +1,24 @@
-import { AuditAction, LetterStatus } from '@prisma/client'
+export enum LetterStatus {
+    DRAFT = 'DRAFT',
+    SENT = 'SENT',
+    SIGNED = 'SIGNED',
+    RESPONDED = 'RESPONDED',
+}
+
+export enum AuditAction {
+    NODE_CREATED = 'NODE_CREATED',
+    NODE_UPDATED = 'NODE_UPDATED',
+    NODE_DELETED = 'NODE_DELETED',
+    LETTER_CREATED = 'LETTER_CREATED',
+    LETTER_UPDATED = 'LETTER_UPDATED',
+    LETTER_DELETED = 'LETTER_DELETED',
+    LETTER_SENT = 'LETTER_SENT',
+    LETTER_SIGNED = 'LETTER_SIGNED',
+    LETTER_RESPONDED = 'LETTER_RESPONDED',
+    LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+    LOGIN_FAILED = 'LOGIN_FAILED',
+    LOGOUT = 'LOGOUT',
+}
 
 // Mock types matching Prisma schema
 export interface Node {
