@@ -50,6 +50,8 @@ export async function getCurrentNode() {
         parentId: node.parentId,
         createdAt: node.createdAt,
         updatedAt: node.updatedAt,
+        sickLeaveBalance: node.sickLeaveBalance,
+        yearlySickLeaveAllowance: node.yearlySickLeaveAllowance,
     }
 }
 
