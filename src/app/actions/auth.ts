@@ -92,6 +92,10 @@ export async function createNodeAction(_prevState: any, formData: FormData) {
         name,
         position,
         parentId,
+    
+        sickLeaveBalance: parent.yearlySickLeaveAllowance ?? 15,
+        yearlySickLeaveAllowance: 15,
+    
         createdAt: new Date(),
         updatedAt: new Date(),
     }
