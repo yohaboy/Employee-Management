@@ -1,7 +1,7 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { db } from '@/lib/db'
+import { db, AuditAction } from '@/lib/db'
 import { createSession, destroySession, hashPassword, verifyPassword } from '@/lib/auth'
 import { loginSchema, createNodeSchema } from '@/lib/validations'
 import { createAuditLog } from '@/lib/audit'
@@ -29,7 +29,7 @@ export async function loginAction(_prevState: any, formData: FormData) {
         const headersList = await headers()
         await createAuditLog({
             nodeId: node.id,
-            action: 'LOGIN_FAILED',
+            action: AuditAction.LOGIN_FAILED,
             details: `Failed login attempt for ${email}`,
             ipAddress: headersList.get('x-forwarded-for') || undefined,
             userAgent: headersList.get('user-agent') || undefined,
@@ -43,7 +43,7 @@ export async function loginAction(_prevState: any, formData: FormData) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: node.id,
-        action: 'LOGIN_SUCCESS',
+        action: AuditAction.LOGIN_SUCCESS,
         details: `Successful login for ${email}`,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
         userAgent: headersList.get('user-agent') || undefined,
@@ -106,7 +106,7 @@ export async function createNodeAction(_prevState: any, formData: FormData) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: parentId,
-        action: 'NODE_CREATED',
+        action: AuditAction.NODE_CREATED,
         details: `Created new node: ${name} (${email})`,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
         userAgent: headersList.get('user-agent') || undefined,

@@ -2,14 +2,13 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { db } from '@/lib/db'
+import { db, AuditAction, LetterStatus } from '@/lib/db'
 import { requireAuth } from '@/lib/auth'
 import { createLetterSchema, updateLetterSchema, signLetterSchema } from '@/lib/validations'
 import { canSendLetterTo, canViewLetter } from '@/lib/hierarchy'
 import { createAuditLog } from '@/lib/audit'
 import { headers } from 'next/headers'
 import { v4 as uuidv4 } from 'uuid'
-import { LetterStatus } from '@/lib/db'
 
 export async function createLetterAction(formData: FormData) {
     const currentNode = await requireAuth()
@@ -64,7 +63,7 @@ export async function createLetterAction(formData: FormData) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
-        action: 'LETTER_CREATED',
+        action: AuditAction.LETTER_CREATED,
         details: `Created ${requestType === 'SICK_LEAVE' ? 'sick leave request' : 'letter'}: ${subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
@@ -117,7 +116,7 @@ export async function updateLetterAction(letterId: string, formData: FormData) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
-        action: 'LETTER_UPDATED',
+        action: AuditAction.LETTER_UPDATED,
         details: `Updated letter: ${letter.subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
@@ -158,7 +157,7 @@ export async function sendLetterAction(letterId: string) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
-        action: 'LETTER_SENT',
+        action: AuditAction.LETTER_SENT,
         details: `Sent letter: ${letter.subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
@@ -231,7 +230,7 @@ export async function signLetterAction(letterId: string, formData: FormData) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
-        action: response ? 'LETTER_RESPONDED' : 'LETTER_SIGNED',
+        action: response ? AuditAction.LETTER_RESPONDED : AuditAction.LETTER_SIGNED,
         details: `Signed ${letter.requestType === 'SICK_LEAVE' ? 'sick leave request' : 'letter'}: ${letter.subject}`,
         letterId: letter.id,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
@@ -273,7 +272,7 @@ export async function deleteLetterAction(letterId: string) {
     const headersList = await headers()
     await createAuditLog({
         nodeId: currentNode.id,
-        action: 'LETTER_DELETED',
+        action: AuditAction.LETTER_DELETED,
         details: `Deleted letter: ${letter.subject}`,
         ipAddress: headersList.get('x-forwarded-for') || undefined,
         userAgent: headersList.get('user-agent') || undefined,
